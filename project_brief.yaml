@@ -1,0 +1,32 @@
+project:
+  title: "Sarawak Tourism Promotion System"
+  agency: "Swinsoft Consulting"
+  client: "Management team of a local tourism association"
+  target_audience: "Worldwide tourists"
+
+core_functions:
+  tourist_facing: "Provide accommodation, transportation, food, and useful local information"
+  management_facing: "Enable content and database management"
+
+methodology:
+  primary_approach: "Tasks and Support approach"
+  requirement_scale: "Goal-Design Scale"
+
+deliverables_and_scope:
+  domain_level_requirements: "Specify tasks users need to perform with system support"
+  quality_attributes: "Specify exactly four (4) critical Non-Functional Requirements (NFRs)"
+  system_context: "Define boundaries and external interactions"
+  domain_model: "Simple domain model (CRITICAL: Do NOT include database schemes)"
+  goal_level_requirements: "Illustrate project incentives; identify existing process pain points"
+  design_and_product_level: "Important requirements identified across the Goal-Design Scale"
+
+strict_ground_rules:
+  solution_agnosticism: "Draft task descriptions applicable to at least three (3) different solutions to avoid solution-oriented bias"
+  actor_identification: "Carefully identify and document all system actors"
+  workflows: "Document the typical workflow of events"
+  validation_evidence: "Must include evidence of validation steps in an Appendix"
+  hardware_assumption: "Elaborate strictly on software. Assume data repositories, hardware, and deployment platforms are already acquired"
+  documentation: "Explicitly document all assumptions"
+
+compliance:
+  privacy_framework: "Malaysian Personal Data Protection Act (PDPA) compliance required for tourist and management data"

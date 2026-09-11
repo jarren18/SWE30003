@@ -1,0 +1,70 @@
+rubric:
+  title: "Assignment 1 Marking Criteria"
+  total_points: 100
+
+criteria:
+  project_goals_and_assumptions:
+    max_points: 5
+    requirements:
+      - "Define Project Type, Goals, Objectives, and Incentives"
+      - "Establish system Context"
+      - "Document assumptions in detail (must be realistic and within constraints)"
+
+  data_domain_model:
+    max_points: 5
+    requirements:
+      - "Provide a simple ER-type domain model"
+      - "Include basic descriptions of entities"
+    strict_penalties:
+      - trigger: "Database attributes are included (too solution-oriented)"
+        deduction: "Up to -3 points"
+
+  user_tasks:
+    max_points: 40
+    style: "Tasks & Support approach"
+    scoring: "5 points per task (Requires 8 major tasks for full marks)"
+    requirements:
+      - "Document major user tasks that must be supported by the system"
+    strict_penalties:
+      - trigger: "Failure to adhere to the Tasks & Support style"
+        deduction: "Variable mark deduction"
+
+  workflow:
+    max_points: 5
+    requirements:
+      - "Identify and illustrate the basic workflow(s)"
+      - "Ensure the workflow covers the main user tasks identified above"
+
+  quality_attributes_nfrs:
+    max_points: 20
+    scoring: "5 points per category"
+    requirements:
+      - "Detail at least four (4) of the most relevant non-functional requirement categories"
+
+  other_requirements:
+    max_points: 5
+    requirements:
+      - "Detail design and product-level requirements in depth"
+      - "Demonstrate the problem has been comprehensively thought through"
+
+  validation:
+    max_points: 10
+    requirements:
+      - "Provide concrete evidence of requirement validation"
+
+  verifiability:
+    max_points: 5
+    requirements:
+      - "Ensure every listed requirement is completely verifiable"
+    strict_penalties:
+      - trigger: "A requirement is identified as non-verifiable"
+        deduction: "-1 point per non-verifiable requirement"
+
+  coherent_document:
+    max_points: 5
+    scoring_breakdown:
+      structure: "1 pt (Suitable overall document structure)"
+      clarity: "1 pt (Clarity and non-contradiction in requirements)"
+      formatting: "1 pt (Title page, table of contents, numbered sections/pages)"
+      presentation: "1 pt (General presentation style, use of English, diagrams)"
+      audience_fit: "1 pt (Pitched at an appropriate audience)"
