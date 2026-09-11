@@ -1,283 +1,133 @@
-# COS30003 Assignment 1 - High Distinction Delta Checklist
+# Delta Checklist: Pass to High Distinction
+### Gap analysis of `sample_pass.pdf` (Holiday Travel Vehicles SIS) against `rubric.yaml` (Assignment 1 Marking Criteria, 100 pts)
 
-Software Requirements Specification: Sarawak Tourism Promotion System
-
-Purpose: exact gap list to move a "Pass"-level SRS to full "High Distinction" marks against `rubric.yaml`.
-Reference sample assessed: `C:\Users\Jarren\OneDrive - Swinburne Sarawak\Documents\COS30003\sample_pass.pdf` (HTV Sales Information System - graded Pass).
-Method reference: `C:\Users\Jarren\OneDrive - Swinburne Sarawak\Documents\COS30003\TasksSupportAWRE.pdf` (Lauesen, Tasks & Support).
-
-Total available: 100 points.
+This checklist is a diagnostic tool only. It does not draft SRS content. Every item below is an actionable "add / expand / fix" instruction, grouped by rubric criterion, with point values and strict-penalty flags called out. Items marked **[STRICT PENALTY RISK]** map directly to automatic deductions defined in the rubric regardless of overall quality elsewhere.
 
 ---
 
-## 1. Project Goals and Assumptions - max 5 points
+## 1. Project Goals & Assumptions (5 pts)
 
-What the Pass sample did:
-- Provided a narrative Project Overview, a 3-bullet Goals list, an Assumptions list, and a Scope paragraph.
-- Assumptions were realistic and within constraints (single location, volume/day, staff skill level, staff types).
+Sample provides Goals, Domain Vocabulary, Assumptions, and Scope — sufficient for a Pass. To reach HD:
 
-What the Pass sample omitted / did weakly:
-- No explicit statement of Project Type (in-house build vs COTS acquisition vs product development).
-- Goals were vague and unmeasurable ("alleviate pain points", "remove redundancies", "tie together key elements").
-- No separation of Goals vs Objectives vs Incentives; no measurable objectives; no business case / ROI / funding rationale (Incentives).
-- System Context given only as prose - no context diagram, no identified external systems/actors.
-- Assumptions not individually justified or traced to a constraint; no dedicated Constraints subsection.
-
-Additions/changes required for full marks:
-- [ ] State the Project Type explicitly and justify it (e.g. new public-facing web/mobile product for Sarawak Tourism Board, partly COTS-integrated).
-- [ ] Write a distinct Goals subsection: 3-6 outcome statements tied to the identified problem.
-- [ ] Write a distinct Objectives subsection: each objective measurable and time-bound (metric + target + deadline), each traceable to a goal.
-- [ ] Write a distinct Incentives subsection: business value / expected ROI / tourism-revenue or visitor-number uplift / why the Board is funding this.
-- [ ] Add a System Context subsection with a context diagram: system boundary plus every external actor and system (tourists, tour operators, Sarawak Tourism Board marketing staff, content administrators, payment gateway, mapping/geolocation service, email/SMS provider, social media, government tourism data sources).
-- [ ] Expand Assumptions: number each, give a one-line justification, and link each to a constraint or scope item; confirm all are realistic and inside project constraints.
-- [ ] Add a Constraints subsection (budget, timeline, regulatory - PDPA, technology, hosting location, languages to support, rural-bandwidth reality in Sarawak).
-- [ ] Add a Scope subsection with explicit in-scope and out-of-scope lists.
+- [ ] Add an explicit **"Project Type"** statement (e.g., greenfield replacement system, internal LOB application) — currently implied only, never stated.
+- [ ] Split the current 3-bullet "Goals" list into distinct **Goals** (broad direction), **Objectives** (specific, measurable outcomes tied to the goals), and **Incentives** (business value/ROI — e.g., reduced staff hours, revenue uplift from removing bottlenecks) as three separately labelled subsections; the rubric names these as four distinct items and the sample only addresses "Goals" and, loosely, "Scope."
+- [ ] Add a formal **System Context** artifact (a context diagram or explicit paragraph defining the system boundary, external actors/systems it interfaces with — e.g., 3rd-party payment processor, external vehicle-valuation databases, license-verification service, mobile platforms). Currently the "context" is only inferable from the Introduction/Scope narrative.
+- [ ] Strengthen **Assumptions** by adding a rationale/source for each (e.g., who supplied "HTV sells on average 2 vehicles per day" — client interview? historical data?) so they read as validated, realistic constraints rather than unsupported claims.
+- [ ] Reconcile the assumption "HTV only has one dealership, in one location" with later NFRs implying scale/multi-user growth — make sure assumptions don't quietly contradict later sections (see also Coherent Document, below).
 
 ---
 
-## 2. Data / Domain Model - max 5 points
+## 2. Data / Domain Model (5 pts)
 
-What the Pass sample did:
-- Provided an ER-type domain model diagram with named relationships (Supervises, Offers, Accepts, Generates, Receives, Pays, Files, Describes, Details).
-- Provided a prose description for each entity.
-- Correctly avoided listing attributes / primary keys / data types (penalty avoided).
+**[STRICT PENALTY RISK — up to -3 pts if database attributes appear]**
+The sample's diagram currently avoids listing attributes inside entity boxes, so it is not automatically penalized — but it is borderline solution-oriented and must be tightened:
 
-What the Pass sample omitted / did weakly:
-- No cardinality / multiplicity on any relationship.
-- Some entities were data-design artefacts rather than domain concepts ("Vehicle Status", "Vehicle Specifications", "Service Type").
-- Domain model not cross-checked against tasks / CRUD table (CRUD table later omitted several of these entities).
-
-Additions/changes required for full marks:
-- [ ] Produce a single clean ER/domain model for the Sarawak Tourism domain: entities + named relationships + multiplicities on every relationship.
-- [ ] Use genuine domain concepts, e.g. Tourist, TourOperator, Attraction, Event, Accommodation, TourPackage, Booking, Itinerary, Payment, Review/Rating, PromotionCampaign, ContentItem, EnquiryTicket.
-- [ ] Give each entity a concise business-level description (what it represents and its role in the domain) - not a field list.
-- [ ] Ensure every entity appears in at least one user task and in the CRUD validation table, and vice versa.
-- [ ] Keep the diagram at conceptual level: entities and relationships only.
-
-MUST AVOID (strict_penalty - up to -3 points):
-- [ ] Do NOT include database attributes, columns, primary/foreign keys, data types, or table structures anywhere in the domain model or entity descriptions.
-- [ ] Do NOT introduce entities that only exist for data storage/normalisation reasons - keep entities solution-independent.
+- [ ] **Add a genuine "Vehicle" entity.** The core domain entity list (§3.2) names "Vehicle," but the actual domain model diagram has no "Vehicle" box at all — only "Vehicle Specifications" and "Vehicle Status." This is a direct inconsistency between the entity list and the model and must be fixed.
+- [ ] Re-evaluate "Vehicle Specifications" and "Vehicle Status" as separate entities — splitting a single conceptual object into normalized fragments is a classic **database-table decomposition pattern**, not a conceptual domain model. For HD, either merge these into one "Vehicle" entity (moving specification/status details into its description) or clearly justify why they are independent conceptual objects. Left as-is, this looks like the exact "too solution-oriented" behaviour the strict penalty targets.
+- [ ] Add a missing **"Option"/"Vehicle Option"** entity — the Goals section explicitly calls out "options" as one of three "key elements" to tie together, and Task 3 discusses dealer-installed options at length, yet no such entity exists anywhere in the domain model.
+- [ ] Add cardinality/multiplicity notation (1..*, 0..1, etc.) to every relationship line — the current diagram has relationship labels ("Supervises," "Offers," "Accepts") but no multiplicity, which is expected in even a "simple" ER-type model for HD-level rigor.
+- [ ] Reconcile the **Domain Entities list (§3.2)** with the **Domain Model (§6)** — §3.2 lists only 6 entities (Customer, Vehicle, Invoice, Service, Test Drive, Sales Person) while the actual model in §6 contains 10 (adds Accountant, Trade In, Service Type, Vehicle Specifications, Vehicle Status). Every entity in the model should be listed (and vice versa).
+- [ ] Consider adding "Manager/Management" as an entity or explicitly stating why it is excluded — it is a named Actor (§3.3) and a task work area ("Manager's office," Task 4) but has zero presence in the domain model.
+- [ ] Deepen entity descriptions with clearer, non-overlapping definitions (e.g., differentiate "Vehicle Status" description from "Vehicle Specifications" more sharply if both are retained).
 
 ---
 
-## 3. User Tasks - max 40 points (5 points per task; 8 major tasks required for full marks)
+## 3. User Tasks — Tasks & Support Style (40 pts — the single largest criterion)
 
-What the Pass sample did:
-- Documented 9 tasks in tabular Tasks & Support-style tables with Purpose, Trigger/Precondition, Frequency, Critical, Work Area, Subtasks, Example Solution, Variants rows.
+**[STRICT PENALTY RISK — variable deduction for failure to adhere to Tasks & Support style]**
+The sample documents 9 tasks (exceeds the 8 needed for full marks on quantity), but quality/adherence issues would prevent full marks and risk the strict penalty:
 
-What the Pass sample omitted / did weakly:
-- No consolidated Work Area / background description block (Lauesen Fig. 1) grouping the tasks (purpose of the work, environment, user profile).
-- "Problem" (present-situation problems) column effectively missing from most tasks - only a few ad-hoc "Problem:" lines; this breaks the Tasks & Support format.
-- Variants left empty for several tasks (Tasks 1, 5, 6, 8, 9); Critical and Work Area left blank on several tasks.
-- Sub-tasks not consistently written in imperative domain-level language; Task 7 sub-tasks were actor narration ("Customer informs Staff"), not domain activities.
-- Several tasks are minor, not major (Feedback, Update Customer Information, Stocktake).
-- Copy/paste and naming defects: Task 7 titled "Process Payment"; Task 8 name blank; task named differently in Section 5 ("Service Engine").
-- Some Example Solution entries prematurely fix the human/computer split and over-specify a solution instead of reading as an example.
-- No typical sub-task sequence noted; no high-level (client-journey) task.
-
-Additions/changes required for full marks:
-- [ ] Provide at least 8 MAJOR user tasks (high-value core business tasks), each fully in Tasks & Support format. Candidates: Search and discover attractions/experiences; Plan and build an itinerary; Book a tour package / accommodation; Make and confirm payment; Create and publish a tourism promotion/campaign; Register and manage an operator listing; Submit and moderate reviews/ratings; Generate tourism/marketing analytics report; Manage the events calendar; Handle a tourist enquiry / support request.
-- [ ] Add a Work Area / background section before the tasks: overall purpose of the work, work environment, user profiles for each actor, grouping of tasks by work area.
-- [ ] For every task table include and fill every field: Task ID + name, Purpose, Trigger/Precondition, Frequency (quantified), Critical (quantified worst-case scenario), Users/Work Area, Sub-tasks (imperative, domain-level), Problem (present-situation problems), Example Solution (column clearly headed "Example solution"), Variants (numbered against sub-tasks: 1a, 1b, 2a...).
-- [ ] Write every sub-task imperatively so it does not pre-assign work to human or computer.
-- [ ] Confirm the 8+ tasks collectively cover every actor and every domain-model entity.
-- [ ] Add at least one high-level task from the tourist's journey viewpoint (discover -> plan -> book -> pay -> travel -> review) to surface business needs (Lauesen section 5).
-- [ ] Note a typical sub-task sequence for each task while stating sequence is not mandatory.
-- [ ] Use identical task names and IDs in Section 4, the Workflow section, the CRUD table, and the traceability matrix.
-- [ ] Replace all placeholder Australian/HTV content with Sarawak Tourism domain content.
-
-MUST AVOID (strict_penalty - variable mark deduction):
-- [ ] Do NOT deviate from the Tasks & Support style: every task must have the Problem column, the Example Solution column, and populated Variants.
-- [ ] Do NOT use feature-style "the system shall..." statements in the sub-task/domain column.
-- [ ] Do NOT submit fewer than 8 major tasks - full task marks require 8 (5 points each).
-- [ ] Do NOT pad with trivial tasks in place of major tasks.
+- [ ] **Fix the Task 7 template error**: the table header literally reads "Task: Process Payment" for the section titled "Task 7: Updating a Customers Information" — a direct copy-paste defect that undermines "adherence to the Tasks & Support style" and is an easy strict-penalty trigger.
+- [ ] **Fix the Task 8 template error**: the table header cell for "Book a Service" is left blank ("Task:" with no name filled in).
+- [ ] Add a per-task **"Actors"** field. The template currently has Purpose / Trigger-Precondition / Frequency / Critical / Work Area / Subtasks / Variants but never states which actor(s) perform the task, even though actors are defined globally in §3.3. Standard Tasks & Support (usage-centered design) templates require actors to be scoped per task.
+- [ ] Add a per-task **"Postcondition"/Outcome** field — currently absent from every task table.
+- [ ] Clarify or rename the ambiguous **"Critical"** field. It is used inconsistently: sometimes it names an edge case ("International license," "Cash Payment"), sometimes it's left blank (Tasks 4, 6, 9) with no explanation of why. Define this field explicitly (e.g., rename to "Critical/Exception Case" or add a real "Priority" rating) and fill it in for every task.
+- [ ] Make the **Subtask "Problem" pattern consistent** across all 9 tasks — some tasks embed "Problem:" text inline under a subtask (Tasks 2, 3, 4, 5, 6), others have no problem cases documented at all (Tasks 1, 7, 8, 9). For HD, every task should identify at least one realistic exception/problem case per major subtask, not just some tasks.
+- [ ] Add a **task hierarchy/goal tree diagram** showing how the 9 tasks relate to each other and to the overall system goal — the Tasks & Support method typically includes this as a companion artifact to the individual task tables, and it is entirely missing from the sample.
+- [ ] Convert vague "Example Solution" narrative text into testable, "the system shall…" style functional requirement statements (or add a companion functional requirements list derived from the tasks) so each subtask's system support is independently verifiable — e.g., "System will use an algorithm and search other online databases to provide a suggested purchase price" (Task 3) is narrative, not a verifiable requirement (see also Verifiability, §8 below).
+- [ ] Standardize actor terminology across tasks and other sections ("Sales Person" vs "Salesperson" vs "Sales person" appear interchangeably).
+- [ ] Consider adding 1-2 additional major tasks beyond the current 9 to demonstrate more complete task-elicitation depth (e.g., "Manage Inventory/Add New Vehicle," "Process Trade-In Valuation" as its own task rather than a Sell-Vehicle subtask, "Manage Staff Access/Permissions") — not required for the point cap (8 tasks = full marks) but strengthens the overall demonstrated rigor expected at HD.
 
 ---
 
-## 4. Workflow - max 5 points
+## 4. Workflow (5 pts)
 
-What the Pass sample did:
-- Provided one activity diagram per task (start/end nodes, some decision diamonds, some fork/join bars).
-
-What the Pass sample omitted / did weakly:
-- Most diagrams are linear restatements of the sub-task list, adding no analytical value.
-- No overarching end-to-end workflow linking the tasks.
-- No actor swimlanes / partitions; no artefact or data flow.
-- Diagram labels contain spelling errors and a duplicated node; diagram titles inconsistent with Section 4 task names.
-
-Additions/changes required for full marks:
-- [ ] Provide at least one consolidated end-to-end workflow linking the main user tasks (e.g. tourist journey: discover -> plan itinerary -> book -> pay -> on-trip -> review; plus the operator/marketing publishing workflow).
-- [ ] Provide per-task workflows for the more complex tasks (booking+payment, campaign publishing, enquiry handling).
-- [ ] Use correct UML activity-diagram notation: swimlanes per actor (tourist, operator, marketing staff, system), decision/merge nodes, fork/join for concurrency, initial/final nodes.
-- [ ] Show the Tasks & Support variant paths as decision branches.
-- [ ] Ensure every major task in Section 4 is visibly covered by a workflow; cross-reference by task ID.
-- [ ] Zero spelling errors; figure captions numbered; titles identical to Section 4 task names.
+- [ ] Add one **overarching/integrated workflow diagram** that connects multiple tasks into an end-to-end business process (e.g., walk-in → presale discussion → test drive → sell vehicle → process payment → feedback). The sample only provides 9 isolated, per-task activity diagrams that largely just re-draw each task's subtask list as boxes — this satisfies "illustrate basic workflow" at a Pass level but not the more holistic view expected at HD.
+- [ ] Add **swimlanes per actor** to the diagrams so responsibility handoffs (customer vs salesperson vs system vs accountant) are visible — currently no actor separation exists in any diagram.
+- [ ] Reflect the **documented "Problem"/exception cases from the task tables** as decision branches in the corresponding workflow diagrams. Only Tasks 2 and 3 currently show any branching; Tasks 4–9 are drawn as simple straight-line sequences even where the task table documents a Problem case (e.g., Task 4's "Problem: Allocated space exceeded" and Task 5's "Problem: Incorrect charge" have no corresponding branch in their workflow diagrams).
+- [ ] Fix the **Task 9 (Feedback) diagram defect**: it duplicates the "Fill out Feedback form" box twice and never shows a "Submit Feedback" step, which is inconsistent with the 4-step task table (Encourage → Access → Fill out → Submit).
+- [ ] Add a **diagram legend** explaining the non-standard color coding (green start box, red "Close Event" box) and confirm/label the notation style being used (e.g., UML Activity Diagram) — currently unexplained, which harms both workflow clarity and general presentation quality.
 
 ---
 
-## 5. Quality Attributes / NFRs - max 20 points (5 points per category)
+## 5. Quality Attributes / NFRs (20 pts — 5 pts per category, 4 categories minimum)
 
-What the Pass sample did:
-- Provided NFR sections with a short rationale for each, and some measurable targets under Reliability and Performance.
+Sample covers 5 categories (Security, Usability, Reliability, Performance, Portability), meeting/exceeding the quantity bar for full marks. HD-level work requires depth and verifiability in every category, not just presence:
 
-What the Pass sample omitted / did weakly:
-- Presented 5 categories (Security, Usability, Reliability, Performance, Portability) - rubric scores 5 points x 4 categories = exactly 4 expected.
-- Usability deferred entirely to an external design-guidelines document - no metrics.
-- Security bullets unmeasurable and cited "Australian Law" (wrong jurisdiction).
-- Performance had a missing unit ("< 20"); Reliability targets ambiguous ("10 minutes", "100%").
-- No fit criterion structure (metric, scale, target, worst acceptable, measurement method, priority) for any NFR.
-- No accessibility, no multilingual/localisation, no scalability for tourist-season peaks.
-
-Additions/changes required for full marks:
-- [ ] Provide EXACTLY 4 NFR categories, each the most relevant to a public tourism promotion system. Recommended: (1) Usability (incl. accessibility + multilingual), (2) Performance & Scalability, (3) Security & Privacy (PDPA), (4) Availability & Reliability.
-- [ ] For EACH category give: business rationale traced to a specific goal/pain point; one or more quantified fit criteria (metric + scale + target value + worst-acceptable value); the measuring instrument; the verification method; a priority.
-- [ ] Usability: SUS >= target; first-time tourist completes a booking in <= N minutes with <= M errors; support >= K languages (Bahasa Malaysia, English, Mandarin, plus stated others); WCAG 2.1 AA conformance.
-- [ ] Performance & Scalability: search response time, page load time, transaction time, concurrent-user capacity at campaign/festival peak, throughput, graceful-degradation behaviour.
-- [ ] Security & Privacy: PDPA 2010 compliance, encryption in transit and at rest, role-based access control, audit logging, penetration-test pass criterion, consent management, breach-response time.
-- [ ] Availability & Reliability: uptime % measured monthly excluding scheduled maintenance, RTO/RPO, MTBF/MTTR targets.
-- [ ] Remove all references to "Australian Law"; cite the Malaysian PDPA.
-- [ ] Fix all missing units and ambiguous windows.
-
-MUST AVOID:
-- [ ] Do NOT list more than 4 or fewer than 4 NFR categories (rubric = exactly 4 categories at 5 points each).
-- [ ] Do NOT state any NFR without a measurable fit criterion ("user-friendly", "fast", "secure", "reliable" alone = fail).
-- [ ] Do NOT defer an entire NFR to an external document with no metric in the SRS.
+- [ ] Rewrite the **Usability** requirement — it currently only says the system "must be developed within the guidelines specified in the Swinsoft UI/UX design guidelines document," with no measurable acceptance criteria (no task-completion time targets, error-rate targets, learnability metric, SUS score, or accessibility standard). This is currently non-verifiable (see §8).
+- [ ] Rewrite the **Security** compliance bullet — "Correctly store client information, invoices, etc, in compliance with Australian Law" cites no specific law (e.g., Privacy Act 1988 (Cth), PCI-DSS for payment data) and has no testable criteria. Name the specific regulation/standard and state a concrete, checkable control (e.g., encryption standard, password policy, session timeout, audit logging requirement).
+- [ ] Add concrete, numeric acceptance criteria to **Portability** ("must be able to be used on mobile platforms (android + iOS)") — specify minimum OS versions, supported browsers, screen-size/responsive breakpoints, etc.
+- [ ] Where Performance and Reliability already contain good numeric targets (e.g., "<1 second," "99% availability"), double check each is realistic/justified and tied back to a business rationale (partially done — extend the same rigor consistently to every category).
+- [ ] Consider adding further NFR categories beyond the minimum 4–5 to demonstrate thoroughness expected at HD (e.g., Maintainability, Scalability, Compliance/Legal, Accessibility, Interoperability with the 3rd-party payment gateway and license-verification service referenced in the task tables) — not required to hit the point cap, but reflects the depth/rigor differentiator between Pass and HD.
 
 ---
 
-## 6. Other Requirements - max 5 points
+## 6. Other Requirements (5 pts)
 
-What the Pass sample did:
-- Provided short Product-level and Design-level requirement lists (data storage/validation, display, reports, print; algorithms, Terms/Privacy display, logo, design guidelines, images).
-
-What the Pass sample omitted / did weakly:
-- Thin and generic; some entries unverifiable ("analyse data using special algorithms").
-- No evidence the problem was thought through comprehensively: no data retention/archival, no integration requirements, no reporting detail, no content management, no localisation, no low-bandwidth handling, no operational/support requirements.
-
-Additions/changes required for full marks:
-- [ ] Provide in-depth, individually IDed, verifiable product-level and design-level requirements.
-- [ ] Cover data lifecycle: retention periods, archival, anonymisation, backup and disaster recovery.
-- [ ] Cover legal/regulatory: PDPA 2010, consumer protection, e-commerce/CyberSecurity obligations, accessibility, tourism-operator licensing checks.
-- [ ] Cover integration/interoperability: payment gateway, operator booking systems, mapping/geolocation, email/SMS, social media, Sarawak Tourism Board content/CMS, analytics.
-- [ ] Cover reporting & analytics: campaign performance, visitor trends, booking funnel, content engagement.
-- [ ] Cover content management & multilingual content authoring and publishing workflow.
-- [ ] Cover discoverability/SEO, branding/design guidelines, and rural/low-bandwidth and offline-tolerant behaviour for remote Sarawak areas.
-- [ ] Cover operations: monitoring, logging, support levels, maintenance windows, training materials, licensing of third-party/open-source components.
-- [ ] Trace each requirement to a goal or task and assign a priority.
+- [ ] Substantially **expand depth** of both "Product level requirements" and "Design level requirements" — the sample gives only 4–5 shallow bullets each. HD requires demonstrating the problem has been "comprehensively thought through," which needs: data retention/backup requirements, audit/logging requirements, licensing/legal/regulatory requirements (e.g., GST-compliant tax invoice fields, given Task 5 explicitly mentions "tax invoice"), interoperability requirements with the 3rd-party payment processor and external vehicle-valuation databases (both referenced in task tables but never specified here), training/documentation/support requirements, and internationalization/localization needs if any.
+- [ ] Remove or specify the vague bullet **"Analyze data using special algorithms"** — "special algorithms" is undefined and unverifiable; either name the analytical capability concretely (e.g., trend forecasting method, trade-in valuation model inputs) or drop it.
+- [ ] Tie design-level requirements (Terms of Trade/Use/Privacy Policy display, HTV logo, design guideline conformance, vehicle photos) back to specific goals/pain points to show deliberate reasoning rather than a bare checklist.
 
 ---
 
-## 7. Validation - max 10 points
+## 7. Validation (10 pts)
 
-What the Pass sample did:
-- One paragraph asserting the requirements were shown to the CEO and some actors were interviewed.
-- Provided a CRUD Check table (Task x Entity).
+The sample's validation evidence is thin: two sentences claiming stakeholder review plus a CRUD matrix. To reach HD:
 
-What the Pass sample omitted / did weakly:
-- Validation asserted, not evidenced - no artefacts, notes, sign-off, dates, or before/after changes.
-- CRUD table omitted several domain-model entities and did not analyse gaps.
-- No traceability matrix; no NFR or goal validation; no walkthrough/inspection record; no prototype/scenario walkthrough.
-
-Additions/changes required for full marks:
-- [ ] Provide concrete, dated evidence of validation activities: who was consulted (Sarawak Tourism Board representative, tour operators, sample tourists), what was reviewed, feedback received, and the resulting requirement changes (show before/after).
-- [ ] Include a stakeholder review/sign-off record.
-- [ ] Include a requirements walkthrough / inspection checklist listing defects found and how each was resolved.
-- [ ] Provide a complete CRUD cross-check covering EVERY domain-model entity against EVERY task; explicitly flag and resolve anomalies (entities never Created or never Deleted, tasks that touch no data).
-- [ ] Provide a traceability matrix: goals -> objectives -> tasks -> product/design requirements -> NFRs, demonstrating full two-way coverage.
-- [ ] Record a task-completeness check with expert users (missing sub-task / missing task findings, Lauesen style).
-- [ ] Record a scenario or prototype walkthrough result for the main tasks.
-- [ ] Record validation of the NFR fit-criteria targets with stakeholders (are the targets acceptable?).
-- [ ] Record that each assumption was confirmed with the client.
+- [ ] Provide **concrete, named evidence** of stakeholder validation: who was interviewed (roles, not just "employees"/"managers"), when, what method (walkthrough, interview script, prototype demo, survey), and what specific feedback led to specific changes in the document. Currently there are no names, dates, or artifacts — just an assertion that validation occurred.
+- [ ] Add a **Requirements Traceability Matrix** mapping every functional requirement / task / NFR back to its originating goal or pain point (§2.2/§3.1) and forward to its validation method — this is the single most concrete artifact missing from the Validation section.
+- [ ] Apply a formal **quality checklist** to the requirement set (e.g., IEEE 830 attributes: unambiguous, complete, consistent, verifiable, traceable, modifiable) and show the results/evidence of applying it, rather than only asserting requirements were "shown to the CEO."
+- [ ] **Complete the CRUD Check matrix** — it currently only covers 6 entities (Customer, Vehicle, Service, Test Drive, Invoice, Sales Person) while the domain model in §6 contains 10 entities (also Accountant, Trade In, Service Type, Vehicle Specifications, Vehicle Status). Every entity in the final domain model should have a corresponding CRUD column so the matrix is internally consistent and complete.
+- [ ] Add evidence of **iteration** — e.g., an earlier draft requirement that was changed as a direct result of validation feedback, to demonstrate validation was substantive rather than a formality.
 
 ---
 
-## 8. Verifiability - max 5 points
+## 8. Verifiability (5 pts)
 
-What the Pass sample did:
-- Some Performance and Reliability items were quantified.
+**[STRICT PENALTY RISK — automatic -1 pt per non-verifiable requirement found]**
+Audit every requirement statement in the document and rewrite any that cannot be objectively tested. Specific offenders identified in the sample:
 
-What the Pass sample omitted / did weakly:
-- Multiple non-verifiable items: usability deferred to a document; "compliance with Australian Law"; "only give access to those authorized"; "correct information 100% of the time"; "response time < 20" (no unit); "analyse data using special algorithms"; "reduce down time to 10 minutes" (no window); unmeasurable goals.
-
-Additions/changes required for full marks:
-- [ ] Give every requirement (task Example-Solution items, product-level, design-level, and every NFR) a fit criterion: measurable quantity + scale + target value + measurement method + verification method (test / demonstration / inspection / analysis).
-- [ ] Assign a unique ID to every requirement and state its acceptance test.
-- [ ] Remove or replace every subjective term (easy, fast, user-friendly, secure, robust, appropriate, relevant, seamless, quickly) with a metric.
-- [ ] Ensure each task is verifiable by "carry out the task and all its variants" - concrete sub-tasks and variants for every task.
-- [ ] Include a self-audit table listing each requirement ID against its fit criterion to demonstrate zero non-verifiable requirements.
-
-MUST AVOID (strict_penalty - minus 1 point per non-verifiable requirement):
-- [ ] Do NOT leave any requirement without a measurable, testable fit criterion.
-- [ ] Do NOT rely on jurisdictionally vague phrases ("comply with the law") - name the statute (PDPA 2010) and the checkable obligation.
+- [ ] "The software must be designed and developed in a way that prevents unauthorized access and fraudulent activity" (Security intro) — restate as testable controls (already partially done in the bullets below it; the intro sentence itself is not a requirement and should be clearly separated from the actual "shall" statements).
+- [ ] "Correctly store client information, invoices, etc, in compliance with Australian Law" (Security) — non-verifiable as written; name the specific law/standard.
+- [ ] Usability requirement referencing an external, unquoted guideline document with no measurable criteria in-document — non-verifiable as it stands unless the specific measurable clauses of that referenced document are quoted/summarized here.
+- [ ] "Analyze data using special algorithms" (Design level requirements) — non-verifiable, undefined term "special algorithms."
+- [ ] "follow the design guidelines of the HTV (e.g. fonts, colour pallette)" — verifiable only if the referenced guideline's specific values are cited; as written it's an indirect, unverifiable reference.
+- [ ] Any other narrative "Example Solution" text in the task tables that is being treated as a de facto requirement (e.g., "System will use an algorithm... to provide a suggested purchase price for trade-in") should be flagged and either converted to a testable statement or explicitly marked as illustrative/non-normative.
+- [ ] After rewriting, produce a **traceable list of every discrete requirement** with a pass/fail verifiability self-check, so the marker can see the audit was performed deliberately (ties back to Validation, §7).
 
 ---
 
-## 9. Coherent Document - max 5 points
+## 9. Coherent Document (5 pts: structure 1 / clarity 1 / formatting 1 / presentation 1 / audience fit 1)
 
-Scoring: structure 1 | clarity & non-contradiction 1 | formatting (title page, TOC, numbered sections/pages) 1 | presentation (English, diagrams) 1 | audience fit 1.
-
-What the Pass sample did:
-- Had a TOC with page numbers, numbered top-level sections, page numbers, a domain vocabulary list.
-
-What the Pass sample omitted / did weakly:
-- Subsections not numbered ("Task 1:", "Security", "Domain Model" instead of 4.1, 7.1, 6.1).
-- Weak title page (no author, student ID, unit code, date, version); no revision history; no list of figures/tables.
-- Clarity defects and contradictions: Task 7 mistitled "Process Payment"; Task 8 name blank; workflow task renamed "Service Engine"; "Australian Law" in an otherwise generic document; missing unit on a metric; duplicated workflow node.
-- English errors and typos throughout body and diagram labels; low-fidelity, inconsistent diagrams.
-- Audience mixed; solution detail leaks into a requirements document; "Possible Solutions" section not required by rubric and reads as scope creep.
-
-Additions/changes required for full marks: see the Formatting & Presentation checklist below.
+- [ ] **Clarity/non-contradiction (1 pt)**: Fix all cross-section inconsistencies identified above — Task 7's mislabeled table header, the Domain Entities list vs Domain Model mismatch, the Task 9 workflow diagram duplicate/missing step, and inconsistent actor naming ("Sales Person"/"Salesperson"). Each of these is a direct contradiction between sections that HD-level review would penalize.
+- [ ] **Presentation/English (1 pt)**: Proofread thoroughly — the sample contains numerous typos ("occured," "Varitants," "Manaully," "Infroms," "Cutomer," "Stall" instead of "Staff," "Dicussion," "outstand" instead of "outstanding," "pallette"). A Pass tolerates these; HD requires a clean, professionally proofread document.
+- [ ] **Structure (1 pt)**: Reassess the placement and purpose of the final "Possible Solutions" section (§10) — it is a design/architecture-options discussion that isn't mapped to any rubric criterion and currently ends the document without a recommendation, decision, or rationale tying it back to the requirements. For HD, either explicitly connect it to a requirement/goal (e.g., justify chosen NFR targets by referencing the eventual solution) or add a concluding recommendation so it reads as a deliberate part of the document's logical flow rather than an appended afterthought.
+- [ ] **Formatting (1 pt)**: Already present (title page, TOC, numbered sections/pages) — maintain this, and ensure new sections/diagrams added per the other checklist items are added to the TOC and numbered consistently.
+- [ ] **Audience fit (1 pt)**: Add an explicit "Intended Audience" statement in the Introduction (e.g., this document is written for HTV management, Swinsoft developers, and QA/testers) to make the pitched audience explicit — currently only inferable from tone/content, and the mixed business/technical style would benefit from an explicit framing statement to confirm it was pitched deliberately.
 
 ---
 
-## Formatting & Presentation Checklist (Section 9 points)
+## Summary: Highest-Leverage Fixes (by point value at stake)
 
-- [ ] Title page: unit code (COS30003), assignment title, system name (Sarawak Tourism Promotion System), author name(s) + student ID(s), tutor/lecturer name, submission date, document version.
-- [ ] Document control page: revision history table (version, date, author, change).
-- [ ] Table of contents: auto-generated, accurate, with correct page numbers.
-- [ ] List of figures and list of tables.
-- [ ] Every section AND subsection hierarchically numbered (1, 1.1, 1.1.1).
-- [ ] Every page numbered (e.g. "Page X of Y") with consistent header/footer.
-- [ ] Every figure and table numbered, captioned, referenced from the text, legible, high-resolution, and using consistent UML notation.
-- [ ] Consistent heading styles, fonts, spacing, and layout throughout; professional appearance.
-- [ ] Full proofread: formal, correct English; no typos; terminology identical to the glossary everywhere (including diagram labels).
-- [ ] No contradictions: task names and IDs identical across Section 4, Workflow, CRUD, and traceability matrix; all cross-references correct.
-- [ ] Glossary / domain vocabulary section plus a list of abbreviations.
-- [ ] Introduction states purpose, scope, intended readership, references, and a document overview.
-- [ ] Audience fit: written for the client (Sarawak Tourism Board) and the development team; consistent level of abstraction; no premature human/computer work split; solution ideas confined to the "Example solution" column or a clearly labelled options appendix.
-- [ ] Any non-required content (e.g. "Possible Solutions") is either removed or clearly delineated as an optional appendix so it is not read as requirements.
-- [ ] Data/Domain model placed logically (near the problem domain, before or alongside the tasks that use it).
+1. **User Tasks (40 pts)** — fix the two template errors (Task 7 mislabeled header, Task 8 blank header), add missing Actors/Postcondition fields per task, and make Problem/exception documentation consistent across all 9 tasks. This is the single highest-weighted criterion and also the one carrying the "variable deduction" strict penalty for style non-adherence.
+2. **Quality Attributes/NFRs (20 pts)** — replace vague, non-measurable statements (Usability, Security law reference, "special algorithms") with concrete, numeric acceptance criteria in every category.
+3. **Validation (10 pts)** — the weakest-evidenced criterion relative to its point value; add a traceability matrix, named stakeholder evidence, and complete the CRUD matrix against the full entity list.
+4. **Domain Model (5 pts)** — add the missing core "Vehicle" entity, reconsider the "Vehicle Specifications/Status" split (borderline solution-orientation risk), add the missing "Option" entity, and reconcile the entity list with the diagram.
+5. **Verifiability (5 pts)** — every instance flagged in §8 above is a direct, automatic point loss (-1 each) if left unfixed; this is pure "free points" recovery with no added content required, only rewriting.
+6. **Coherent Document (5 pts)** — proofreading pass plus resolving the specific cross-section contradictions listed above.
 
 ---
 
-## PDPA Compliance Checklist (Malaysian Personal Data Protection Act 2010)
-
-- [ ] Replace all "Australian Law" / generic compliance wording with explicit reference to the Malaysian Personal Data Protection Act 2010 (PDPA).
-- [ ] Identify all personal data processed:
-  - Tourist data: name, contact details, passport/IC number, nationality, payment details, itinerary/location history, booking history, reviews, enquiry content.
-  - Management/operator data: operator staff accounts and credentials, business registration details, banking/payout details, marketing-staff accounts.
-- [ ] State each PDPA obligation as a verifiable requirement with a fit criterion and verification method:
-  - [ ] Notice & Choice: consent captured before collection; purpose-limitation notice presented in Bahasa Malaysia and English.
-  - [ ] Disclosure: personal data disclosed only to named third parties (payment gateway, specific tour operators) and only with consent.
-  - [ ] Security: encryption in transit and at rest, role-based access control, audit logging, defined breach-response procedure and notification time.
-  - [ ] Retention: defined retention period per data category; automatic deletion or anonymisation of tourist data after the stated period.
-  - [ ] Data Integrity: tourists can review and correct their personal data.
-  - [ ] Access: self-service data-access and correction requests, fulfilled within the stated time.
-  - [ ] Cross-border transfer: cloud hosting outside Malaysia addressed with stated safeguards/consent.
-  - [ ] Direct marketing: email/SMS campaign opt-out honoured and testable.
-  - [ ] Cookies/tracking consent for marketing analytics on the promotion site.
-  - [ ] Data-user responsibilities identified; registration with the PDP Commissioner addressed if the system falls within a registration class.
-- [ ] Validate the PDPA interpretation with a legal/compliance stakeholder and record it in the Validation section.
-- [ ] Ensure every PDPA requirement has a measurable fit criterion so it does not trigger the verifiability penalty.
-
----
-
-## Consolidated MUST AVOID (all strict_penalty triggers)
-
-- [ ] Domain model: NO database attributes, keys, data types, or table structures (up to -3 points).
-- [ ] User tasks: MUST adhere to Tasks & Support style - Problem column, Example Solution column, populated Variants, imperative domain-level sub-tasks, no "system shall" feature statements in the domain column (variable deduction).
-- [ ] User tasks: MUST provide 8 major user tasks for full marks (5 points each).
-- [ ] NFRs: MUST have exactly 4 NFR categories (5 points each = 20).
-- [ ] Verifiability: EVERY requirement MUST be verifiable with a measurable fit criterion (-1 per non-verifiable requirement).
-- [ ] Document: NO internal contradictions or inconsistent task naming across sections.
-- [ ] Compliance: name the Malaysian PDPA 2010, not a vague or foreign legal reference.
+### Files reviewed
+- `C:\Users\Jarren\OneDrive - Swinburne Sarawak\Documents\COS30003\rubric.yaml`
+- `C:\Users\Jarren\OneDrive - Swinburne Sarawak\Documents\COS30003\sample_pass.pdf` (the task brief referred to `sample_pass.md`, but only the `.pdf` exists in the project directory and was used for this analysis)

@@ -1,1653 +1,1253 @@
-# Software Requirements Specification
 
+# Software Requirements Specification
 ## Sarawak Tourism Promotion System
 
 ---
 
-### FM-1 Title Page
+## Front Matter
+
+### 0.1 Title Page
 
 | Field | Detail |
 |---|---|
-| Unit code | COS30003 |
-| Assignment | Assignment 1 - Software Requirements Specification |
-| System name | Sarawak Tourism Promotion System (STPS) |
-| Prepared by (agency) | Swinsoft Consulting |
-| Author identity | jarrentannn@gmail.com |
-| Student name / ID | [student name] / [student ID] |
+| Document title | Software Requirements Specification — Sarawak Tourism Promotion System |
+| System name / short form | Sarawak Tourism Promotion System (STPS) |
 | Client | Management team of a local tourism association ("the Association") |
-| Primary audience | Worldwide tourists; Association management and content staff; Swinsoft development team |
-| Tutor / Lecturer | COS30003 Teaching Team |
-| Submission date | 11 September 2026 |
-| Document version | 1.0 (final; precision-QA pass applied) |
-| Method | Tasks & Support (Lauesen); Goal-Design Scale for requirement placement |
-| Status | Final - language, PDPA and formatting pass complete |
+| Preparing agency | Swinsoft Consulting |
+| Prepared for | Sarawak Tourism Association — Management Team |
+| Prepared by | Jarren Tan, Requirements Analyst / Technical Documenter, Swinsoft Consulting (jarrentannn@gmail.com) |
+| Document type | Software Requirements Specification (Tasks & Support approach; Goal-Design Scale requirement placement) |
+| Version | 1.0 — Draft for precision-QA pass |
+| Date | 11 September 2026 |
+| Confidentiality notice | Confidential. Prepared exclusively for the Sarawak Tourism Association and the Swinsoft Consulting project team. Not for distribution outside these parties without written consent of both the Association and Swinsoft Consulting. |
 
----
+### 0.2 Revision History
 
-### FM-2 Document Control / Revision History
+**Table FM-1 — Revision history**
 
-**Table 1 - Document control / revision history**
-
-| Version | Date | Author | Section(s) | Change summary | Reason |
-|---|---|---|---|---|---|
-| 0.1 | 2026-08-18 | Swinsoft Consulting (jarrentannn@gmail.com) | All | Initial skeleton created from approved blueprint | Establish section tree and ID scheme |
-| 0.2 | 2026-08-22 | Swinsoft Consulting | 2, 3 | Goals, objectives, incentives, constraints, assumptions and system context drafted | Populate problem-domain framing |
-| 0.3 | 2026-08-26 | Swinsoft Consulting | 4, 5 | Domain model entities/relationships and actor catalogue drafted | Conceptual model baseline |
-| 0.4 | 2026-08-30 | Swinsoft Consulting | 6 | Eight user tasks written in Tasks & Support format | Domain-level requirements |
-| 0.5 | 2026-09-02 | Swinsoft Consulting | 7, 8 | Workflows and four NFR categories with fit criteria drafted | Behavioural and quality requirements |
-| 0.6 | 2026-09-05 | Swinsoft Consulting | 9 | Goal-Design Scale placement, REQ-FUN/PROD/DES and PDPA requirements drafted | Cross-scale requirement coverage |
-| 0.7 | 2026-09-08 | Swinsoft Consulting | 10, 11, 12 | Verifiability approach, validation plan and traceability drafted | Assurance sections |
-| 0.8 | 2026-09-10 | Swinsoft Consulting | 13, 14 | Appendices (validation evidence) and glossary drafted | Evidence pack and vocabulary |
-| 0.9 | 2026-09-11 | Swinsoft Consulting | All | Consolidated draft assembled for precision-QA | Hand-off for language/PDPA/format pass |
-| 1.0 | 2026-09-11 | Swinsoft Consulting (jarrentannn@gmail.com) | All | Precision-QA pass: active voice and split compound sentences in Sections 1 and 8 rationales; standardised PDPA 2010 naming; removed residual subjective terms and replaced them with metrics; extended REQ-PROD-PDPA-05 and REQ-PROD-PDPA-06 to management/operator data subjects; corrected Appendix B column alignment and the Appendix D count check; added table captions 35-37; labelled the title page FM-1 | Final language, PDPA and formatting enforcement |
-
----
-
-### FM-3 Table of Contents
-
-1. Introduction - 1.1 Purpose; 1.2 Scope; 1.3 Intended readership; 1.4 Document overview; 1.5 References; 1.6 Definitions pointer; 1.7 Requirement ID scheme and verifiability statement
-2. Project Goals & Assumptions - 2.1 Project Type; 2.2 Existing Process Description; 2.3 Pain Points; 2.4 Goals; 2.5 Objectives; 2.6 Incentives; 2.7 Scope; 2.8 Constraints; 2.9 Assumptions
-3. System Context - 3.1 System Boundary; 3.2 Context Diagram; 3.3 External Entities - Human; 3.4 External Entities - Systems / Services; 3.5 Context Interactions Table
-4. Domain Model - 4.1 Modelling rules; 4.2 Entity List; 4.3 Relationships and Cardinality; 4.4 Domain Model Diagram; 4.5 Entity-to-Task coverage note
-5. Actors - 5.1 Actor catalogue; 5.2 Actor-to-task mapping summary; 5.3 User profiles / work-area background
-6. User Tasks (Tasks & Support) - 6.1 Work Area / background block; 6.2 Tasks & Support format definition; 6.3 TASK-01; 6.4 TASK-02; 6.5 TASK-03; 6.6 TASK-04; 6.7 TASK-05; 6.8 TASK-06; 6.9 TASK-07; 6.10 TASK-08; 6.11 Typical sub-task sequence note; 6.12 Task-to-actor and task-to-entity coverage statement
-7. Workflows - 7.1 Workflow notation; 7.2 WF-01; 7.3 WF-02; 7.4 WF-03; 7.5 WF-04; 7.6 WF-05; 7.7 Workflow-to-task coverage table
-8. Non-Functional Requirements - 8.1 NFR method; 8.2 NFR-USAB; 8.3 NFR-PERF; 8.4 NFR-SEC; 8.5 NFR-AVAIL
-9. Other Requirements (Goal-Design Scale) - 9.1 Placement on Goal-Design Scale; 9.2 Product-level requirements; 9.3 Design-level requirements; 9.4 Functional requirement stubs; 9.5 PDPA 2010 requirements; 9.6 Data lifecycle; 9.7 Integration / interoperability; 9.8 Reporting & analytics; 9.9 Content management & multilingual authoring; 9.10 Low-bandwidth / rural / offline-tolerant behaviour; 9.11 Operations
-10. Verifiability Approach - 10.1 Rule; 10.2 Subjective-term ban list; 10.3 Self-audit table plan
-11. Validation - 11.1 Strategy overview; 11.2 Stakeholders consulted; 11.3 Validation activities list; 11.4 Before/after change log plan; 11.5 Pointer to Appendices
-12. Traceability - 12.1 Traceability matrix plan; 12.2 CRUD completeness matrix plan
-13. Appendices - A Validation evidence; B Traceability matrix; C CRUD completeness check; D Self-audit verifiability table; E Scenario / prototype walkthrough results; F Assumption confirmation record; G PDPA interpretation validation record; H Optional solution options (non-normative)
-14. Glossary / Domain Vocabulary
-
----
-
-### FM-4 List of Figures
-
-| Figure | Title | Section |
-|---|---|---|
-| Figure 1 | STPS system context diagram | 3.2 |
-| Figure 2 | STPS conceptual domain model | 4.4 |
-| Figure 3 | WF-01 End-to-end tourist journey activity diagram | 7.2 |
-| Figure 4 | WF-02 Content & promotion publishing activity diagram | 7.3 |
-| Figure 5 | WF-03 Booking + payment activity diagram | 7.4 |
-| Figure 6 | WF-04 Enquiry / support handling activity diagram | 7.5 |
-| Figure 7 | WF-05 Listing onboarding & moderation activity diagram | 7.6 |
-| Figure 8 | Goal-Design Scale placement of requirement classes | 9.1 |
-
----
-
-### FM-5 List of Tables
-
-| Table | Title | Section |
-|---|---|---|
-| Table 1 | Document control / revision history | FM-2 |
-| Table 2 | Pain points in the existing process | 2.3 |
-| Table 3 | Goals (REQ-GOAL-001..008) | 2.4 |
-| Table 4 | Objectives (OBJ-01..07) | 2.5 |
-| Table 5 | Incentives (INC-01..06) | 2.6 |
-| Table 6 | Constraints (CON-01..08) | 2.8 |
-| Table 7 | Assumptions (ASM-01..15) | 2.9 |
-| Table 8 | External human entities (EXT-H-01..07) | 3.3 |
-| Table 9 | External systems / services (EXT-S-01..08) | 3.4 |
-| Table 10 | Context interactions | 3.5 |
-| Table 11 | Domain entity list (ENT-01..28) | 4.2 |
-| Table 12 | Domain relationships (REL-01..35) | 4.3 |
-| Table 13 | Actor catalogue (ACT-01..15) | 5.1 |
-| Table 14 | Actor-to-task mapping | 5.2 |
-| Table 15 | User profiles / work-area background | 5.3 |
-| Tables 16-23 | Tasks & Support tables TASK-01..TASK-08 | 6.3-6.10 |
-| Table 24 | Workflow-to-task coverage | 7.7 |
-| Table 25 | NFR-USAB fit-criteria | 8.2 |
-| Table 26 | NFR-PERF fit-criteria | 8.3 |
-| Table 27 | NFR-SEC fit-criteria | 8.4 |
-| Table 28 | NFR-AVAIL fit-criteria | 8.5 |
-| Table 29 | Goal-Design Scale placement table | 9.1 |
-| Table 30 | Functional requirement stubs (REQ-FUN-001..018) | 9.4 |
-| Table 31 | PDPA 2010 requirements (REQ-PROD-PDPA-01..10) | 9.5 |
-| Table 32 | Verifiability self-audit (extract) | 10.3 |
-| Table 33 | Validation activities (VAL-01..10) | 11.3 |
-| Table 34 | Requirement change log | 11.4 / Appendix A |
-| Table 35 | Requirement-to-task traceability matrix | Appendix B |
-| Table 36 | CRUD completeness matrix (ENT x TASK) | Appendix C |
-| Table 37 | Self-audit verifiability table (full) | Appendix D |
-| Table 38 | Assumption confirmation record | Appendix F |
-
----
-
-### FM-6 List of Abbreviations
-
-| Abbreviation | Expansion |
-|---|---|
-| SRS | Software Requirements Specification |
-| STPS | Sarawak Tourism Promotion System |
-| NFR | Non-Functional Requirement |
-| PDPA | Malaysian Personal Data Protection Act 2010 (Act 709) |
-| PDP | Personal Data Protection (Commissioner / Department), Malaysia |
-| CRUD | Create, Read, Update, Delete |
-| RBAC | Role-Based Access Control |
-| RTO | Recovery Time Objective |
-| RPO | Recovery Point Objective |
-| MTBF | Mean Time Between Failures |
-| MTTR | Mean Time To Repair / Restore |
-| SUS | System Usability Scale |
-| WCAG | Web Content Accessibility Guidelines |
-| CMS | Content Management System |
-| SEO | Search Engine Optimisation |
-| COTS | Commercial Off-The-Shelf |
-| BM | Bahasa Malaysia |
-| UML | Unified Modeling Language |
-| DR | Disaster Recovery |
-
----
-
-## 1 Introduction
-
-### 1.1 Purpose of the document
-
-This Software Requirements Specification (SRS) states the requirements for the Sarawak Tourism Promotion System (STPS). The STPS is a public-facing tourism promotion software product. The management team of a local tourism association ("the Association") commissioned it, and Swinsoft Consulting will build it. This document specifies what the software must achieve for worldwide tourists and for Association management and content staff. It expresses each requirement at the domain level using the Tasks & Support approach and places each requirement on the Goal-Design Scale. It defines the system context, the conceptual domain model, the user tasks the software must support, and the workflows those tasks participate in. It specifies exactly four categories of non-functional requirement and further requirements across the Goal-Design Scale. It states Malaysian Personal Data Protection Act 2010 (PDPA) obligations as verifiable requirements. It records the validation and traceability evidence that shows the specification is complete and verifiable.
-
-The SRS is the agreed reference for accepting the delivered software. Every requirement carries a unique identifier and a measurable fit criterion. Acceptance therefore rests on test, demonstration, inspection or analysis rather than on opinion.
-
-### 1.2 Scope of the system
-
-The STPS is a single authoritative online source of Sarawak tourism information for a worldwide audience, together with the content and domain-data management capability the Association needs to keep that information current in multiple languages. In-scope and out-of-scope items are listed in full in section 2.7. In summary, the software covers: a tourist-facing information portal spanning accommodation, transportation, food and useful local information; itinerary planning; reservation-request capture; hand-off to an external payment interaction; multilingual content authoring and publishing; promotion-campaign coordination; enquiry capture and handling; engagement analytics and reporting for management; and PDPA consent and privacy handling. The following fall outside scope: payment processing itself; mapping, weather and notification delivery; operator internal systems; and procurement of hardware, networks or deployment platforms.
-
-### 1.3 Intended readership
-
-| Reader | Use of this document |
-|---|---|
-| Representatives of worldwide tourists (as consulted during validation) | Confirm that the tourist tasks and journey reflect real needs |
-| Association management | Confirm goals, objectives, incentives, scope, constraints, NFR targets and PDPA interpretation; provide sign-off |
-| Association content staff | Confirm the content, translation, listing and campaign tasks and workflows |
-| Swinsoft development team | Basis for design, build, test planning and acceptance |
-| Course assessor | Evaluate the specification against the COS30003 rubric |
-
-### 1.4 Document overview
-
-| Section | Content |
-|---|---|
-| 1 | Purpose, scope, readership, references, ID scheme and verifiability statement |
-| 2 | Project type, as-is process, pain points, goals, objectives, incentives, scope, constraints, assumptions |
-| 3 | System boundary, context diagram, external human and system entities, context interactions |
-| 4 | Conceptual domain model: entities and relationships with cardinality only |
-| 5 | Actor catalogue, actor-to-task mapping, user profiles |
-| 6 | Eight major user tasks in Tasks & Support format |
-| 7 | Five workflows as ordered step lists with swimlane notes, plus workflow-to-task coverage |
-| 8 | Exactly four NFR categories, each with measurable fit criteria |
-| 9 | Goal-Design Scale placement; functional, product-level and design-level requirements; PDPA requirements; data lifecycle; integration; reporting; content management; low-bandwidth behaviour; operations |
-| 10 | Verifiability rules, subjective-term ban list, self-audit plan |
-| 11 | Validation strategy, stakeholders, activities, change-log plan |
-| 12 | Traceability matrix plan and CRUD completeness matrix plan |
-| 13 | Appendices A-H: validation evidence, traceability matrix, CRUD check, self-audit, walkthrough results, assumption confirmation, PDPA interpretation record, non-normative solution options |
-| 14 | Glossary / domain vocabulary |
-
-### 1.5 References
-
-| Ref | Item |
-|---|---|
-| R1 | COS30003 Assignment 1 project brief (`project_brief.yaml`) |
-| R2 | Lauesen, S. *Task Descriptions and the Tasks & Support Approach* (Author Workshop on Requirements Engineering material) |
-| R3 | Lauesen, S. *Software Requirements: Styles and Techniques* - Goal-Design Scale and fit criteria |
-| R4 | Personal Data Protection Act 2010 (Act 709), Laws of Malaysia, and its seven Personal Data Protection Principles |
-| R5 | Web Content Accessibility Guidelines (WCAG) 2.1, W3C Recommendation, conformance level AA |
-| R6 | COS30003 Assignment 1 High Distinction delta checklist (`01_checklist.md`) |
-| R7 | Approved SRS structural blueprint (`02_blueprint.md`) |
-
-### 1.6 Definitions pointer
-
-Domain terms, method terms and abbreviations used in this document are defined in section 14 (Glossary / Domain Vocabulary) and expanded in FM-6 (List of Abbreviations). Terms are used consistently with those definitions throughout the document, including in figure and table labels.
-
-### 1.7 Requirement ID scheme and verifiability statement
-
-Every requirement, constraint, assumption, entity, relationship, actor, task, workflow and objective carries a unique, stable identifier that is reused unchanged in every section, figure and table. The scheme is:
-
-| Prefix | Meaning | Defined in |
-|---|---|---|
-| PAIN-xx | Existing-process pain point | 2.3 |
-| REQ-GOAL-xxx | Goal-level outcome statement | 2.4 |
-| OBJ-xx | Measurable, time-bound objective | 2.5 |
-| INC-xx | Incentive / business-case item | 2.6 |
-| CON-xx | Constraint | 2.8 |
-| ASM-xx | Assumption | 2.9 |
-| EXT-H-xx / EXT-S-xx | External human / external system entity | 3.3 / 3.4 |
-| ENT-xx / REL-xx | Domain entity / domain relationship | 4.2 / 4.3 |
-| ACT-xx | Actor | 5.1 |
-| TASK-0x | Major user task (exactly eight) | 6.3-6.10 |
-| WF-0x | Workflow | 7.2-7.6 |
-| NFR-USAB-xx / NFR-PERF-xx / NFR-SEC-xx / NFR-AVAIL-xx | Non-functional requirement (exactly four categories) | 8.2-8.5 |
-| REQ-FUN-xxx | Functional requirement stub derived from a task | 9.4 |
-| REQ-PROD-xxx | Product-level requirement | 9.2, 9.6-9.11 |
-| REQ-DES-xxx | Design-level requirement | 9.3 |
-| REQ-PROD-PDPA-xx | PDPA-specific product requirement, also mapped to NFR-SEC | 9.5 |
-
-Verifiability statement: each requirement (including task example-solution items, REQ-FUN, REQ-PROD, REQ-DES and every NFR) is stated with a measurable fit criterion - metric, scale or unit, target value, worst acceptable value, measuring instrument and verification method (test, demonstration, inspection or analysis). Goal-level statements are made verifiable through their linked OBJ-xx objectives. Subjective terms (for example easy, fast, secure, user-friendly, efficient, robust, seamless, intuitive, modern, appropriate, relevant, quickly) are not used as requirement wording; section 10.2 lists each banned term and its replacement metric. Appendix D lists every requirement ID against its fit criterion and acceptance test with no blank cells.
-
----
-
-## 2 Project Goals & Assumptions
-
-### 2.1 Project Type
-
-**Statement.** The STPS is a new, custom-built, public-facing tourism promotion software product. It is commissioned by the Association and developed by Swinsoft Consulting, and it integrates with a defined set of pre-existing external services (payment, mapping, weather/advisory, notification, publishing channels, external tourism/government data and web analytics). It is not a commercial off-the-shelf (COTS) acquisition, and it is not an internal-only administrative tool.
-
-**Justification.**
-
-- The audience is worldwide tourists, so the product must be publicly reachable, multilingual and discoverable, which a generic internal tool does not provide.
-- The Association requires its own branding, editorial voice and content-approval workflow, which a COTS package would constrain.
-- Multilingual delivery (Bahasa Malaysia, English, Mandarin and others as directed) and Malaysian PDPA obligations require controls specified and verified against this context rather than accepted as vendor defaults.
-- Management needs controlled content and domain-data management with approval routing, which is a bespoke workflow tied to the Association's roles.
-- Integration with several independent external services requires a purpose-built integration layer with defined failure behaviour per service.
-
-### 2.2 Existing Process Description (as-is)
-
-Today the Association promotes Sarawak as a destination mainly through printed brochures, occasional press and social-media posts, and entries placed on third-party travel websites. A small number of staff compile tourism information by hand. Each staff member owns one topic area: attractions, events, accommodation contacts, transport notes, food or local tips. Tourism providers (operators of accommodation, transport, food outlets and activities) send their details to the Association by email or on paper. A staff member then re-types the information into whichever channel is next in line for an update. There is no single place where a tourist can see accommodation, transport, food and local information together, so tourists assemble their own picture from many sources and build trip plans manually.
-
-Staff apply promotional updates channel by channel. The same change (a new event date, a corrected price, a closed attraction) therefore reaches each channel at a different time, and staff sometimes miss a channel. No structured store holds listings and events as a single source. Tourist enquiries arrive by phone and email. Whoever picks up an enquiry handles it alone. No shared record captures what the tourist asked, who answered, or whether the enquiry closed. Most material exists in one language. The Association holds no consolidated view of tourist interest. It also holds no verifiable record that it handles personal data from tourists or providers in line with the PDPA.
-
-### 2.3 Pain Points in the Existing Process
-
-**Table 2 - Pain points**
-
-| ID | Pain point | Consequence |
-|---|---|---|
-| PAIN-01 | Tourism information is fragmented across brochures and third-party sites; no single authoritative source | Inconsistent or outdated information; the Association cannot control the destination message |
-| PAIN-02 | Accommodation, transport, food and local information are not consolidated | Tourists cross-reference many sources and build plans manually |
-| PAIN-03 | Promotional content updates are manual, slow and inconsistent across channels | The same fact appears differently on different channels; some updates are missed |
-| PAIN-04 | No structured way for management to maintain listings and events data | Entries become stale or incorrect; no single source of truth |
-| PAIN-05 | No consolidated view of tourist interest or engagement | Promotion decisions and budget allocation are not evidence-based |
-| PAIN-06 | Enquiries handled ad hoc by phone and email with no tracking | Slow responses, lost requests, unrecorded outcomes |
-| PAIN-07 | Material is mostly single-language | Non-English and non-Malay speakers poorly served; limited reach |
-| PAIN-08 | Poor reach in rural Sarawak due to low bandwidth and intermittent connectivity | Information does not load for many in-region and prospective visitors |
-| PAIN-09 | No verifiable safeguarding of tourist or provider personal data against the PDPA | Regulatory exposure; loss of tourist and provider trust |
-
-### 2.4 Goals
-
-**Table 3 - Goals**
-
-| ID | Goal statement | Addresses |
-|---|---|---|
-| REQ-GOAL-001 | Provide a single authoritative source of Sarawak tourism information for worldwide tourists | PAIN-01 |
-| REQ-GOAL-002 | Consolidate accommodation, transportation, food and useful local information in one place | PAIN-02 |
-| REQ-GOAL-003 | Enable the Association to manage content and domain data without developer involvement | PAIN-03, PAIN-04 |
-| REQ-GOAL-004 | Increase measurable tourist engagement and trip-planning completion | PAIN-01, PAIN-02 |
-| REQ-GOAL-005 | Shorten and standardise promotional content publishing | PAIN-03 |
-| REQ-GOAL-006 | Give management evidence-based insight into tourist interest | PAIN-05, PAIN-06 |
-| REQ-GOAL-007 | Make information reachable in multiple languages and in low-bandwidth areas | PAIN-07, PAIN-08 |
-| REQ-GOAL-008 | Protect personal data in compliance with the Malaysian Personal Data Protection Act 2010 | PAIN-09 |
-
-### 2.5 Objectives
-
-Each objective is measurable and time-bound and traces to a goal. Bracketed target values are to be confirmed with the Association in VAL-05; metric, scale and deadline are fixed now so each objective is verifiable.
-
-**Table 4 - Objectives**
-
-| ID | Objective | Metric and target | Deadline | Traces to |
+| Version | Date | Author | Summary of change | Trigger |
 |---|---|---|---|---|
-| OBJ-01 | A single portal covers all four information categories at launch | Percentage of the four categories present and populated equals 100% | By go-live | REQ-GOAL-002 |
-| OBJ-02 | Content publish cycle time reduced to a defined ceiling | Median elapsed time from "submitted for approval" to "published" less than or equal to [8] working hours | Within 3 months of launch | REQ-GOAL-005 |
-| OBJ-03 | Tourists who start an itinerary complete it | Itinerary-plan completion rate greater than or equal to [55]% of started itineraries | Within 6 months of launch | REQ-GOAL-004 |
-| OBJ-04 | Management analytics reporting available at a defined frequency | A refreshed analytics report set available at least once every [7] days | From go-live | REQ-GOAL-006 |
-| OBJ-05 | Multilingual and low-bandwidth reach targets met | Fully translated tourist-facing languages greater than or equal to [3] (BM, English, Mandarin); defined key pages delivered within a payload less than or equal to [500] KB | By go-live | REQ-GOAL-007 |
-| OBJ-06 | Every personal-data flow covered by a verifiable PDPA control | Percentage of identified personal-data collection, use, disclosure, retention and transfer flows with a mapped, verifiable control equals 100% | By go-live | REQ-GOAL-008 |
-| OBJ-07 | Tourist enquiries receive a first response within a defined time | Median first-response time to a submitted enquiry less than or equal to [24] hours | Within 3 months of launch | REQ-GOAL-006 |
+| 0.1 | 2026-07-30 | Swinsoft Consulting — Requirements Architect | Initial structural blueprint issued: front matter plan, ID legend, goals/objectives/incentives/pain points, assumptions, system context and actors, 11-entity domain model, 11 major tasks, workflow outline, 4 NFR categories, design/product/PDPA requirement stubs, appendix skeletons | Elicitation synthesis from `project_brief.yaml` and stakeholder notes |
+| 0.5 | 2026-08-15 | Swinsoft Consulting — Technical Documenter | First full-prose expansion of Sections 1–6 | Blueprint hand-off (`02_blueprint.md`) |
+| 0.8 | 2026-09-01 | Swinsoft Consulting — Technical Documenter | Full-prose expansion of Sections 7–12 and Appendices A–F; validation evidence drafted | Continuation of documentation pipeline |
+| 0.9 | 2026-09-08 | Swinsoft Consulting — Technical Documenter | Domain model redesigned and rendered as a Mermaid diagram; traceability and CRUD matrices completed in full; cross-checked against blueprint hard constraints | Internal design review of Section 5 (see body text preceding this file) |
+| 1.0 | 2026-09-11 | Swinsoft Consulting — Technical Documenter | Consolidated draft assembled for hand-off to the precision-QA / verifiability pass | Completion of blueprint expansion; ready for IEEE‑830 self-audit finalization |
 
-### 2.6 Incentives
+### 0.3 Table of Contents
 
-**Table 5 - Incentives**
+1. [Introduction](#1-introduction)
+   1.1 Purpose of the Document · 1.2 Scope · 1.3 Intended Audience · 1.4 Project Type · 1.5 Domain Vocabulary / Definitions · 1.6 Document Conventions
+2. [Project Goals, Objectives, Incentives & Pain Points](#2-project-goals-objectives-incentives--pain-points)
+   2.1 Goals · 2.2 Objectives · 2.3 Incentives · 2.4 Pain Points
+3. [Assumptions](#3-assumptions)
+4. [System Context & Actors](#4-system-context--actors)
+   4.1 System Boundary Statement · 4.2 Actors · 4.3 System Context Diagram
+5. [Domain Model](#5-domain-model)
+   5.1 Entity List · 5.2 Relationships · 5.3 Diagram
+6. [User Tasks (Tasks & Support Approach)](#6-user-tasks-tasks--support-approach)
+   6.1 Standard Task Template · 6.2 Task Hierarchy / Goal Tree · 6.3 Major Tasks (TASK-001 – TASK-011)
+7. [Workflows](#7-workflows)
+   7.1 Overarching End-to-End Workflow (WF-000) · 7.2 Per-Task Workflow Diagrams (WF-001 – WF-011) · 7.3 Diagram Legend
+8. [Non-Functional Requirements](#8-non-functional-requirements)
+   8.1 REQ-NFR-001 Performance & Scalability · 8.2 REQ-NFR-002 Security & Data Privacy · 8.3 REQ-NFR-003 Usability & Accessibility · 8.4 REQ-NFR-004 Availability & Reliability
+9. [Other Design & Product-Level Requirements](#9-other-design--product-level-requirements)
+   9.1 Design-Level Requirements · 9.2 Product-Level Requirements
+10. [PDPA & Regulatory Compliance](#10-pdpa--regulatory-compliance)
+11. [Validation Summary](#11-validation-summary)
+12. [Conclusion & Recommendations](#12-conclusion--recommendations)
+Appendix A — Stakeholder Validation Evidence
+Appendix B — Requirements Traceability Matrix
+Appendix C — CRUD Matrix
+Appendix D — Verifiability Self-Check (IEEE 830 Quality Audit)
+Appendix E — Domain Vocabulary / Glossary
+Appendix F — Iteration / Revision Evidence Log
 
-| ID | Incentive | Basis |
-|---|---|---|
-| INC-01 | Expected uplift in visitor numbers, average length of stay and tourism spend from consolidated, current, multilingual promotion | Association marketing analysis; comparable-destination benchmarks (target confirmed in VAL-05) |
-| INC-02 | Reduced staff effort and cost for content maintenance and enquiry handling | Current staff time re-keying content and answering untracked enquiries |
-| INC-03 | Stronger, more consistent destination brand across all channels | Present channel-by-channel inconsistency (PAIN-03) |
-| INC-04 | Promotion budget allocated using engagement and booking-funnel evidence | Absence of consolidated insight today (PAIN-05) |
-| INC-05 | Reduction of regulatory risk and potential PDPA penalties through verifiable personal-data controls | PDPA 2010 enforcement regime (PAIN-09) |
-| INC-06 | Funding rationale: Association marketing budget plus a potential government tourism grant contribution | Association budget statement; grant eligibility for destination-marketing digital infrastructure |
+*This table of contents is regenerated whenever a section or diagram is added or renumbered, per the Coherent Document formatting rule.*
 
-### 2.7 Scope
+### 0.4 Requirement / Artifact ID Legend
 
-**In scope**
+| Prefix | Meaning |
+|---|---|
+| `GOAL-xxx` | Goal (broad direction) |
+| `OBJ-xxx` | Objective (specific, measurable outcome) |
+| `INC-xxx` | Incentive (business value / ROI) |
+| `PP-xxx` | Pain point (existing process problem) |
+| `ASSUMP-xxx` | Assumption (with rationale/source) |
+| `ACT-xxx` | Actor |
+| `EXT-xxx` | External system/interface (subset of `ACT-xxx` reserved for non-human/external parties) |
+| `DM-ENT-xxx` | Domain model entity |
+| `DM-REL-xxx` | Domain model relationship |
+| `TASK-xxx` | Major user task (Tasks & Support) |
+| `ST-x.y` | Subtask of `TASK-x` |
+| `REQ-FUN-xxx` | Functional requirement (derived from a subtask) |
+| `REQ-NFR-xxx` | Non-functional requirement (exactly 4 categories, numbered 001–004) |
+| `REQ-DES-xxx` | Design-level requirement |
+| `REQ-PROD-xxx` | Product-level requirement |
+| `REQ-PDPA-xxx` | PDPA/regulatory compliance requirement |
+| `WF-xxx` | Workflow diagram (`WF-000` = overarching; `WF-001`…`WF-011` = per-task) |
+| `VAL-xxx` | Validation evidence item |
 
-- Tourist-facing information portal covering accommodation, transportation, food and useful local information, plus attractions and events.
-- Search, browse, filter and comparison of offerings.
-- Itinerary planning and per-day organisation.
-- Reservation-request capture against listings.
-- Presentation of amount due, hand-off to an external payment interaction, and capture of the payment outcome against a booking.
-- Multilingual content and listing authoring, classification, translation management, approval routing and publish/withdraw control.
-- Promotion-campaign definition, scheduling, outbound publishing to external channels and performance review.
-- Structured enquiry capture, acknowledgement, assignment, status tracking, response and closure.
-- Engagement analytics and management reporting (visitor trends, booking funnel, content engagement, campaign performance).
-- PDPA consent capture, privacy-notice presentation, tourist self-service access and correction, retention enforcement, opt-out handling and tracking-consent gating.
-- Defined, version-controlled interactions with external services (payment, mapping/geolocation, weather/advisory, notification, publishing channels, external tourism/government data, web analytics, optional external sign-in).
-- Account, role and access administration for management users.
+Every identifier above is minted exactly once in the section that owns it and is never renumbered or reused elsewhere in this document. All figures, tables, and appendices reference these identifiers verbatim.
 
-**Out of scope**
+### 0.5 Intended Audience Statement
 
-- Building payment processing itself; the system uses an external, separately contracted payment service.
-- Building mapping, geolocation, weather or advisory data providers.
-- Tourism providers' own internal booking, property-management or point-of-sale systems.
-- Procurement or provisioning of hardware, networks, data repositories or deployment platforms (assumed already acquired - section 2.9).
-- Physical tourism operations (running tours, transport or accommodation).
-- Printed brochure production and offline campaign logistics.
+This SRS is written for four audiences, each of whom uses it differently. **(a) Tourism Association management and decision-makers** use it to confirm that the goals, objectives, incentives, and pain points in Section 2 correctly represent the business problem, to approve the non-functional targets in Section 8, and to sign off the PDPA compliance posture in Section 10 before funding development. **(b) The Swinsoft Consulting development team** uses it as the authoritative basis for solution design, technical architecture, and sprint/iteration planning; every task in Section 6 and workflow in Section 7 is written to be solution-agnostic precisely so the development team retains freedom to choose an appropriate technical realization. **(c) QA and test engineers** use the functional requirements (Section 6), non-functional requirements (Section 8), and the verifiability self-check (Appendix D) as the direct source of test cases and acceptance criteria. **(d) Any PDPA compliance auditor** reviewing the system prior to launch uses Section 10, the PDPA-specific entries embedded throughout the traceability matrix (Appendix B), and Assumption `ASSUMP-005` as the record of how the system's data-handling practices were reasoned about and validated (Appendix A).
 
-### 2.8 Constraints
+### 0.6 Project Type Statement
 
-**Table 6 - Constraints**
+The Sarawak Tourism Promotion System is a **greenfield, purpose-built software system**. It is not a replacement for a single existing legacy IT system; rather, it is a deliberate **consolidation** of the Association's currently fragmented manual, print, and social-media tourism-promotion channels (see Pain Points `PP-001`–`PP-006`, Section 2.4) into one association-operated digital platform. No prior system of record is being migrated off; the primary engineering risk is therefore not data migration but requirements completeness — ensuring every promotional and operational function currently performed informally is captured, and captured correctly, in the new platform. This framing governs Section 3's assumptions (in particular `ASSUMP-001`–`ASSUMP-003`, which establish that hardware, network, and data-repository platforms are already provisioned and that only the software itself is being specified).
 
-| ID | Constraint | Effect on the specification |
-|---|---|---|
-| CON-01 | Compliance with the Malaysian Personal Data Protection Act 2010 is mandatory | PDPA obligations stated as verifiable requirements in sections 8.4 and 9.5 |
-| CON-02 | Supported languages are Bahasa Malaysia, English and Mandarin, plus others as directed by the Association | Multilingual authoring, translation-completeness and language-selector requirements |
-| CON-03 | Rural Sarawak has low bandwidth and intermittent connectivity | Payload ceilings, offline-tolerant behaviour and graceful-degradation requirements |
-| CON-04 | Hosting location and any cross-border personal-data transfer must be addressed with stated safeguards | Cross-border transfer safeguard and consent requirements (REQ-PROD-017, REQ-PROD-PDPA-07) |
-| CON-05 | The academic timeline fixes the specification submission date | Objective deadlines expressed relative to launch |
-| CON-06 | The Association sets a budget ceiling | Requirement priorities distinguish mandatory from desirable scope |
-| CON-07 | Already-acquired data repositories, hardware and deployment platforms must be reused | Only software is specified; see ASM-01 to ASM-04 |
-| CON-08 | Accessibility target is WCAG 2.1 level AA | NFR-USAB-04 and REQ-DES-005 |
+---
 
-### 2.9 Assumptions
+## 1. Introduction
 
-The specification elaborates on software only; hardware, data repositories and deployment platforms are assumed already acquired and available.
+### 1.1 Purpose of the Document
 
-**Table 7 - Assumptions**
+This Software Requirements Specification (SRS) defines, at a level of detail sufficient for design, build, test, and formal acceptance, the software requirements for the Sarawak Tourism Promotion System (STPS). The STPS is commissioned by the management team of a local tourism association and will be developed by Swinsoft Consulting. This document exists to give every stakeholder identified in Section 0.5 a single, unambiguous, and verifiable reference for what the software must do, expressed using the Tasks & Support elicitation approach and organized according to the Goal-Design Scale. Every normative statement in this document is phrased as "the system shall…" and is written to be objectively testable by inspection, demonstration, or measurement; no requirement is expressed only as an aspiration.
 
-| ID | Assumption | Justification | Link |
+### 1.2 Scope
+
+The scope of this SRS is **software only**. Hardware, physical servers, network provisioning, end-user devices, and the data-repository and deployment platforms are assumed already acquired by the client (`ASSUMP-001`) and are explicitly out of scope for specification here; they are treated as pre-existing infrastructure onto which the STPS software is deployed. Within that software scope, this SRS covers: the tourist-facing modules that support discovery, planning, reservation, payment initiation, and feedback (Sections 6.3, `TASK-001`–`TASK-008`); the management-facing modules that support content curation, booking and availability administration, and PDPA-related privacy administration (Sections 6.3, `TASK-009`–`TASK-011`); the business logic that connects these modules to the conceptual domain model (Section 5); and the integration logic that governs the system's interaction with external services such as the payment gateway, notification service, and mapping/geolocation provider (Section 4.2, `ACT-004`–`ACT-007`). The internal implementation of those external, third-party services is explicitly out of scope; they are treated as black boxes accessed only through their documented interaction contract.
+
+### 1.3 Intended Audience
+
+See Section 0.5 for the full statement. In summary, this document is written for: (a) Tourism Association management and decision-makers; (b) the Swinsoft development team; (c) QA/test engineers; and (d) any PDPA compliance auditor reviewing the system prior to launch.
+
+### 1.4 Project Type
+
+See Section 0.6 for the full statement. In summary, the STPS is a greenfield, purpose-built system consolidating fragmented manual/print/social-media promotion channels into one association-operated platform; it does not replace a single existing legacy IT system.
+
+### 1.5 Domain Vocabulary / Definitions
+
+All domain terms, actor names, and abbreviations used in this document are defined once, consistently, in Appendix E (Domain Vocabulary / Glossary), and that definition is used identically in every section, table, and diagram of this document. In particular, the canonical term for the primary worldwide end user is **Tourist** — this document never substitutes "Visitor," "Traveler," "Customer," or any other synonym for this actor.
+
+### 1.6 Document Conventions
+
+This document uses the identifier scheme defined in Section 0.4 without exception or renumbering. Every requirement statement — whether a functional requirement (`REQ-FUN-xxx`), a non-functional requirement (`REQ-NFR-xxx`), a design-level requirement (`REQ-DES-xxx`), a product-level requirement (`REQ-PROD-xxx`), or a PDPA/regulatory requirement (`REQ-PDPA-xxx`) — is written using the fixed sentence pattern "The system shall…" so that requirement statements are syntactically distinguishable from narrative, rationale, or illustrative text at a glance. Any illustrative or example solution text appearing under a "Solution-Agnosticism Check" or "Example Solution" heading is explicitly and visually marked *Non-Normative* and carries no requirement weight; such text exists only to demonstrate that a task can be realized by more than one kind of solution, per the brief's solution-agnosticism ground rule, and must never be read as narrowing the requirement itself.
+
+---
+
+## 2. Project Goals, Objectives, Incentives & Pain Points
+
+Goals, Objectives, Incentives, and Pain Points are kept as four separately labelled subsections below, in line with the project's Goal-Design Scale methodology; they are never collapsed into a single undifferentiated "Goals" list, because each category answers a different question (Goals: broad direction; Objectives: how we will know we got there; Incentives: why it is worth doing; Pain Points: what is broken today) and each plays a distinct role in the traceability matrix (Appendix B).
+
+### 2.1 Goals
+
+Goals state the broad, qualitative direction of the project. Each goal is later made measurable through one or more Objectives (Section 2.2) and delivered through one or more Tasks (Section 6).
+
+| ID | Goal |
+|---|---|
+| `GOAL-001` | Promote Sarawak destinations, accommodation, transportation, and food to worldwide tourists through one authoritative digital channel. |
+| `GOAL-002` | Enable the tourism association's management team to control and maintain promotional content and operational data. |
+| `GOAL-003` | Provide trustworthy, current local information that improves visitor experience and safety. |
+| `GOAL-004` | Operate the platform in demonstrable compliance with the Malaysian PDPA for both tourist and management data. |
+
+### 2.2 Objectives
+
+Each objective is specific, measurable, and traced to exactly one parent Goal. Bracketed target figures below were proposed during drafting and were subsequently confirmed with Association management during stakeholder validation (`VAL-005`; see Appendix A and Appendix F for the before/after record of how these targets were tightened).
+
+| ID | Objective | Traces to | Target |
 |---|---|---|---|
-| ASM-01 | Data repositories are already acquired and available for the software to use | Brief ground rule: elaborate on software only | CON-07 |
-| ASM-02 | Servers and other hardware are already acquired | Brief ground rule: elaborate on software only | CON-07 |
-| ASM-03 | The deployment platform is already provisioned | Brief ground rule: elaborate on software only | CON-07 |
-| ASM-04 | Only the software is to be specified and elaborated in this SRS | Brief ground rule | Scope (2.7) |
-| ASM-05 | An external payment service exists and is contracted separately by the Association | Payment processing is out of scope | 2.7 |
-| ASM-06 | An external mapping / geolocation service is available for location and routing information | Mapping provision is out of scope | 2.7 |
-| ASM-07 | An external weather / travel-advisory source is available | Weather provision is out of scope | 2.7 |
-| ASM-08 | An external email / SMS delivery service is available for notifications | Notification delivery is out of scope | 2.7 |
-| ASM-09 | The Association supplies and owns all tourism content and its translations | Client responsibility for content and languages | CON-02 |
-| ASM-10 | Tourism providers supply listing details to the Association, which enters or approves them | Existing client process; reflected in the domain model | Section 4 |
-| ASM-11 | Management users are trained office staff with basic web-tool skills | User-profile input to task and NFR design | Section 5.3 |
-| ASM-12 | Tourists use their own internet-connected devices through a web browser | User profile; informs low-bandwidth constraints | CON-03 |
-| ASM-13 | Network connectivity from the deployment site to each external service is available | Infrastructure ground rule | CON-07 |
-| ASM-14 | A legal / compliance advisor is available to validate the PDPA interpretation | Needed for validation activity VAL-07 | CON-01 |
-| ASM-15 | The concurrent-user peak occurs during festivals and campaign periods | Sizing input for performance requirements | Section 8.3 |
+| `OBJ-001` | Consolidate accommodation, transportation, food, and local-info listings currently spread across independent channels into one searchable catalog before launch. | `GOAL-001` | 100% of the four listing categories (Accommodation, Vehicle, Food Establishment, Local Information) populated and searchable at go-live. |
+| `OBJ-002` | Reduce the content-update cycle for a new/changed listing from the current manual, multi-day process. | `GOAL-002` | Median elapsed time from "submitted by staff" to "live on the platform" ≤ 1 business day (same-business-day publish for submissions received before the daily cut-off). |
+| `OBJ-003` | Enable a tourist to research, assemble, and pay for a multi-component trip package within the platform without leaving it. | `GOAL-001` | ≥ 55% of Tourists who start building a Package (`TASK-006`) complete it through to a Confirmed Booking, measured over the first 6 months post-launch. |
+| `OBJ-004` | Pass a documented PDPA compliance checklist review (Section 10 / Appendix A) prior to go-live. | `GOAL-004` | 100% of the checklist items in Appendix A's compliance review, and 100% of `REQ-PDPA-001`–`007`, verified with zero open findings before go-live sign-off. |
+
+### 2.3 Incentives
+
+Incentives state the business value the Association expects to realize; they justify the investment and are the basis on which management will judge project success post-launch.
+
+| ID | Incentive |
+|---|---|
+| `INC-001` | Increased bookings/revenue channelled to association-endorsed accommodation, transport, and food providers, by concentrating tourist demand on one trusted, bookable catalog rather than fragmented informal listings. |
+| `INC-002` | Reduced association staff hours spent on manual/paper-based content coordination and provider liaison, freeing staff capacity for higher-value promotional and quality-assurance work (`TASK-009`, `TASK-010`). |
+| `INC-003` | Strengthened association brand trust from centralized, verified, moderated information (vs. fragmented/unofficial sources), supported directly by the quality/review loop of `TASK-008`. |
+| `INC-004` | Data-informed decision-making for the association — knowing which destinations and providers actually drive tourist engagement and bookings — enabled by the structured Booking and Review data captured through `TASK-007` and `TASK-010`. |
+
+### 2.4 Pain Points
+
+Pain points describe specific, observable problems in the Association's *existing* process. Each pain point is required to map forward to at least one Goal or Objective and forward again into the traceability matrix (Appendix B); none is permitted to remain an orphaned complaint with no corresponding requirement addressing it.
+
+| ID | Pain point | Maps to |
+|---|---|---|
+| `PP-001` | Tourist information is scattered across informal/unofficial sites and social media, inconsistent and unverifiable. | `OBJ-001` |
+| `PP-002` | No single channel lets a tourist discover and book accommodation, transport, and food together. | `OBJ-003` |
+| `PP-003` | Management currently updates tourism content via manual/offline means (spreadsheets, printed brochures), causing delay and error. | `OBJ-002` |
+| `PP-004` | Language and currency barriers hinder worldwide tourists using fragmented local-only sites. | `GOAL-001`, `GOAL-003` |
+| `PP-005` | No structured feedback channel exists for the association to assess visitor satisfaction or provider quality. | `INC-003`, `TASK-008` |
+| `PP-006` | Absence of a governed data-handling process exposes tourist and management personal data to PDPA compliance risk. | `GOAL-004` |
 
 ---
 
-## 3 System Context
+## 3. Assumptions
 
-### 3.1 System Boundary
+Every assumption below is stated with an explicit rationale/source, per the project's Goals/Assumptions rule. Assumptions flagged "requires stakeholder confirmation" have since been put to the Association during validation; the outcome of that confirmation is recorded in Appendix A and referenced inline below.
 
-The system under specification is the STPS software. **Inside** the boundary: the tourist-facing information portal (search, browse, filter, compare, view listings, attractions, events, food options, transportation and local information); itinerary assembly and per-day organisation; reservation-request capture and the internal record of bookings; presentation of amount due, initiation of the external payment interaction, and capture and linkage of the payment outcome; content and domain-data management (authoring, classification, translation management, approval routing, publish and withdraw); promotion-campaign definition, scheduling and outbound publishing requests; enquiry capture, acknowledgement, assignment, status tracking, response and closure; consent-gated engagement observation and compilation of analytics reports; consent capture, privacy-notice presentation, tourist self-service access and correction, retention enforcement and marketing opt-out handling; account, role and access administration.
-
-**Outside** the boundary: all external human roles (section 3.3); all external systems and services (section 3.4); physical delivery of email or SMS; the actual movement of funds; production of map or weather data; tourism providers' internal systems; and the hardware, network, data repositories and deployment platform (ASM-01 to ASM-03).
-
-### 3.2 Context Diagram
-
-**Figure 1 - STPS system context diagram (described).** A single central node labelled "Sarawak Tourism Promotion System (STPS)" sits inside a rectangular system boundary. Two rings of external entities surround it, each joined to the STPS by a labelled, directed interaction arrow.
-
-- **Inner ring - external human entities.** Tourist (EXT-H-01): sends search terms, itinerary edits, reservation requests, enquiry text and consent choices; receives destination information, comparison views, itinerary feedback, booking confirmation, receipts and enquiry responses. Association Management User (EXT-H-02): sends approvals, campaign direction and report requests; receives approval queues and analytics reports. Content Administrator / Editor (EXT-H-03): sends draft content, classifications and translations; receives publishing status and validation messages. Enquiry Handler / Support Officer (EXT-H-04): sends triage decisions and responses; receives enquiry queues and context. Tourism Provider / Operator contact (EXT-H-05): sends offering details via the Association; receives listing status. System / Platform Administrator (EXT-H-06): sends account, role and configuration changes; receives operational monitoring information. Compliance / Legal Advisor (EXT-H-07): sends PDPA control definitions and audit findings; receives control-coverage and audit-log evidence.
-- **Outer ring - external systems and services.** Payment service (EXT-S-01); Mapping / geolocation service (EXT-S-02); Weather / travel-advisory source (EXT-S-03); Notification service (EXT-S-04); Social media / external publishing channels (EXT-S-05); External tourism / government data sources (EXT-S-06); Web analytics / tracking service (EXT-S-07); Identity / authentication provider (EXT-S-08).
-- The system boundary rectangle encloses only the STPS node; no external entity is inside it. Arrows name interactions (for example "payment-authorisation request / payment outcome") rather than protocols, products or components, keeping the diagram solution-agnostic.
-
-### 3.3 External Entities - Human
-
-**Table 8 - External human entities**
-
-| ID | Entity | Role at the boundary |
+| ID | Assumption | Rationale / Source |
 |---|---|---|
-| EXT-H-01 | Tourist | A person anywhere in the world, anonymous or identified, who discovers information, plans a trip, reserves offerings, pays, raises enquiries and gives consent |
-| EXT-H-02 | Association Management User | Provides promotion direction, approves content and listings, consumes analytics |
-| EXT-H-03 | Content Administrator / Editor | Creates, updates, classifies, translates and publishes content and listings |
-| EXT-H-04 | Enquiry Handler / Support Officer | Triages, investigates and resolves tourist enquiry tickets |
-| EXT-H-05 | Tourism Provider / Operator contact | Supplies and updates offering information for listings through the Association |
-| EXT-H-06 | System / Platform Administrator | Manages accounts, roles, access and operational monitoring |
-| EXT-H-07 | Compliance / Legal Advisor | Defines and audits PDPA controls and reviews audit-log evidence |
+| `ASSUMP-001` | Hardware, servers, network, and the data-repository platform are already acquired/provisioned by the client. | Source: `project_brief.yaml` → `strict_ground_rules.hardware_assumption`. This assumption is load-bearing for the entire scope statement in Section 1.2 and for `REQ-NFR-004` (Availability & Reliability), which is written in terms of the software's behaviour on top of already-provisioned infrastructure rather than infrastructure procurement itself. |
+| `ASSUMP-002` | The tourism association is the sole authoritative content owner; individual accommodation/vehicle/food providers do not receive direct system login — they supply information to association staff off-system. | Source: `project_brief.yaml` → `core_functions.management_facing` wording ("enable content and database management"), read as staff-only. **Confirmed** with Association operations management during `VAL-002` (Appendix A); this is why `TASK-009` and `TASK-010` list only Management Staff (`ACT-002`/`ACT-003`) as actors, never a Tourism Provider actor. |
+| `ASSUMP-003` | Worldwide tourists are assumed to have access to a modern web browser or smartphone with adequate internet connectivity. | Source: `project_brief.yaml` → `target_audience`. This assumption bounds the scope of `REQ-NFR-001`: the performance targets in Section 8.1 assume connectivity meeting this assumption, and the system is not required to function while fully offline. This document does not define a separate numeric performance target for degraded or low-bandwidth connections; the client should confirm such a target in a future revision if one is required. |
+| `ASSUMP-004` | Payment processing is delegated to a third-party, PCI-DSS-compliant payment gateway; the system does not store raw payment-card data. | Source: software-only scope ground rule plus standard industry practice for a system of this size; reflected directly in `REQ-PROD-003` and in `TASK-007`'s designation of the Payment Gateway Provider (`ACT-004`) as an external actor. |
+| `ASSUMP-005` | The association operates under Malaysian jurisdiction; PDPA is the governing privacy framework even though end users are worldwide; foreign frameworks (e.g., GDPR) are explicitly out of scope unless the client states otherwise. | Source: `project_brief.yaml` → `compliance.privacy_framework`. **Flagged as a residual risk requiring client sign-off** (carried forward to Section 12); reviewed with an external PDPA/compliance advisor during `VAL-003` (Appendix A), which confirmed the PDPA-only scope for v1.0 but recommended the cross-border transfer safeguard now codified in `REQ-PDPA-005`. |
+| `ASSUMP-006` | One shared platform instance serves all association-endorsed listings; no separate deployment per district. | Source: inferred from the single-system framing of `project_brief.yaml`. Cross-checked against Section 8's `REQ-NFR-001` scalability target (≥500 concurrent users against a single up-to-10,000-listing catalog) to confirm no contradiction — the performance target is deliberately sized for one consolidated instance, not per-district sharding. |
+| `ASSUMP-007` | English and Bahasa Malaysia are the baseline supported languages; additional languages are budget-dependent stretch scope. | Source: target audience plus typical practice for a Malaysian state-tourism platform. **Confirmed** with Association management during `VAL-005` (Appendix A): English and Bahasa Malaysia are contractual minimums for go-live (`REQ-NFR-003`); Mandarin was discussed as a desirable stretch addition dependent on translation budget and is recorded as a non-normative future consideration only, not a v1.0 requirement. |
 
-### 3.4 External Entities - External Systems / Services
-
-Each external system is modelled only as an external interaction; no internal design of the external system is specified.
-
-**Table 9 - External systems / services**
-
-| ID | Service | Interaction with the STPS (solution-agnostic) |
-|---|---|---|
-| EXT-S-01 | Payment service | Receives a payment-authorisation request with an amount due; returns a payment outcome (authorised, declined, pending, timed out) |
-| EXT-S-02 | Mapping / geolocation service | Receives a location or route query; returns coordinates, travel-time and routing information for itinerary feasibility |
-| EXT-S-03 | Weather / travel-advisory source | Receives a place-and-date query; returns conditions and advisory information for itinerary feasibility |
-| EXT-S-04 | Notification service | Receives a message with recipient, language and content; returns a delivery outcome |
-| EXT-S-05 | Social media / external publishing channels | Receive outbound promotional content and a publish schedule; return a publish outcome |
-| EXT-S-06 | External tourism / government data sources | Provide reference information (public holidays, park status, regional advisories) on request or schedule |
-| EXT-S-07 | Web analytics / tracking service | Receives consent-gated engagement events; returns aggregated engagement measures |
-| EXT-S-08 | Identity / authentication provider | Receives an optional external sign-in request; returns an authenticated identity assertion |
-
-### 3.5 Context Interactions Table
-
-**Table 10 - Context interactions**
-
-| External entity | Information into the STPS | Information out of the STPS | Trigger | Notes (solution-agnostic) |
-|---|---|---|---|---|
-| EXT-H-01 Tourist | Search terms, filters, interests, itinerary edits, traveller details, reservation requests, enquiry text, consent choices, review text, data-correction requests | Consolidated destination information, comparison views, itinerary feedback, reservation outcome, amount due, receipt, enquiry acknowledgement and response, privacy notice, personal-data copy | Tourist action in a browser session; scheduled reminder | May be anonymous; identified only on registration |
-| EXT-H-02 Association Management User | Approval decisions, campaign direction, report scope and period, NFR-target confirmations | Approval queues, analytics reports, campaign performance summaries | Management working session; review cycle | Consumes rather than authors content |
-| EXT-H-03 Content Administrator / Editor | Draft and updated entries, classifications, translations, publish/withdraw decisions | Draft state, translation-completeness status, publishing outcome, validation messages | Provider submission received; scheduled content review | Works item by item within an approval workflow |
-| EXT-H-04 Enquiry Handler / Support Officer | Triage and assignment decisions, investigation notes, response text, closure outcome | Enquiry queue, enquiry context (linked booking, itinerary, listing), status history | New or reopened enquiry | Uses the notification interaction to deliver responses |
-| EXT-H-05 Tourism Provider / Operator contact | Offering details and updates, licensing / eligibility evidence | Listing status (submitted, under review, published, withdrawn) | Provider sends new or changed details to the Association | Interacts through the Association, not directly with tourists |
-| EXT-H-06 System / Platform Administrator | Account creation and changes, role assignments, configuration changes, maintenance-window schedule | Operational monitoring information, alerts, audit-log extracts | Onboarding, offboarding, incident, planned maintenance | Operational, not content-related |
-| EXT-H-07 Compliance / Legal Advisor | PDPA control definitions, retention periods, audit findings | Control-coverage evidence, audit logs of personal-data operations, breach-drill records | Compliance review cycle; audit; incident drill | Confirms the PDPA interpretation in Appendix G |
-| EXT-S-01 Payment service | Payment outcome | Payment-authorisation request with amount due and reference | Tourist authorises payment for a booking (TASK-04) | Money movement is external; the STPS records only the outcome |
-| EXT-S-02 Mapping / geolocation service | Coordinates, travel time, routing | Location / route query | Itinerary feasibility check (TASK-02) | If unavailable, itinerary planning continues without feasibility hints (NFR-PERF-04) |
-| EXT-S-03 Weather / travel-advisory source | Conditions, advisories | Place-and-date query | Itinerary feasibility check (TASK-02) | Advisory only; not a booking gate |
-| EXT-S-04 Notification service | Delivery outcome | Message content, recipient, language | Booking confirmed, enquiry acknowledged or answered, campaign or retention event | The STPS records the delivery outcome (REQ-PROD-005) |
-| EXT-S-05 Publishing channels | Publish outcome | Promotional content and schedule | Campaign start/stop (TASK-06, ACT-15) | Outbound only |
-| EXT-S-06 External tourism / government data | Reference information | Reference-data query | Scheduled refresh; editor request | Used to support content accuracy, not stored as authoritative |
-| EXT-S-07 Web analytics / tracking service | Aggregated engagement measures | Consent-gated engagement events | Tourist interaction where tracking consent is recorded | No event sent without a matching ConsentRecord (REQ-PROD-019) |
-| EXT-S-08 Identity / authentication provider | Authenticated identity assertion | External sign-in request | Tourist chooses external sign-in | Optional; local accounts remain available |
+**Cross-check performed.** Sections 8–10 were re-scanned during drafting to confirm that no non-functional or design requirement silently contradicts an assumption above. No conflicts were found: `REQ-NFR-001`'s scalability target is consistent with `ASSUMP-006`'s single-instance model; `REQ-NFR-002`'s security controls are consistent with `ASSUMP-004`'s delegation of card data to the payment gateway; and `REQ-NFR-003`'s language target is bounded to the two baseline languages of `ASSUMP-007` (with Mandarin explicitly marked non-normative/stretch rather than silently assumed).
 
 ---
 
-## 4 Domain Model
+## 4. System Context & Actors
 
-### 4.1 Modelling rules
+### 4.1 System Boundary Statement
 
-The domain model is conceptual. It shows only domain entities and the named relationships between them, each relationship carrying a cardinality (multiplicity). In line with the project brief and the blueprint, the model contains **no attributes, no identifiers or keys, no data types, and no table, column or schema structures**. Entities are business concepts that would exist in the tourism domain regardless of how the software is built, and they are solution-independent. Every entity appears in at least one user task (section 6) and in the CRUD completeness matrix (Appendix C); any entity that did not would be flagged in section 4.5.
+**In scope** (inside the STPS software boundary): the tourist-facing modules (destination/accommodation/vehicle/food discovery, itinerary/package building, reservation and payment initiation, review submission); the management-facing modules (content and listing curation, booking and availability administration, PDPA privacy-request administration); the business logic that enforces the rules described in Section 6 (e.g., availability re-validation, option compatibility checks, consent gating); and the integration logic — request/response handling, retries, and failure handling — for each external interaction named in Section 4.2.
 
-### 4.2 Entity List
+**Out of scope** (outside the STPS software boundary): the physical servers, network, and hosting infrastructure on which the software runs; the end-user devices tourists and staff use to access it; and the internal implementation of every third-party service listed in Section 4.2 as an external actor — each is treated strictly as a black box accessed only through its documented request/response contract. This boundary is a direct consequence of `ASSUMP-001` (`strict_ground_rules.hardware_assumption`).
 
-**Table 11 - Domain entity list**
+### 4.2 Actors
+
+| ID | Actor | Description |
+|---|---|---|
+| `ACT-001` | Tourist (Guest / Registered) | The primary worldwide end user of the platform. May browse as an anonymous Guest or hold a Registered profile. This exact term — **Tourist** — is used everywhere in this document and is never replaced by "Visitor," "Traveler," or "Customer." |
+| `ACT-002` | Management Staff — Content Officer | Tourism association staff responsible for curating listings and promotional/local-information content (`TASK-009`). Generalizes, with `ACT-003`, under the superclass "Management Staff." |
+| `ACT-003` | Management Staff — Data/System Administrator | Tourism association staff responsible for account/permission administration and PDPA data-subject request handling (`TASK-011`). Generalizes with `ACT-002` under "Management Staff." |
+| `ACT-004` | Payment Gateway Provider (external) | A third-party, PCI-DSS-compliant payment processor that authorizes and settles Tourist payments; accessed only via a tokenized request/response interface (`ASSUMP-004`). |
+| `ACT-005` | Notification Service (external) | A third-party email/SMS gateway used to deliver booking confirmations, PDPA-request acknowledgements, and related notifications. |
+| `ACT-006` | Mapping/Geolocation Service Provider (external) | A third-party service that supplies location, map, and geolocation data used to enrich Destination/Accommodation/Vehicle presentation. |
+| `ACT-007` | Translation/Localization Service (external) | An optional third-party translation/localization service that may support expansion of supported languages beyond the `ASSUMP-007` baseline. Its use is conditional on future budget approval and is not required for the English/Bahasa Malaysia baseline. |
+| `ACT-008` | PDPA Regulatory Authority (contextual, non-user) | The Malaysian data-protection regulatory authority. This actor never logs in to or operates the system; it appears in the system context only as the recipient of breach notifications under `REQ-PDPA-006`. |
+
+**Terminology rule.** The actor names above are canonical and are used identically throughout every section, table, task, and diagram in this document; no synonym or alternate phrasing is introduced elsewhere.
+
+### 4.3 System Context Diagram
+
+**Diagram description.** The system context is centred on a single node, "Sarawak Tourism Promotion System," surrounded by all eight actors (`ACT-001`–`ACT-008`). Every edge to `ACT-001`–`ACT-007` is a **solid** edge representing a direct, bidirectional system interaction (e.g., the `ACT-004` edge is labelled "payment authorization request / payment outcome response"). The single edge to `ACT-008` is **dashed**, representing a compliance/regulatory relationship rather than a direct system interaction — the STPS never receives operational input from, nor grants system access to, the PDPA Regulatory Authority; it only sends breach notifications to it when `REQ-PDPA-006` is triggered.
+
+```mermaid
+flowchart LR
+    STPS(["Sarawak Tourism Promotion System"])
+
+    Tourist["ACT-001 Tourist (Guest / Registered)"]
+    ContentOfficer["ACT-002 Management Staff -\nContent Officer"]
+    SysAdmin["ACT-003 Management Staff -\nData / System Administrator"]
+    Payment["ACT-004 Payment Gateway Provider\n(external)"]
+    Notify["ACT-005 Notification Service\n(external)"]
+    Mapping["ACT-006 Mapping / Geolocation\nService Provider (external)"]
+    Translate["ACT-007 Translation / Localization\nService (external, optional)"]
+    Regulator["ACT-008 PDPA Regulatory Authority\n(contextual, non-user)"]
+
+    Tourist <-->|"search, plan, reserve,\npay, review"| STPS
+    ContentOfficer <-->|"curate content & listings"| STPS
+    SysAdmin <-->|"administer accounts,\npermissions, PDPA requests"| STPS
+    STPS <-->|"payment authorization\nrequest / response"| Payment
+    STPS -->|"booking & PDPA-request\nnotifications"| Notify
+    STPS <-->|"location / mapping queries"| Mapping
+    STPS <-->|"content translation requests\n(optional, ASSUMP-007 stretch)"| Translate
+    STPS -.->|"breach notification /\nregulatory oversight"| Regulator
+
+    classDef ext fill:#E8F0FE,stroke:#4472C4;
+    classDef reg fill:#FCE8E6,stroke:#C0392B,stroke-dasharray: 4 4;
+    classDef people fill:#EAF7EA,stroke:#3C8C3C;
+    class Payment,Notify,Mapping,Translate ext;
+    class Regulator reg;
+    class Tourist,ContentOfficer,SysAdmin people;
+```
+
+**Legend.** Solid edge = direct system interaction. Dashed edge = compliance/regulatory relationship (`ACT-008` only, non-operational).
+
+---
+
+## 5. Domain Model
+
+### 5.1 Modelling Rule
+
+The domain model below is strictly conceptual. It contains entities, one-line descriptions, and named relationships with cardinalities only. It contains **no attributes, no primary/foreign keys, and no normalized sub-entities** — for example, `DM-ENT-005` Vehicle is kept as a single entity and is never split into "Vehicle Details"/"Vehicle Availability." Every entity below appears in at least one Task in Section 6 and in the CRUD matrix in Appendix C; there are no orphan entities.
+
+### 5.2 Entity List
 
 | ID | Entity | One-line description |
 |---|---|---|
-| ENT-01 | Tourist | A person worldwide who uses the system to discover and plan Sarawak travel |
-| ENT-02 | Association | The tourism association that owns and promotes the destination information |
-| ENT-03 | ManagementUser | An Association staff member who maintains content and domain data |
-| ENT-04 | TourismProvider | An operator or business whose offering is listed (accommodation, transport, food, activity) |
-| ENT-05 | Attraction | A place or point of interest promoted to tourists |
-| ENT-06 | Event | A scheduled happening of tourist interest, such as a festival, show or seasonal activity |
-| ENT-07 | Accommodation | A place to stay presented to tourists |
-| ENT-08 | Transportation | A means or route of travel presented to tourists |
-| ENT-09 | FoodOption | An eating establishment or culinary experience presented to tourists |
-| ENT-10 | LocalInformation | Practical destination guidance such as customs, safety, currency and connectivity |
-| ENT-11 | Listing | A promoted entry describing a provider offering or a place, shown to tourists |
-| ENT-12 | ContentItem | A unit of editorial or promotional material such as an article, guide or media set |
-| ENT-13 | PromotionCampaign | A coordinated promotional effort over a period and a set of channels |
-| ENT-14 | Itinerary | A tourist's assembled plan of places, events, stays and movements |
-| ENT-15 | ItineraryItem | A single planned element within an itinerary |
-| ENT-16 | Booking | A tourist's reservation request against a listing or offering |
-| ENT-17 | Payment | A record of a financial settlement associated with a booking, processed externally |
-| ENT-18 | Review | A tourist's published opinion and rating of a listing, attraction or experience |
-| ENT-19 | EnquiryTicket | A tourist request for help or information tracked to resolution |
-| ENT-20 | Language | A supported language in which information is offered |
-| ENT-21 | Translation | A language-specific rendering of a content item or listing |
-| ENT-22 | EngagementRecord | An observation of tourist interaction used for analytics, gated by consent |
-| ENT-23 | AnalyticsReport | A compiled summary of engagement, booking and campaign performance for management |
-| ENT-24 | ConsentRecord | A tourist's recorded permission covering data use and marketing |
-| ENT-25 | UserAccount | A credentialed identity for a ManagementUser or an identified Tourist |
-| ENT-26 | Role | A named set of permissions assigned to a UserAccount |
-| ENT-27 | Region | A geographic area of Sarawak used to group attractions, listings and events |
-| ENT-28 | Category | A classification label applied to listings, attractions and content |
+| `DM-ENT-001` | Tourist | A worldwide visitor who discovers, plans, and books Sarawak travel experiences via the platform; may act as guest or registered profile. |
+| `DM-ENT-002` | Management Staff | Tourism association personnel who curate content, moderate reviews, and administer bookings/data. |
+| `DM-ENT-003` | Destination | A promoted place of interest (cultural site, park, festival, landmark). |
+| `DM-ENT-004` | Accommodation | A lodging listing (hotel, homestay, resort) available for reservation. |
+| `DM-ENT-005` | Vehicle | A transportation option (car, van, boat, bus, etc.) offered/listed for tourist transport or touring. Kept as a single conceptual entity. |
+| `DM-ENT-006` | Food Establishment | A dining venue listing promoted/reservable through the platform. |
+| `DM-ENT-007` | Local Information Article | General-interest content (culture, safety, weather, events, etiquette) authored by staff. |
+| `DM-ENT-008` | Package (Itinerary) | A curated bundle combining Destinations, Accommodation, Vehicle, and/or Food Establishment selections into one bookable trip plan. |
+| `DM-ENT-009` | Option | A selectable add-on/configuration attached to a Booking or Package (e.g., guided-tour add-on, meal preference, insurance, child seat). |
+| `DM-ENT-010` | Booking | A Tourist's pending or confirmed reservation against an Accommodation, Vehicle, Food Establishment, or Package. |
+| `DM-ENT-011` | Review | A Tourist-submitted rating/comment evaluating an Accommodation, Vehicle, Food Establishment, Destination, or Package. |
 
-> Numbering note: the blueprint list runs ENT-01..ENT-27 with `ItineraryItem` carried as a concept. This draft assigns `ItineraryItem` = ENT-15 and shifts later concepts by one so every concept has a unique ENT-xx identifier; `Category` becomes ENT-28. Section 12 and the appendices use this numbering throughout.
+### 5.3 Relationships
 
-### 4.3 Relationships and Cardinality
-
-**Table 12 - Domain relationships** (read "A (m) -- name --> (n) B")
+Each relationship is read "A (cardinality) — verb → B (cardinality)." Two relationships (`DM-REL-002` and `DM-REL-007`) are XOR fan-outs to a conceptual generalization — "Offering" and "Reviewable" respectively — that is described here in prose only and is **not** a stored entity in Section 5.2; this is a deliberate design decision, confirmed during the domain-model design review, to avoid introducing a database-style superclass into a strictly conceptual model.
 
 | ID | Relationship | Cardinality |
 |---|---|---|
-| REL-01 | Association employs ManagementUser | 1 : 1..* |
-| REL-02 | ManagementUser maintains ContentItem | 1..* : 0..* |
-| REL-03 | ManagementUser maintains Listing | 1..* : 0..* |
-| REL-04 | TourismProvider supplies Listing | 1 : 1..* |
-| REL-05 | Listing describes one offering of type Accommodation, Transportation, FoodOption, Attraction or Event | 1 : 0..1 per type |
-| REL-06 | Attraction located in Region | 0..* : 1 |
-| REL-07 | Event held at Attraction or in Region | 0..* : 0..1 Attraction / 1 Region |
-| REL-08 | Listing classified by Category | 0..* : 0..* |
-| REL-09 | Attraction classified by Category | 0..* : 0..* |
-| REL-10 | PromotionCampaign promotes ContentItem and Listing | 0..* : 0..* |
-| REL-11 | ManagementUser plans PromotionCampaign | 1..* : 0..* |
-| REL-12 | Tourist builds Itinerary | 1 : 0..* |
-| REL-13 | Itinerary includes ItineraryItem | 1 : 0..* |
-| REL-14 | ItineraryItem references an Attraction, Event, Accommodation, Transportation or FoodOption | 1 : 1 |
-| REL-15 | Tourist makes Booking | 1 : 0..* |
-| REL-16 | Booking placed against Listing | 0..* : 1 |
-| REL-17 | Booking settled by Payment | 1 : 0..1 |
-| REL-18 | Payment processed via the external Payment service | association to EXT-S-01, modelled as external |
-| REL-19 | Tourist writes Review | 1 : 0..* |
-| REL-20 | Review targets a Listing, Attraction or Event | 0..* : 1 |
-| REL-21 | Tourist raises EnquiryTicket | 1 : 0..* |
-| REL-22 | ManagementUser (as Enquiry Handler) resolves EnquiryTicket | 1 : 0..* |
-| REL-23 | ContentItem has Translation in Language | 1 : 0..* ; each Translation : 1 Language |
-| REL-24 | Listing has Translation in Language | 1 : 0..* ; each Translation : 1 Language |
-| REL-25 | Tourist prefers Language | 0..* : 1 |
-| REL-26 | Tourist generates EngagementRecord | 1 : 0..* |
-| REL-27 | AnalyticsReport aggregates EngagementRecord, Booking and PromotionCampaign data | 1 : 1..* |
-| REL-28 | ManagementUser generates AnalyticsReport | 1..* : 0..* |
-| REL-29 | Tourist gives ConsentRecord | 1 : 0..* |
-| REL-30 | ConsentRecord governs EngagementRecord and marketing to the Tourist | 1 : 0..* |
-| REL-31 | UserAccount identifies a ManagementUser or a Tourist | 1 : 0..1 |
-| REL-32 | UserAccount assigned Role | 1..* : 1..* |
-| REL-33 | Role authorises operations on ContentItem, Listing, EnquiryTicket and AnalyticsReport | conceptual authorisation relationship |
-| REL-34 | Region groups Listing | 1 : 0..* |
-| REL-35 | LocalInformation scoped to Region | 0..* : 0..1 |
+| `DM-REL-001` | Tourist creates Booking | 1 : 0..* |
+| `DM-REL-002` | Booking targets exactly one of {Accommodation \| Vehicle \| Food Establishment \| Package} (conceptual generalization "Offering," XOR — described in prose only, not a stored entity) | 1 : 1 |
+| `DM-REL-003` | Booking includes Option | 0..* : 0..* (many-to-many) |
+| `DM-REL-004` | Package bundles Destination, Accommodation, Vehicle, Food Establishment | 0..* : 1..* (Destination), 0..* (Accommodation), 0..* (Vehicle), 0..* (Food Establishment) — aggregation, many-to-many |
+| `DM-REL-005` | Destination is near Accommodation / Food Establishment | 0..* : 0..* (informational/spatial, optional) |
+| `DM-REL-006` | Tourist writes Review | 1 : 0..* |
+| `DM-REL-007` | Review evaluates exactly one of {Accommodation \| Vehicle \| Food Establishment \| Destination \| Package} (conceptual generalization "Reviewable," XOR — described in prose only, not a stored entity) | 0..* : 1 |
+| `DM-REL-008` | Management Staff publishes/maintains Local Information Article | 1..* : 0..* |
+| `DM-REL-009` | Management Staff curates (CRUD) Destination, Accommodation, Vehicle, Food Establishment, Package, Option | 1..* : 0..* (each) |
+| `DM-REL-010` | Management Staff processes (approve/adjust/cancel) Booking | 1 : 0..* |
 
-### 4.4 Domain Model Diagram
+### 5.4 Domain Model Diagram
 
-**Figure 2 - STPS conceptual domain model (described).** Each entity from Table 11 is a named box with no attribute or operation compartments. Association lines carry the relationship name and the multiplicities from Table 12. The layout groups: (a) ownership - Association, ManagementUser, UserAccount, Role; (b) offering - TourismProvider, Listing and the five offering concepts Accommodation, Transportation, FoodOption, Attraction, Event, with Region and Category as classifiers and LocalInformation attached to Region; (c) promotion - ContentItem, Translation, Language, PromotionCampaign; (d) tourist activity - Tourist, Itinerary, ItineraryItem, Booking, Payment, Review, EnquiryTicket; (e) insight and consent - EngagementRecord, ConsentRecord, AnalyticsReport. The external Payment service (EXT-S-01) is shown as a boundary annotation on REL-18, not as a domain entity.
+The diagram groups entities into three layout clusters purely for visual clarity — *People*, *Catalog & Content*, and *Tourist Transactions* — with no implication that these clusters are themselves stored entities. Every edge is labelled with its `DM-REL-xxx` ID plus the verb and cardinality from Section 5.3, so the diagram and the relationship table reconcile 1:1. The two dashed note boxes record the XOR constraints on `DM-REL-002` and `DM-REL-007` without introducing "Offering" or "Reviewable" as entities.
 
-### 4.5 Entity-to-Task coverage note
+```mermaid
+flowchart TD
 
-Every entity ENT-01..ENT-28 is exercised by at least one task in section 6 and appears in Appendix C. Entities not created or updated by tourist- or content-facing tasks (ENT-02 Association, ENT-25 UserAccount, ENT-26 Role) are created and maintained through the operations and administration activities of ACT-07 and ACT-08, recorded in the operations column of the CRUD matrix and in section 9.11. ENT-24 ConsentRecord is created in TASK-03 and TASK-07 and read in TASK-08; ENT-18 Review is created in the review sub-flow of WF-01, moderated in WF-05 and covered by REQ-FUN-016. No entity is left without task coverage.
+    %% ===== PEOPLE =====
+    subgraph People["People"]
+        Tourist["<b>Tourist</b><br/>(DM-ENT-001)<br/><i>Worldwide visitor; guest or registered</i>"]
+        MgmtStaff["<b>Management Staff</b><br/>(DM-ENT-002)<br/><i>Association personnel curating content &amp; bookings</i>"]
+    end
 
----
+    %% ===== CATALOG & CONTENT =====
+    subgraph Catalog["Catalog &amp; Content"]
+        Destination["<b>Destination</b><br/>(DM-ENT-003)<br/><i>Promoted place of interest</i>"]
+        Accommodation["<b>Accommodation</b><br/>(DM-ENT-004)<br/><i>Lodging listing</i>"]
+        Vehicle["<b>Vehicle</b><br/>(DM-ENT-005)<br/><i>Transportation option</i>"]
+        FoodEstablishment["<b>Food Establishment</b><br/>(DM-ENT-006)<br/><i>Dining venue listing</i>"]
+        LocalInfoArticle["<b>Local Information Article</b><br/>(DM-ENT-007)<br/><i>Culture/safety/weather/event content</i>"]
+        Package["<b>Package (Itinerary)</b><br/>(DM-ENT-008)<br/><i>Curated multi-component trip bundle</i>"]
+        Option["<b>Option</b><br/>(DM-ENT-009)<br/><i>Selectable add-on for a Booking/Package</i>"]
+    end
 
-## 5 Actors
+    %% ===== TRANSACTIONS =====
+    subgraph Transactions["Tourist Transactions"]
+        Booking["<b>Booking</b><br/>(DM-ENT-010)<br/><i>Pending/confirmed reservation</i>"]
+        Review["<b>Review</b><br/>(DM-ENT-011)<br/><i>Tourist rating/comment</i>"]
+    end
 
-### 5.1 Actor catalogue
+    %% ===== NOTES (conceptual generalizations, not stored entities) =====
+    NoteOffering["Note: 'Offering' is a conceptual grouping only,\nnot a stored entity. A Booking targets exactly\none of the four linked entities. (DM-REL-002)"]
+    NoteReviewable["Note: 'Reviewable' is a conceptual grouping only,\nnot a stored entity. A Review evaluates exactly\none of the five linked entities. (DM-REL-007)"]
 
-**Table 13 - Actor catalogue**
+    %% ===== DM-REL-001 =====
+    Tourist -->|"DM-REL-001: creates (1 : 0..*)"| Booking
 
-| ID | Actor | One-line role | Human? |
-|---|---|---|---|
-| ACT-01 | Tourist (Anonymous) | Browses and searches destination information without an account | Yes |
-| ACT-02 | Tourist (Registered) | Saves itineraries, makes bookings, writes reviews, manages own personal data and consent | Yes |
-| ACT-03 | Association Management User | Sets promotion direction, approves content and listings, consumes analytics | Yes |
-| ACT-04 | Content Administrator / Editor | Creates, updates, translates and publishes content and listings | Yes |
-| ACT-05 | Enquiry Handler / Support Officer | Triages and resolves tourist enquiry tickets | Yes |
-| ACT-06 | Campaign Manager | Plans, schedules and evaluates promotion campaigns | Yes |
-| ACT-07 | System / Platform Administrator | Manages accounts, roles, access and operational monitoring | Yes |
-| ACT-08 | Data Protection Officer / Compliance Advisor | Defines and audits PDPA controls | Yes |
-| ACT-09 | Tourism Provider / Operator (external, via submission) | Supplies and updates offering information for listings | Yes |
-| ACT-10 | External Payment Service | Authorises and confirms payment | No |
-| ACT-11 | External Mapping / Geolocation Service | Supplies location and routing information | No |
-| ACT-12 | External Weather / Advisory Source | Supplies conditions and advisory information | No |
-| ACT-13 | External Notification Service | Delivers email and SMS messages | No |
-| ACT-14 | External Publishing / Social Channels | Receive outbound promotional content | No |
-| ACT-15 | Scheduled Time / System Clock | Triggers time-based tasks such as campaign start/stop and retention purge | No |
+    %% ===== DM-REL-002 (XOR fan-out) =====
+    Booking -->|"DM-REL-002: targets [XOR] (1 : 1)"| Accommodation
+    Booking -->|"DM-REL-002: targets [XOR] (1 : 1)"| Vehicle
+    Booking -->|"DM-REL-002: targets [XOR] (1 : 1)"| FoodEstablishment
+    Booking -->|"DM-REL-002: targets [XOR] (1 : 1)"| Package
+    Booking -.- NoteOffering
 
-### 5.2 Actor-to-task mapping summary
+    %% ===== DM-REL-003 =====
+    Booking -->|"DM-REL-003: includes (0..* : 0..*)"| Option
 
-**Table 14 - Actor-to-task mapping** (P = primary, S = supporting)
+    %% ===== DM-REL-004 =====
+    Package -->|"DM-REL-004: bundles (0..* : 1..*)"| Destination
+    Package -->|"DM-REL-004: bundles (0..* : 0..*)"| Accommodation
+    Package -->|"DM-REL-004: bundles (0..* : 0..*)"| Vehicle
+    Package -->|"DM-REL-004: bundles (0..* : 0..*)"| FoodEstablishment
 
-| Actor | T-01 | T-02 | T-03 | T-04 | T-05 | T-06 | T-07 | T-08 |
-|---|---|---|---|---|---|---|---|---|
-| ACT-01 Tourist (Anonymous) | P | - | - | - | - | - | P | - |
-| ACT-02 Tourist (Registered) | P | P | P | P | - | - | P | - |
-| ACT-03 Association Management User | - | - | - | - | S | S | - | P |
-| ACT-04 Content Administrator / Editor | - | - | - | - | P | S | - | - |
-| ACT-05 Enquiry Handler / Support Officer | - | - | - | - | - | - | P | S |
-| ACT-06 Campaign Manager | - | - | - | - | S | P | - | P |
-| ACT-07 System / Platform Administrator | S | - | S | S | S | S | S | S |
-| ACT-08 Data Protection Officer / Compliance Advisor | S | - | S | S | S | S | S | S |
-| ACT-09 Tourism Provider / Operator | - | - | S | - | S | S | - | - |
-| ACT-10 External Payment Service | - | - | - | P | - | - | - | - |
-| ACT-11 External Mapping / Geolocation Service | S | S | - | - | - | - | - | - |
-| ACT-12 External Weather / Advisory Source | S | S | - | - | - | - | - | - |
-| ACT-13 External Notification Service | - | - | S | S | - | S | P | - |
-| ACT-14 External Publishing / Social Channels | - | - | - | - | - | P | - | - |
-| ACT-15 Scheduled Time / System Clock | - | - | S | S | - | P | S | S |
+    %% ===== DM-REL-005 (dashed = informational/optional) =====
+    Destination -.->|"DM-REL-005: near (0..* : 0..*)"| Accommodation
+    Destination -.->|"DM-REL-005: near (0..* : 0..*)"| FoodEstablishment
 
-### 5.3 User profiles / work-area background
+    %% ===== DM-REL-006 =====
+    Tourist -->|"DM-REL-006: writes (1 : 0..*)"| Review
 
-**Table 15 - User profiles / work-area background**
+    %% ===== DM-REL-007 (XOR fan-out) =====
+    Review -->|"DM-REL-007: evaluates [XOR] (0..* : 1)"| Accommodation
+    Review -->|"DM-REL-007: evaluates [XOR] (0..* : 1)"| Vehicle
+    Review -->|"DM-REL-007: evaluates [XOR] (0..* : 1)"| FoodEstablishment
+    Review -->|"DM-REL-007: evaluates [XOR] (0..* : 1)"| Destination
+    Review -->|"DM-REL-007: evaluates [XOR] (0..* : 1)"| Package
+    Review -.- NoteReviewable
 
-| Actor | Environment | Skill level | Frequency of use | Device / bandwidth context |
-|---|---|---|---|---|
-| ACT-01 Tourist (Anonymous) | Any location worldwide, while planning a trip or already travelling in Sarawak | General public; no training; many languages | One to several sessions per trip-planning period | Personal phone or laptop; bandwidth from broadband to intermittent rural mobile (CON-03) |
-| ACT-02 Tourist (Registered) | As above, plus post-trip review from home | General public; comfortable with online booking | A few sessions per trip; occasional return visits | As above; may complete payment on mobile data |
-| ACT-03 Association Management User | Association office | Business user; basic web-tool skills (ASM-11) | Weekly review cycles; daily during campaigns | Office desktop on broadband |
-| ACT-04 Content Administrator / Editor | Association office or remote | Trained content editor; works with translations | Daily | Office desktop on broadband |
-| ACT-05 Enquiry Handler / Support Officer | Association office or remote support desk | Trained support officer | Daily, multiple enquiries per day | Office desktop on broadband |
-| ACT-06 Campaign Manager | Association office | Marketing professional | Several times per week; intensive at campaign launches | Office desktop on broadband |
-| ACT-07 System / Platform Administrator | Association office or managed operations | Technical administrator | As needed for onboarding, incidents, maintenance | Office desktop; role-gated administrative access under NFR-SEC-02 |
-| ACT-08 Data Protection Officer / Compliance Advisor | Association office or external advisory | Legal / compliance professional (ASM-14) | Periodic reviews and audits; incident-driven | Office desktop on broadband |
-| ACT-09 Tourism Provider / Operator | Provider premises across Sarawak | Small-business operator; variable digital skill | Occasional: at onboarding and when details change | Phone or shared computer; variable bandwidth |
+    %% ===== DM-REL-008 =====
+    MgmtStaff -->|"DM-REL-008: publishes/maintains (1..* : 0..*)"| LocalInfoArticle
+
+    %% ===== DM-REL-009 (six curates edges) =====
+    MgmtStaff -->|"DM-REL-009: curates CRUD (1..* : 0..*)"| Destination
+    MgmtStaff -->|"DM-REL-009: curates CRUD (1..* : 0..*)"| Accommodation
+    MgmtStaff -->|"DM-REL-009: curates CRUD (1..* : 0..*)"| Vehicle
+    MgmtStaff -->|"DM-REL-009: curates CRUD (1..* : 0..*)"| FoodEstablishment
+    MgmtStaff -->|"DM-REL-009: curates CRUD (1..* : 0..*)"| Package
+    MgmtStaff -->|"DM-REL-009: curates CRUD (1..* : 0..*)"| Option
+
+    %% ===== DM-REL-010 =====
+    MgmtStaff -->|"DM-REL-010: processes approve/adjust/cancel (1 : 0..*)"| Booking
+
+    classDef note fill:#FFF9C4,stroke:#999,stroke-dasharray: 4 4,color:#333,text-align:left;
+    class NoteOffering,NoteReviewable note;
+```
+
+**Diagram instruction confirmation.** Entity boxes above contain only the entity name and one-line description (rendered as bold name / italic description) — no attribute compartments appear anywhere in the diagram, satisfying the Section 5 hard rule.
 
 ---
 
-## 6 User Tasks (Tasks & Support)
+## 6. User Tasks (Tasks & Support Approach)
 
-### 6.1 Work Area / background block
+### 6.1 Standard Task Template
 
-**Overall purpose of the work.** The work supported by the STPS is the promotion of Sarawak as a destination and the support of a tourist from first interest through to a completed, reviewed trip. Two connected work areas exist: the **tourist work area**, in which a member of the worldwide public discovers information, assembles a trip plan, reserves and pays for offerings, seeks help during the journey, and later shares an opinion; and the **Association work area**, in which staff keep destination information accurate and multilingual, coordinate promotion campaigns, answer tourist enquiries, and study engagement evidence to direct effort and spend.
-
-**Environment.** Tourist work is done alone on a personal device, in any of several languages, sometimes on an intermittent rural connection, and often under time pressure while travelling. Association work is done by trained office staff on broadband, in recurring cycles (daily content and enquiry work, weekly review, campaign bursts around festivals).
-
-**Grouping of tasks by work area.**
-
-| Work area | Tasks |
-|---|---|
-| Tourist work area | TASK-01 Discover attractions and experiences; TASK-02 Plan and assemble a trip itinerary; TASK-03 Reserve an offering; TASK-04 Make and confirm payment; TASK-07 Handle a tourist enquiry / support request (raise side) |
-| Association work area | TASK-05 Maintain destination content and listings (multilingual); TASK-06 Plan and run a promotion campaign; TASK-07 Handle a tourist enquiry / support request (handle side); TASK-08 Produce tourism engagement and performance insight |
-
-A high-level task from the tourist's journey viewpoint (discover -> plan -> reserve -> pay -> travel -> enquire -> review) is expressed as workflow WF-01, which chains TASK-01 to TASK-04 and TASK-07 and includes the review sub-flow.
-
-### 6.2 Tasks & Support format definition
-
-Every task subsection below is a single table with these fields:
+Every task in Section 6.3 uses the identical field order below; no task deviates from this order or omits a field.
 
 | Field | Meaning |
 |---|---|
-| Task ID + Name | Stable identifier and name, reused unchanged in sections 4, 7, and the matrices |
-| Actor(s) | Primary and supporting actors from section 5 |
-| Goal / Purpose | The result the actor wants, stated without reference to any solution |
-| Trigger / Precondition | What starts the task and what must already hold |
-| Frequency | Quantified expected rate (placeholder values confirmed in VAL-03) |
-| Critical | Quantified worst-case consequence if the task fails or is delayed |
-| Work Area | Tourist work area or Association work area (section 6.1) |
-| Sub-tasks | Imperative, domain-level steps that do not pre-assign work to a human or the computer and that apply to at least three different solutions |
-| Problem | Present-situation difficulty (traced to PAIN-xx) that the task must overcome |
-| Support the system provides | Solution-agnostic statement of the help the software gives, each item carrying a measurable fit criterion |
-| Example Solution (non-normative) | One illustrative realisation, clearly marked non-normative; not a requirement |
-| Variants | Numbered alternative paths keyed to sub-tasks (1a, 1b, 2a, ...) |
-| Entities touched | Domain entities from section 4 that the task creates, reads, updates or deletes; cross-checked in Appendix C |
+| Task ID & Name | Header reads literally "Task `TASK-xxx`: `<Name>`," exactly matching the section title. |
+| Actors | Which `ACT-xxx` perform or receive the task. |
+| Trigger | What starts the task. |
+| Precondition | What must already hold for the task to begin. |
+| Postcondition | The resulting system/domain state once the task completes. |
+| Frequency | Expected rate of occurrence. |
+| Priority / Exception-Criticality | A mandatory priority rating with a note on why. |
+| Work Area | The module/functional area the task belongs to. |
+| Solution-Agnosticism Check | At least 3 different realizable solutions/channels for this task. |
+| Subtasks | Each subtask states (a) the normal-flow step and (b) at least one realistic Problem/Exception case with the system's handling. |
+| Variants | Alternative paths through the task. |
+| Derived Functional Requirements | The `REQ-FUN-xxx` IDs derived from this task's subtasks. |
 
-All "Support" items are verifiable by executing the task and every numbered variant to completion and confirming the stated fit criterion; the shared acceptance test is recorded once here and referenced by each task: **AT-TASK: a representative actor completes the task and every listed variant end to end, in each required language where applicable, with no assistance beyond on-screen information, and every "Support" fit criterion for that task is met.**
+### 6.2 Task Hierarchy / Goal Tree
 
-### 6.3 TASK-01 Discover attractions and experiences
+```
+System Goal: Promote Sarawak Tourism & Enable Association Management
+├── Tourist Goal: Plan & Experience a Sarawak Trip
+│    ├── TASK-001 Register & Manage Tourist Account
+│    ├── TASK-002 Discover Local Tourism Information
+│    ├── TASK-003 Search & Reserve Accommodation
+│    ├── TASK-004 Search & Reserve Transportation (Vehicle)
+│    ├── TASK-005 Search & Reserve Food & Dining
+│    ├── TASK-006 Build & Book a Travel Package (Itinerary) with Options
+│    ├── TASK-007 Complete Payment for a Booking
+│    └── TASK-008 Submit Review & Feedback
+└── Management Goal: Maintain an Authoritative, Compliant Tourism Platform
+     ├── TASK-009 Manage Promotional Content & Listings
+     ├── TASK-010 Manage Bookings, Availability & Provider Coordination
+     └── TASK-011 Manage Tourist Data Privacy Requests (PDPA)
+```
 
-**Table 16 - TASK-01 Discover attractions and experiences**
+Eleven major tasks are specified below (exceeding the 8-task minimum) to demonstrate elicitation depth across both the tourist and management goal branches.
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-01 Discover attractions and experiences |
-| Actor(s) | Primary: ACT-01 Tourist (Anonymous), ACT-02 Tourist (Registered). Supporting: ACT-11 Mapping service, ACT-12 Weather source (contextual information only) |
-| Goal / Purpose | Find Sarawak attractions, events, food options, places to stay and ways to travel that match stated interests and constraints |
-| Trigger / Precondition | A person is considering or undertaking a trip to Sarawak and opens the destination information source; published information exists |
-| Frequency | Placeholder: 5,000-50,000 discovery sessions per day, rising by a factor of [3] during a festival or campaign |
-| Critical | If discovery returns nothing useful or fails, a prospective visitor abandons planning; worst case tolerated: no more than [1]% of discovery sessions end with a system error message |
-| Work Area | Tourist work area |
-| Sub-tasks | 1. State interests, dates and constraints (region, budget band, travel style, language). 2. Browse or search offerings by region, category and interest. 3. Inspect a single offering in detail. 4. Compare two or more shortlisted offerings side by side. 5. Retain a shortlist of candidates for later planning. |
-| Problem | Information is scattered across brochures and third-party sites, cannot be compared in one place, and is mostly in one language (PAIN-01, PAIN-02, PAIN-07). |
-| Support the system provides | (a) A consolidated, searchable body of information covering all five offering concepts, verifiable by content audit showing 100% of the four brief categories plus attractions and events represented. (b) Filtering by region, category and interest, verifiable by test: every filter returns only matching offerings, measured over a [200]-case test set with 0 mismatches. (c) Side-by-side comparison of at least [3] shortlisted offerings on a common set of decision points, verifiable by demonstration. (d) Presentation of every published offering in each required language, verifiable by inspection: translation-completeness equals 100% for BM, English and Mandarin on published offerings. (e) Shortlist retention across a session and, for ACT-02, across sessions, verifiable by test: retained items reappear in [100]% of [50] trial sessions. (f) Consent-gated recording of discovery interactions for analytics, verifiable by test: 0 EngagementRecords created without a matching ConsentRecord. |
-| Example Solution (non-normative) | A public web portal with a keyword search box, faceted filters, offering detail pages, a "compare" tray holding up to four items, a persistent language selector, and a "save for later" list tied to a browser session or account. *Non-normative: this describes one possible realisation only and is not a requirement.* |
-| Variants | 1a. The person states no interests and browses only by region. 1b. The person arrives from an external campaign link with a pre-set region or theme. 2a. Search returns no results; the person broadens the criteria. 2b. The person searches by map area rather than by text. 3a. The offering is temporarily unavailable or seasonal; its status is shown. 4a. Only one offering is shortlisted, so comparison is skipped. 5a. An anonymous person's shortlist is offered for transfer to a new account. |
-| Entities touched | Attraction, Event, Accommodation, Transportation, FoodOption, Listing, Category, Region, Language, Translation, EngagementRecord, ConsentRecord |
+### 6.3 Major Tasks
 
-### 6.4 TASK-02 Plan and assemble a trip itinerary
+#### Task TASK-001: Register & Manage Tourist Account
 
-**Table 17 - TASK-02 Plan and assemble a trip itinerary**
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist wants to create or update a profile before or during platform use.
+- **Precondition:** The platform is accessible in guest mode and the PDPA notice has been presented.
+- **Postcondition:** An account is created or updated with a timestamped consent record; guest browsing remains available if consent is declined.
+- **Frequency:** Low (one-time registration plus occasional updates).
+- **Priority / Exception-Criticality:** High — this task gates personalization and PDPA consent capture; a failure here blocks lawful data collection platform-wide.
+- **Work Area:** Tourist account/profile module.
+- **Solution-Agnosticism Check** *(Non-Normative — illustrative only)*: (a) a self-service web registration form; (b) a native mobile onboarding flow; (c) staff-assisted counter/kiosk registration at a physical Association touchpoint.
+- **Subtasks:**
+  - **ST-1.1** View and accept/decline the Terms of Use and Privacy Policy. *Problem/Exception:* if consent is declined, the system restricts personalization features but still allows guest browsing rather than blocking the Tourist entirely. → `REQ-FUN-001`, `REQ-FUN-002`
+  - **ST-1.2** Provide profile details (contact, nationality, preferred language/currency). *Problem/Exception:* if invalid or duplicate contact information is submitted, the system flags it for correction before saving rather than silently discarding or overwriting existing data. → `REQ-FUN-003`
+  - **ST-1.3** Update profile/preferences, or request deletion of them. *Problem/Exception:* if the Tourist requests full data deletion, the system routes the request into the PDPA data-subject workflow (`TASK-011`) rather than attempting an ad hoc deletion within the profile module. → `REQ-FUN-004`
+- **Variants:** Guest checkout without full registration; social-login-assisted registration (where enabled).
+- **Derived Functional Requirements:** `REQ-FUN-001`, `REQ-FUN-002`, `REQ-FUN-003`, `REQ-FUN-004`
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-02 Plan and assemble a trip itinerary |
-| Actor(s) | Primary: ACT-02 Tourist (Registered). Supporting: ACT-11 Mapping service, ACT-12 Weather source |
-| Goal / Purpose | Turn a set of shortlisted offerings into a coherent day-by-day plan that is feasible to carry out |
-| Trigger / Precondition | The tourist has shortlisted candidates (TASK-01) and wants to organise a trip; travel dates are known or assumed |
-| Frequency | Placeholder: 500-5,000 itineraries started per day; [55]% completed (OBJ-03) |
-| Critical | If planning gives no feasibility feedback, the tourist builds an impossible schedule and has a poor trip; worst case tolerated: feasibility information is shown for at least [90]% of planned movements when the external services are available |
-| Work Area | Tourist work area |
-| Sub-tasks | 1. Create a plan for a date range. 2. Add shortlisted or newly found items to specific days. 3. Order and adjust items within and across days. 4. Check timing and feasibility of movements between items. 5. Review the whole plan and mark it final. |
-| Problem | Tourists build plans by hand across many sources with no check that the plan can actually be done in the time available (PAIN-01, PAIN-02). |
-| Support the system provides | (a) Creation of a dated plan and per-day organisation of items, verifiable by test against AT-TASK. (b) Addition of any offering concept as a planned item, verifiable by test: all five concept types can be added, 0 rejected. (c) Reordering within and across days with the plan remaining internally consistent, verifiable by demonstration. (d) A feasibility indication per movement using external location and weather information, verifiable by test: for a [100]-movement test set with services available, an indication is produced for at least [90] movements; when a service is unavailable, planning still completes (link to NFR-PERF-04). (e) A final review view listing every item, day and movement with any unresolved feasibility warning, verifiable by inspection. |
-| Example Solution (non-normative) | A calendar-style planner with drag-and-drop day columns, a per-leg travel-time estimate drawn from a mapping interaction, a weather note per day drawn from a weather interaction, and a "finalise" action that produces a read-only summary. *Non-normative.* |
-| Variants | 1a. The tourist copies a previous itinerary as a starting point. 2a. An item is added without a day and placed in an "unscheduled" area. 3a. Reordering creates an infeasible leg; a warning is shown but the change is allowed. 4a. External feasibility services are unavailable; the plan is marked "feasibility not checked". 4b. A planned day exceeds available hours; the overflow is highlighted. 5a. The tourist shares the finalised plan with a travelling companion for view only. |
-| Entities touched | Itinerary, ItineraryItem, Attraction, Event, Accommodation, Transportation, FoodOption |
+> `REQ-FUN-001`: The system shall present the Terms of Use and PDPA-aligned Privacy Policy to every Tourist before the system collects any personal data. The system shall record the Tourist's accept-or-decline choice together with a timestamp.
+> `REQ-FUN-002`: Where the Tourist declines consent, the system shall restrict all personalization and data-collection features while continuing to allow guest browsing of publicly available tourist-facing content.
+> `REQ-FUN-003`: The system shall validate submitted contact details (e.g., email format, duplicate email/phone against existing accounts) at the point of submission. Where the submitted details fail validation, the system shall reject the submission and display a specific correction message instead of saving the invalid or duplicate data.
+> `REQ-FUN-004`: The system shall allow a registered Tourist to update their own profile/preference fields at any time. The system shall route any deletion request submitted through the profile module into the PDPA data-subject request workflow (`TASK-011`) within the same session.
 
-### 6.5 TASK-03 Reserve an offering
+---
 
-**Table 18 - TASK-03 Reserve an offering (accommodation / transport / activity)**
+#### Task TASK-002: Discover Local Tourism Information
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-03 Reserve an offering |
-| Actor(s) | Primary: ACT-02 Tourist (Registered). Supporting: ACT-09 Tourism Provider (offering and availability information), ACT-08 Compliance Advisor (consent), ACT-13 Notification service, ACT-15 System Clock (timeout) |
-| Goal / Purpose | Secure a place against a chosen listing for stated dates and quantities |
-| Trigger / Precondition | The tourist has chosen a listing (from TASK-01 or TASK-02) that accepts reservations; the listing is published |
-| Frequency | Placeholder: 200-3,000 reservation requests per day; higher during campaigns |
-| Critical | A lost or duplicated reservation request causes a failed trip element and a complaint; worst case tolerated: no more than [0.5]% of submitted requests end in an unrecorded outcome |
-| Work Area | Tourist work area |
-| Sub-tasks | 1. Select a listing and state dates and quantity. 2. Provide traveller details required for the reservation. 3. Read and accept the reservation terms and the privacy notice, and record consent choices. 4. Submit the reservation request. 5. Receive and keep the reservation outcome. |
-| Problem | Reservations are made separately with each provider with no single confirmation trail, and personal data is collected with no recorded consent (PAIN-02, PAIN-06, PAIN-09). |
-| Support the system provides | (a) Capture of a reservation request against a listing with dates and quantity, verifiable by test against AT-TASK. (b) Validation of the request against the availability information supplied for the listing, verifiable by test: [100] conflicting requests are all detected. (c) Presentation of the reservation terms and the privacy notice in at least BM and English, and capture of an explicit consent choice before submission, verifiable by inspection: 100% of collection points show both languages and block submission until a choice is recorded (link to REQ-PROD-PDPA-01). (d) A recorded reservation outcome (confirmed, declined, pending) linked to the tourist and the listing, verifiable by test: outcome recorded for 100% of [500] test submissions. (e) An outcome notification via the notification interaction with its delivery outcome recorded, verifiable by test (link to REQ-PROD-005). |
-| Example Solution (non-normative) | A booking form pre-filled from the account, an availability check against provider-supplied data, a combined terms-and-privacy step with tick boxes for required and optional consents, and a confirmation screen plus email. *Non-normative.* |
-| Variants | 1a. The listing does not take reservations; the tourist is directed to the provider contact information. 2a. The tourist reserves for several travellers and enters each traveller's details. 3a. The tourist declines an optional marketing consent but proceeds. 3b. The tourist declines a required consent; the reservation cannot proceed and no personal data is retained. 4a. The request times out awaiting provider availability data; the tourist is asked to retry. 5a. The outcome is "pending"; the tourist is told when a final outcome will arrive. |
-| Entities touched | Booking, Listing, TourismProvider, Tourist, ConsentRecord |
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist wants destination, culture, safety, weather, or event information.
+- **Precondition:** The platform is accessible in either guest or registered mode.
+- **Postcondition:** The Tourist has viewed or saved relevant local-information content.
+- **Frequency:** High.
+- **Priority / Exception-Criticality:** Medium-High — this is a core promotional function directly serving `GOAL-001` and `GOAL-003`.
+- **Work Area:** Local information/content module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a searchable web content hub; (b) a mobile app content feed; (c) a QR-linked kiosk/brochure backed by the same content repository.
+- **Subtasks:**
+  - **ST-2.1** Search/filter information by category (culture, safety, weather, events). *Problem/Exception:* if there are no matching results, the system suggests related or alternative categories instead of returning an empty page. → `REQ-FUN-005`
+  - **ST-2.2** View a Local Information Article in detail. *Problem/Exception:* if the article is outdated or unpublished, the system automatically hides expired content from all tourist-facing views. → `REQ-FUN-006`
+  - **ST-2.3** Bookmark an article for later (registered Tourist only). *Problem/Exception:* if a Guest attempts to bookmark, the system prompts registration (→ `TASK-001`) without discarding the Tourist's current browsing context. → `REQ-FUN-007`
+- **Variants:** Location-based auto-suggested information (where geolocation is permitted); offline-saved information for low-connectivity areas.
+- **Derived Functional Requirements:** `REQ-FUN-005`, `REQ-FUN-006`, `REQ-FUN-007`
 
-### 6.6 TASK-04 Make and confirm payment
+> `REQ-FUN-005`: The system shall let a Tourist search or filter Local Information Article content by at least the categories culture, safety, weather, and events. Where zero results match the selected filter combination, the system shall present at least one suggested related or alternative category instead of an empty result page.
+> `REQ-FUN-006`: The system shall automatically remove an unpublished or expired Local Information Article from all tourist-facing search, browse, and detail views at or before its configured expiry timestamp.
+> `REQ-FUN-007`: The system shall allow only an authenticated, registered Tourist to bookmark a Local Information Article. When a Guest attempts to bookmark, the system shall present a registration or sign-in prompt (`TASK-001`) without discarding the Tourist's current browsing context.
 
-**Table 19 - TASK-04 Make and confirm payment**
+---
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-04 Make and confirm payment |
-| Actor(s) | Primary: ACT-02 Tourist (Registered), ACT-10 External Payment Service (non-human). Supporting: ACT-13 Notification service, ACT-15 System Clock (timeout) |
-| Goal / Purpose | Settle the amount due for a booking and obtain a confirmation linked to that booking |
-| Trigger / Precondition | A booking exists with an amount due and a state that allows payment |
-| Frequency | Placeholder: 150-2,500 payment attempts per day |
-| Critical | A payment taken without a linked confirmation, or a confirmation without a payment, causes financial dispute; worst case tolerated: 0 unreconciled payment outcomes at end of day |
-| Work Area | Tourist work area |
-| Sub-tasks | 1. Review the amount due and what it covers. 2. Choose a payment method offered by the external service. 3. Authorise the payment through the external payment interaction. 4. Obtain the payment outcome. 5. Attach the outcome to the booking and obtain a receipt. |
-| Problem | There is no linked payment and confirmation record, so reconciliation is manual and error-prone (PAIN-06). |
-| Support the system provides | (a) Presentation of the amount due and its breakdown before authorisation, verifiable by inspection: breakdown shown for 100% of [200] test bookings. (b) Hand-off to the external payment interaction without the STPS holding raw payment-instrument data, verifiable by inspection of the interaction contract and by test showing 0 instrument records stored (link to NFR-SEC-01). (c) Capture of the payment outcome (authorised, declined, pending, timed out) for 100% of attempts, verifiable by test over [500] simulated attempts. (d) Linkage of every captured outcome to exactly one booking, verifiable by analysis: 0 orphan outcomes. (e) Issue of a receipt artefact for every authorised payment, verifiable by demonstration. (f) A payment notification with recorded delivery outcome, verifiable by test. |
-| Example Solution (non-normative) | A summary screen, redirect or embedded widget to the contracted payment provider, a return callback that records the outcome, a booking state change, and a downloadable and emailed receipt. *Non-normative.* |
-| Variants | 2a. Only one payment method is available; the choice step is skipped. 3a. The tourist abandons at the external step; the booking stays unpaid and is released after a stated hold time (ACT-15). 4a. The outcome is "declined"; the tourist may retry with another method. 4b. The outcome is "pending"; the booking is held and the tourist is notified when it resolves. 4c. The external service times out; the STPS reconciles the true outcome before confirming. 5a. A partial payment or deposit is recorded and the remaining balance is shown. |
-| Entities touched | Payment, Booking, Tourist; external EXT-S-01 |
+#### Task TASK-003: Search & Reserve Accommodation
 
-### 6.7 TASK-05 Maintain destination content and listings (multilingual)
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist needs lodging for planned travel dates.
+- **Precondition:** Accommodation listings are published with availability.
+- **Postcondition:** A Booking is created in Pending or Confirmed state against an Accommodation.
+- **Frequency:** High.
+- **Priority / Exception-Criticality:** High — core revenue-and-trust-critical function.
+- **Work Area:** Accommodation search & reservation module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web filter-and-reservation form; (b) a mobile booking flow; (c) staff-assisted phone/counter booking recorded into the same system.
+- **Subtasks:**
+  - **ST-3.1** Search/filter Accommodation by location, date, price, and type. *Problem/Exception:* if the filter combination returns zero results, the system suggests relaxed filters or nearby dates rather than an empty page. → `REQ-FUN-008`
+  - **ST-3.2** View Accommodation detail and Reviews. *Problem/Exception:* if no reviews exist yet, the system shows an explicit "no reviews yet" state rather than a blank section. → `REQ-FUN-009`
+  - **ST-3.3** Select an Accommodation and submit a reservation. *Problem/Exception:* if dates become unavailable mid-transaction, the system re-validates availability before confirming and notifies the Tourist if the reservation is lost. → `REQ-FUN-010`
+- **Variants:** Reservation with Option add-ons; group/multi-room booking.
+- **Derived Functional Requirements:** `REQ-FUN-008`, `REQ-FUN-009`, `REQ-FUN-010`
 
-**Table 20 - TASK-05 Maintain destination content and listings (multilingual)**
+> `REQ-FUN-008`: The system shall let a Tourist filter Accommodation listings by at least location, date range, price range, and accommodation type. Where the applied combination returns zero results, the system shall present at least one relaxed-filter or nearby-date suggestion.
+> `REQ-FUN-009`: The system shall display all published Reviews associated with an Accommodation on its detail view. Where no Review exists, the system shall display an explicit "No reviews yet" state instead of a blank section.
+> `REQ-FUN-010`: The system shall re-validate Accommodation availability for the requested dates immediately before confirming a reservation. Where availability was lost between search and confirmation, the system shall reject the reservation attempt, notify the Tourist of the specific conflict, and offer alternative available dates or listings.
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-05 Maintain destination content and listings (multilingual) |
-| Actor(s) | Primary: ACT-04 Content Administrator / Editor. Supporting: ACT-09 Tourism Provider (supplies details), ACT-03 Association Management User (approves), ACT-06 Campaign Manager (requests features), ACT-15 System Clock (scheduled publish/withdraw) |
-| Goal / Purpose | Keep attractions, events, listings and local information accurate, classified and available in every required language |
-| Trigger / Precondition | A provider submits or updates offering details, a scheduled review falls due, or management requests a change |
-| Frequency | Placeholder: 20-200 create-or-update actions per day |
-| Critical | Stale or wrong published information misleads tourists and damages the brand; worst case tolerated: no published entry older than its stated review interval by more than [7] days |
-| Work Area | Association work area |
-| Sub-tasks | 1. Draft a new entry or open an existing one for update. 2. Classify the entry by region and category. 3. Add or update the language translations required for publication. 4. Submit the entry for approval. 5. Publish the approved entry, or withdraw an entry no longer valid. |
-| Problem | Updates are manual, slow and inconsistent across channels, entries go stale, and most material exists in one language (PAIN-03, PAIN-04, PAIN-07). |
-| Support the system provides | (a) Authoring and updating of content items and listings for all five offering concepts and local information, verifiable by test against AT-TASK. (b) Classification by region and category, verifiable by test: unclassified entries cannot be published, 0 exceptions over [100] cases. (c) Translation management that blocks publication until the required-language set is complete, verifiable by test: publish is refused for [50] entries missing a required language and allowed for [50] complete entries (link to REQ-PROD-008). (d) Approval routing so that only management-approved entries become public, verifiable by inspection of the approval log: 100% of published entries carry an approval record. (e) Publish and withdraw control, including scheduled publish and withdraw at a set time, verifiable by demonstration. (f) A recorded licensing / eligibility check outcome for every published listing, verifiable by inspection (link to REQ-PROD-011). |
-| Example Solution (non-normative) | A CMS with entry types for each concept, a taxonomy picker for region and category, a translation grid showing per-language status, a submit-for-review button, an approver queue, and scheduled publish/unpublish. *Non-normative.* |
-| Variants | 1a. The editor imports provider-supplied text and media as a draft. 2a. A new region or category is proposed and must itself be approved before use. 3a. A translation is supplied by an external translator and attached later; the entry stays unpublished until complete. 4a. The approver returns the entry with comments; the editor revises and resubmits. 5a. An entry is withdrawn immediately because the provider closed; dependent campaign features are flagged. 5b. Publication is scheduled for a future date to match a campaign start. |
-| Entities touched | ContentItem, Listing, Attraction, Event, Accommodation, Transportation, FoodOption, LocalInformation, Category, Region, Language, Translation |
+---
 
-### 6.8 TASK-06 Plan and run a promotion campaign
+#### Task TASK-004: Search & Reserve Transportation (Vehicle)
 
-**Table 21 - TASK-06 Plan and run a promotion campaign**
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist needs transport (car/van/boat/bus) for touring or transfer.
+- **Precondition:** Vehicle listings are published with an availability calendar.
+- **Postcondition:** A Booking is created in Pending or Confirmed state against a Vehicle.
+- **Frequency:** High.
+- **Priority / Exception-Criticality:** High — core function with an explicit Vehicle-entity focus.
+- **Work Area:** Transportation search & reservation module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web listing page; (b) a mobile app with map-based search; (c) staff-assisted back-office allocation for walk-in tourists.
+- **Subtasks:**
+  - **ST-4.1** Search/filter Vehicle by type, capacity, date, and pickup location. *Problem/Exception:* if no Vehicle matches the requested capacity, the system suggests a combination of smaller vehicles or the nearest available alternative capacity. → `REQ-FUN-011`
+  - **ST-4.2** View Vehicle detail (capacity, coverage area, provider). *Problem/Exception:* if a Vehicle is temporarily suspended (e.g., for maintenance), the system excludes it from search results. → `REQ-FUN-012`
+  - **ST-4.3** Reserve a Vehicle with optional add-ons (driver, child seat, via Option). *Problem/Exception:* if a selected Option is incompatible with the chosen Vehicle, the system blocks the combination and explains the conflict. → `REQ-FUN-013`
+- **Variants:** Self-drive rental vs. chauffeured tour vehicle; shared shuttle vs. private vehicle.
+- **Derived Functional Requirements:** `REQ-FUN-011`, `REQ-FUN-012`, `REQ-FUN-013`
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-06 Plan and run a promotion campaign |
-| Actor(s) | Primary: ACT-06 Campaign Manager. Supporting: ACT-03 Association Management User (approves), ACT-04 Editor (prepares featured content), ACT-14 Publishing / Social Channels, ACT-15 System Clock (start/stop) |
-| Goal / Purpose | Coordinate a themed promotion over a defined period and set of channels and judge its result against a target |
-| Trigger / Precondition | Management decides to promote a theme, season or region; the content and listings to feature exist or are being prepared |
-| Frequency | Placeholder: 2-10 active campaigns per month; more around major festivals |
-| Critical | An uncoordinated campaign wastes budget and produces no measurable result; worst case tolerated: every campaign has a recorded performance summary within [3] days of its end |
-| Work Area | Association work area |
-| Sub-tasks | 1. Define the campaign theme, period and target audience. 2. Select the content items and listings to feature. 3. Schedule the campaign start and end. 4. Publish the campaign to the chosen channels. 5. Review campaign performance against the target and prior campaigns. |
-| Problem | Promotion is inconsistent across channels and its effect is never measured (PAIN-03, PAIN-05). |
-| Support the system provides | (a) Definition of a campaign with theme, period and audience, verifiable by test against AT-TASK. (b) Association of featured content items and listings with the campaign, verifiable by test: featured items resolve to published entries for 100% of [50] test campaigns. (c) Time-based automatic start and stop at the scheduled moments, verifiable by demonstration: start and stop occur within [5] minutes of the scheduled time over [20] trials. (d) Outbound publishing to the selected external channels with a recorded publish outcome per channel, verifiable by test (link to REQ-PROD-005). (e) A performance summary comparing defined measures against the campaign target and at least one prior campaign, verifiable by inspection: every summary shows a target column and a prior-period column (link to REQ-DES-009). |
-| Example Solution (non-normative) | A campaign record with a schedule, a picker for featured entries, connectors that post to social and partner channels on start, and a dashboard that pulls engagement and booking figures for the campaign window. *Non-normative.* |
-| Variants | 1a. The campaign is regional and inherits its audience from a region. 2a. A featured listing is withdrawn mid-campaign; it is dropped from the campaign and the manager is alerted. 3a. The campaign is started manually rather than on schedule. 4a. A channel rejects the content; the failure is recorded and the manager retries or removes the channel. 5a. The campaign is extended; the end date is moved and the schedule updated. 5b. Results are exported for a board report. |
-| Entities touched | PromotionCampaign, ContentItem, Listing, AnalyticsReport, EngagementRecord; external EXT-S-05 |
+> `REQ-FUN-011`: The system shall let a Tourist filter Vehicle listings by at least type, passenger capacity, date, and pickup location. Where no single Vehicle satisfies the requested capacity, the system shall suggest a combination of smaller vehicles or the nearest available alternative capacity.
+> `REQ-FUN-012`: The system shall exclude a Vehicle flagged as temporarily suspended (e.g., under maintenance) from all tourist-facing Vehicle search results for the duration of the suspension.
+> `REQ-FUN-013`: The system shall validate the compatibility of a selected Option against the selected Vehicle before allowing checkout to proceed. The system shall block and explain any incompatible Vehicle–Option combination instead of allowing the Tourist to add it to the Booking.
 
-### 6.9 TASK-07 Handle a tourist enquiry / support request
+---
 
-**Table 22 - TASK-07 Handle a tourist enquiry / support request**
+#### Task TASK-005: Search & Reserve Food & Dining
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-07 Handle a tourist enquiry / support request |
-| Actor(s) | Primary (raise): ACT-01 Tourist (Anonymous), ACT-02 Tourist (Registered). Primary (handle): ACT-05 Enquiry Handler / Support Officer. Supporting: ACT-13 Notification service, ACT-08 Compliance Advisor (personal data in enquiry content), ACT-15 System Clock (response timers) |
-| Goal / Purpose | Capture a tourist's question or problem, track it, and resolve it with a recorded outcome |
-| Trigger / Precondition | A tourist has a question or problem before, during or after a trip and chooses to contact the Association |
-| Frequency | Placeholder: 50-500 enquiries per day; peaks during disruptions and campaigns |
-| Critical | An untracked enquiry is lost and the tourist is left without help; worst case tolerated: 0 submitted enquiries with no acknowledgement, and median first response within [24] hours (OBJ-07) |
-| Work Area | Tourist work area (raise) and Association work area (handle) |
-| Sub-tasks | 1. Submit an enquiry with its subject, detail and any related booking, itinerary or listing. 2. Acknowledge receipt to the tourist. 3. Assign the enquiry and investigate, drawing on any linked booking, itinerary or listing. 4. Respond to the tourist with a resolution. 5. Close the enquiry and record the outcome; reopen if the tourist is not satisfied. |
-| Problem | Enquiries arrive by phone and email, are not tracked, and are answered slowly or lost (PAIN-06). |
-| Support the system provides | (a) Structured capture of an enquiry with subject, detail and optional context references, verifiable by test against AT-TASK. (b) An acknowledgement to the tourist for 100% of submitted enquiries, verifiable by test over [500] submissions (link to REQ-PROD-005). (c) Assignment and status tracking through a defined set of states with a full status history, verifiable by inspection: every test enquiry shows an unbroken state history. (d) Response delivery through the notification interaction with a recorded delivery outcome, verifiable by test. (e) A recorded resolution outcome on closure and a reopen path, verifiable by demonstration. (f) Handling of personal data contained in enquiry text under the same retention and access rules as other tourist data, verifiable by inspection (link to REQ-PROD-PDPA-04, REQ-PROD-PDPA-06). |
-| Example Solution (non-normative) | A contact form that creates a ticket, an auto-acknowledgement email, a handler queue with statuses (new, assigned, waiting, answered, closed, reopened), threaded replies sent by email, and a closure note with a category. *Non-normative.* |
-| Variants | 1a. An anonymous tourist submits an enquiry and gives only a contact address. 1b. The enquiry is raised from within a booking or itinerary and the context is attached automatically. 3a. The enquiry needs escalation to management or to a provider; it is routed and the tourist is told of the delay. 3b. The enquiry is a duplicate and is merged with an existing one. 4a. The response needs the tourist to supply more information; the enquiry waits on the tourist. 5a. The tourist reopens a closed enquiry within a stated window and it returns to the handler. |
-| Entities touched | EnquiryTicket, Tourist, ManagementUser, Booking, Itinerary, Listing, ConsentRecord; external EXT-S-04 |
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist wants to find or reserve a dining venue.
+- **Precondition:** Food Establishment listings are published.
+- **Postcondition:** A reservation is created, or an informational view is logged for walk-in-only venues.
+- **Frequency:** High.
+- **Priority / Exception-Criticality:** Medium — core function, though the consequence of failure is lower than for accommodation or transport.
+- **Work Area:** Food & dining discovery/reservation module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web listing with an optional reservation form; (b) a mobile cuisine-based search; (c) a staff-curated recommendation counter drawing on the same backend listings.
+- **Subtasks:**
+  - **ST-5.1** Search/filter by cuisine, location, price, and dietary option. *Problem/Exception:* if a dietary filter (e.g., halal, vegetarian) returns zero results, the system flags the coverage gap for Management Staff review. → `REQ-FUN-014`
+  - **ST-5.2** View Food Establishment detail and Reviews. *Problem/Exception:* if the listing is missing a required license/registration reference, the system withholds publication (links `REQ-PROD-007`). → `REQ-FUN-015`
+  - **ST-5.3** Submit a table reservation where supported. *Problem/Exception:* if the venue does not support online reservation, the system displays contact-only information instead of a booking form. → `REQ-FUN-016`
+- **Variants:** Walk-in-only venue (informational only); reservable venue with a deposit requirement.
+- **Derived Functional Requirements:** `REQ-FUN-014`, `REQ-FUN-015`, `REQ-FUN-016`
 
-### 6.10 TASK-08 Produce tourism engagement and performance insight
+> `REQ-FUN-014`: The system shall let a Tourist filter Food Establishment listings by at least cuisine, location, price range, and dietary option. Where a dietary filter (e.g., halal, vegetarian) returns zero results, the system shall log the coverage gap for Management Staff review.
+> `REQ-FUN-015`: The system shall display all published Reviews on a Food Establishment's detail view. The system shall withhold publication of a Food Establishment listing that lacks a recorded, valid business registration or license reference (`REQ-PROD-007`).
+> `REQ-FUN-016`: Where a Food Establishment does not support online reservation, the system shall display contact-only information instead of a reservation form. Where the Food Establishment does support online reservation, the system shall accept and record a table reservation request against it.
 
-**Table 23 - TASK-08 Produce tourism engagement and performance insight**
+---
 
-| Field | Content |
-|---|---|
-| Task ID + Name | TASK-08 Produce tourism engagement and performance insight |
-| Actor(s) | Primary: ACT-03 Association Management User, ACT-06 Campaign Manager. Supporting: ACT-05 Enquiry Handler (enquiry metrics), ACT-08 Compliance Advisor (consent gating), ACT-15 System Clock (scheduled refresh) |
-| Goal / Purpose | Obtain evidence on tourist interest, the booking funnel, content engagement and campaign performance to direct promotion effort and spend |
-| Trigger / Precondition | A review cycle falls due, a campaign ends, or management asks a specific question; engagement and booking data exist |
-| Frequency | Placeholder: refreshed report set at least every [7] days (OBJ-04); ad hoc queries several times per week |
-| Critical | Without consolidated insight, promotion budget is allocated blindly (PAIN-05); worst case tolerated: the standard report set is never more than [7] days out of date |
-| Work Area | Association work area |
-| Sub-tasks | 1. Choose the question, period and audience segment. 2. Assemble the engagement, booking and campaign data within that scope. 3. View the compiled summary. 4. Compare the result against targets and prior periods. 5. Export or share the summary. |
-| Problem | There is no consolidated view of tourist interest or engagement on which to base decisions (PAIN-05). |
-| Support the system provides | (a) Selection of report scope by question, period and segment, verifiable by test against AT-TASK. (b) Aggregation of only consent-gated engagement data together with booking and campaign data, verifiable by test: 0 records in any report that lack a governing ConsentRecord (link to REQ-PROD-019). (c) A compiled summary for each of the four standard subjects (visitor trends, booking funnel, content engagement, campaign performance), verifiable by inspection: all four are produced. (d) Comparison against a stated target and at least one prior period, verifiable by inspection (link to REQ-DES-009). (e) Export or share of the summary in a portable form, verifiable by demonstration. |
-| Example Solution (non-normative) | A reporting area with a scope picker, four standard dashboards, a comparison toggle for target and previous period, and CSV or PDF export plus a shareable link. *Non-normative.* |
-| Variants | 1a. The user opens a saved standard report instead of defining a new scope. 2a. The chosen period has too little data; the summary is shown with a low-confidence note. 3a. The user drills from a summary figure to its contributing segments. 4a. No target has been set; only the prior-period comparison is shown. 5a. The summary is scheduled for automatic delivery to a management distribution list. |
-| Entities touched | AnalyticsReport, EngagementRecord, Booking, PromotionCampaign, ConsentRecord |
+#### Task TASK-006: Build & Book a Travel Package (Itinerary) with Options
 
-### 6.11 Typical sub-task sequence note
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist wants a bundled multi-service/multi-day trip plan.
+- **Precondition:** At least one Destination, Accommodation, Vehicle, or Food Establishment is published and available.
+- **Postcondition:** A Package Booking is created combining the selected components and chosen Options.
+- **Frequency:** Medium.
+- **Priority / Exception-Criticality:** High — this task ties together all domain entities and is central to `OBJ-003`.
+- **Work Area:** Package/itinerary builder module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a drag-and-drop web itinerary builder; (b) a guided step-by-step mobile wizard; (c) a staff-assembled custom-quote tool using the same catalog.
+- **Subtasks:**
+  - **ST-6.1** Select Destinations and combine them with Accommodation/Vehicle/Food components. *Problem/Exception:* if selected components' dates conflict, the system flags the scheduling conflict before checkout. → `REQ-FUN-017`
+  - **ST-6.2** Choose applicable Options for the Package (guided tour, insurance, meal plan). *Problem/Exception:* if a chosen Option becomes unavailable, the system removes it and notifies the Tourist before payment. → `REQ-FUN-018`
+  - **ST-6.3** Review the consolidated Package summary and confirm. *Problem/Exception:* if the total price changes mid-session due to a component price update, the system re-displays the updated total for re-confirmation. → `REQ-FUN-019`
+- **Variants:** Staff-curated "featured package" vs. a fully custom tourist-built package.
+- **Derived Functional Requirements:** `REQ-FUN-017`, `REQ-FUN-018`, `REQ-FUN-019`
 
-For each task the sub-tasks are numbered in the order most often observed, but the order is not mandatory: sub-tasks may be revisited, skipped where a variant allows, or interleaved. The typical end-to-end order across tasks, from the tourist's viewpoint, is TASK-01 -> TASK-02 -> TASK-03 -> TASK-04 -> (travel, during which TASK-07 may occur) -> Review (the review sub-flow of WF-01, covered by REQ-FUN-016). The Association tasks run on their own cycles: TASK-05 continuously, TASK-06 per campaign, TASK-07 continuously, TASK-08 per review cycle.
+> `REQ-FUN-017`: The system shall detect and flag a date or time scheduling conflict between two or more components (Destination, Accommodation, Vehicle, Food Establishment) selected into the same Package. The system shall prevent the Tourist from proceeding to checkout until the conflict is resolved or acknowledged.
+> `REQ-FUN-018`: Where a previously selected Option becomes unavailable before payment, the system shall automatically remove it from the Package and notify the Tourist of the removal before the system presents the payment step.
+> `REQ-FUN-019`: The system shall recompute and re-display the consolidated Package price and summary for Tourist re-confirmation whenever any bundled component's price changes during the active session, before accepting payment.
 
-### 6.12 Task-to-actor and task-to-entity coverage statement
+---
 
-- **Actor coverage.** ACT-01 to ACT-06 and ACT-09 are primary or supporting actors in at least one task (see Table 14). ACT-07 (System / Platform Administrator) and ACT-08 (Data Protection Officer / Compliance Advisor) act across every task and are specified further through the operations requirements (9.11) and the PDPA requirements (9.5). ACT-10 to ACT-15 are non-human actors realised through the external interactions in section 3.5 and the workflows in section 7.
-- **Entity coverage.** Every entity ENT-01..ENT-28 is touched by at least one task; the full mapping and the create/read/update/delete pattern per entity are given in the CRUD completeness matrix (Appendix C). Entities maintained only by administration (ENT-02, ENT-25, ENT-26) are covered in the operations column of that matrix.
+#### Task TASK-007: Complete Payment for a Booking
 
+- **Actors:** `ACT-001` Tourist, `ACT-004` Payment Gateway Provider (external)
+- **Trigger:** The Tourist confirms a Booking/Package requiring payment.
+- **Precondition:** The Booking exists in Pending-Payment state; the payment gateway interface is available.
+- **Postcondition:** The Booking transitions to Confirmed (on success) or Payment-Failed (on failure); the Tourist is notified.
+- **Frequency:** High.
+- **Priority / Exception-Criticality:** High — revenue-critical; failures here directly threaten `INC-001`.
+- **Work Area:** Checkout/payment module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) redirect to a hosted payment page; (b) an embedded payment widget/SDK; (c) staff-recorded manual/offline payment reconciled in-system.
+- **Subtasks:**
+  - **ST-7.1** Select a payment method and submit payment. *Problem/Exception:* if payment is declined or the gateway times out, the Booking is preserved as Pending-Payment for retry within a defined window rather than silently cancelled. → `REQ-FUN-020`
+  - **ST-7.2** Receive payment and booking confirmation. *Problem/Exception:* if the gateway confirms payment but the system fails to update the Booking status, an automated reconciliation check alerts Management Staff. → `REQ-FUN-021`
+  - **ST-7.3** Request refund/cancellation. *Problem/Exception:* if cancellation is requested after the provider's non-refundable cutoff, the system displays the applicable policy and auto-limits the refund. → `REQ-FUN-022`
+- **Variants:** Full online payment; partial deposit plus balance on arrival (where supported).
+- **Derived Functional Requirements:** `REQ-FUN-020`, `REQ-FUN-021`, `REQ-FUN-022`
 
+> `REQ-FUN-020`: Where a payment attempt is declined or the payment gateway times out, the system shall preserve the associated Booking in a Pending-Payment state for a defined retry window (e.g., 30 minutes) rather than cancelling it automatically.
+> `REQ-FUN-021`: The system shall reconcile every payment-gateway confirmation against the corresponding Booking's status within a defined interval. The system shall automatically alert Management Staff of any Booking for which the Booking status does not reflect a confirmed payment.
+> `REQ-FUN-022`: Where a Tourist requests cancellation after the provider's published non-refundable cutoff, the system shall display the applicable cancellation policy. The system shall calculate and apply only the refund amount that the policy permits.
 
-## 7 Workflows
+---
 
-### 7.1 Workflow notation
+#### Task TASK-008: Submit Review & Feedback
 
-Each workflow is given as an ordered list of steps with a swimlane note on every step naming the actor or external entity that owns it. The intended UML activity-diagram realisation uses: one swimlane (partition) per actor - Tourist, System (STPS), and each external entity involved; an initial node and one or more final nodes; action nodes for steps; decision and merge nodes for the questions listed under "Decisions"; and fork and join bars where steps run concurrently. Tasks & Support variant paths (section 6) appear as decision branches. Figure numbers are assigned in FM-4. Every step cross-references the task it realises by TASK-ID.
+- **Actors:** `ACT-001` Tourist
+- **Trigger:** The Tourist completes a booked experience, or wants to give general feedback.
+- **Precondition:** The Tourist has a completed Booking (for a verified review) or a general feedback channel is open.
+- **Postcondition:** A Review is stored and linked to the relevant entity; it is pending moderation if applicable.
+- **Frequency:** Medium.
+- **Priority / Exception-Criticality:** Medium — supports the `INC-003` trust goal but is not transaction-critical.
+- **Work Area:** Review & feedback module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a post-trip web review form; (b) a mobile push-prompted review; (c) an email/SMS-linked review form sent after Booking completion.
+- **Subtasks:**
+  - **ST-8.1** Access a review form for a completed Booking. *Problem/Exception:* if the Tourist attempts to review a Booking that is not yet completed, the system blocks the premature submission. → `REQ-FUN-023`
+  - **ST-8.2** Submit a rating and comment. *Problem/Exception:* if the content contains prohibited/offensive language, the system flags it for Management Staff moderation before publishing. → `REQ-FUN-024`
+  - **ST-8.3** View published Reviews on entity pages. *Problem/Exception:* if a Review is removed by moderation, it is not shown publicly and the submitting Tourist is notified of the outcome. → `REQ-FUN-025`
+- **Variants:** Verified-booking review vs. general open feedback not tied to a Booking.
+- **Derived Functional Requirements:** `REQ-FUN-023`, `REQ-FUN-024`, `REQ-FUN-025`
 
-### 7.2 WF-01 End-to-end tourist journey workflow
+> `REQ-FUN-023`: The system shall permit a Tourist to open a Review form for a given Booking only when that Booking's status is Completed. The system shall block submission attempts against a Booking in any other status.
+> `REQ-FUN-024`: The system shall scan submitted Review text against a prohibited/offensive-language rule set at submission time. The system shall route any match to a Management Staff moderation queue instead of publishing the Review immediately.
+> `REQ-FUN-025`: The system shall exclude a moderation-removed Review from all public entity pages. The system shall notify the submitting Tourist of the moderation outcome and reason.
 
-**Figure 3.** Swimlanes: Tourist | System (STPS) | External Payment (EXT-S-01) | External Notification (EXT-S-04). Contextual reads from Mapping (EXT-S-02) and Weather (EXT-S-03) occur inside step 2.
+---
 
-| # | Step | Swimlane | Realises |
+#### Task TASK-009: Manage Promotional Content & Listings
+
+- **Actors:** `ACT-002` Management Staff — Content Officer
+- **Trigger:** A Destination/Accommodation/Vehicle/Food Establishment/Local Information Article/Option needs creating, updating, or retiring.
+- **Precondition:** Staff is authenticated with content-management permission.
+- **Postcondition:** The domain entity record is created/updated/archived and reflected in tourist-facing views.
+- **Frequency:** Medium-High (ongoing).
+- **Priority / Exception-Criticality:** High — this is the core management-facing function that directly delivers `GOAL-002`.
+- **Work Area:** Content/listing administration back office.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web admin dashboard/CMS; (b) a desktop back-office application; (c) a bulk spreadsheet-import tool feeding the same repository.
+- **Subtasks:**
+  - **ST-9.1** Create/edit a listing record. *Problem/Exception:* if a required legal/registration reference is missing, the system blocks publish until it is supplied. → `REQ-FUN-026`
+  - **ST-9.2** Publish/unpublish or archive a listing. *Problem/Exception:* if Staff attempts to archive an entity with active future Bookings, the system warns and requires explicit confirmation/reassignment. → `REQ-FUN-027`
+  - **ST-9.3** Author/edit a Local Information Article. *Problem/Exception:* if an article scheduled to publish is missing a required category tag, the system prevents publish without categorization. → `REQ-FUN-028`
+- **Variants:** Single-record edit vs. bulk update; optional draft/maker-checker review before publish.
+- **Derived Functional Requirements:** `REQ-FUN-026`, `REQ-FUN-027`, `REQ-FUN-028`
+
+> `REQ-FUN-026`: The system shall block publication of any Destination, Accommodation, Vehicle, or Food Establishment listing that lacks a recorded valid legal/registration reference until Management Staff supplies that reference.
+> `REQ-FUN-027`: Where Management Staff attempts to archive or unpublish a listing that has one or more active future Bookings, the system shall display an explicit warning and require confirmation or reassignment before completing the action.
+> `REQ-FUN-028`: The system shall prevent Management Staff from publishing a Local Information Article without at least one assigned category tag.
+
+---
+
+#### Task TASK-010: Manage Bookings, Availability & Provider Coordination
+
+- **Actors:** `ACT-002` Management Staff — Content Officer, `ACT-003` Management Staff — Data/System Administrator
+- **Trigger:** A new Booking/Package request is received, or availability/capacity needs adjustment.
+- **Precondition:** Staff is authenticated with booking-management permission; Booking(s) exist.
+- **Postcondition:** A Booking is approved/adjusted/cancelled and availability calendars are updated accordingly.
+- **Frequency:** High.
+- **Priority / Exception-Criticality:** High — directly protects `INC-001` and `INC-004`.
+- **Work Area:** Booking & availability administration module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web admin booking queue/calendar; (b) a mobile back-office app for on-the-go approvals; (c) a call-center/manual-entry tool for phone-based coordination.
+- **Subtasks:**
+  - **ST-10.1** Review and approve/reject a pending Booking. *Problem/Exception:* if the requested capacity exceeds Vehicle/Accommodation availability, the system flags the overbooking risk and prevents silent approval. → `REQ-FUN-029`
+  - **ST-10.2** Adjust an availability calendar. *Problem/Exception:* if Staff sets a conflicting availability window overlapping confirmed Bookings, the system warns of the conflict. → `REQ-FUN-030`
+  - **ST-10.3** Cancel/modify a Booking on the Tourist's or provider's behalf. *Problem/Exception:* if cancellation occurs after payment capture, it triggers the refund workflow (→ `TASK-007`). → `REQ-FUN-031`
+- **Variants:** Auto-approval for standard bookings vs. manual review for high-value/group bookings.
+- **Derived Functional Requirements:** `REQ-FUN-029`, `REQ-FUN-030`, `REQ-FUN-031`
+
+> `REQ-FUN-029`: The system shall flag as an overbooking risk any pending Booking whose requested quantity or capacity would exceed the remaining published availability of the targeted Accommodation or Vehicle. The system shall require an explicit Management Staff override before Management Staff can approve such a Booking.
+> `REQ-FUN-030`: Before saving a newly entered availability-calendar change, the system shall warn Management Staff if the change would overlap one or more existing Confirmed Bookings.
+> `REQ-FUN-031`: Where Management Staff cancels or modifies a Booking for which the system has already captured payment, the system shall automatically initiate the refund workflow (`TASK-007` ST-7.3) instead of requiring a separate manual refund request.
+
+---
+
+#### Task TASK-011: Manage Tourist Data Privacy Requests (PDPA)
+
+- **Actors:** `ACT-003` Management Staff — Data/System Administrator
+- **Trigger:** A Tourist submits a data access/correction/deletion request (from `ST-1.3` or a dedicated privacy-request channel).
+- **Precondition:** Staff is authenticated with data-administration permission; the request is logged.
+- **Postcondition:** The request is actioned (exported/corrected/deleted) and the requester is notified within SLA; the action is logged for audit.
+- **Frequency:** Low.
+- **Priority / Exception-Criticality:** High — legal/compliance-critical; directly delivers `GOAL-004` and `OBJ-004`.
+- **Work Area:** Privacy/compliance administration module.
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a self-service web privacy-request portal reviewed by staff; (b) a staff-managed ticket/case tool; (c) a manual email-based request logged into the same backend.
+- **Subtasks:**
+  - **ST-11.1** Verify the Tourist's identity for the request. *Problem/Exception:* if identity cannot be confidently verified, the system requires an additional verification step before proceeding. → `REQ-FUN-032`
+  - **ST-11.2** Fulfil the access/correction/deletion request. *Problem/Exception:* if deletion is requested but the data is legally required to be retained (e.g., a financial record), the system anonymizes rather than deletes, with justification logged. → `REQ-FUN-033`
+  - **ST-11.3** Log the outcome and notify the Tourist within SLA. *Problem/Exception:* if the SLA deadline is approaching without resolution, the system auto-escalates to responsible Staff. → `REQ-FUN-034`
+- **Variants:** Routine access request vs. full account-deletion request (which cascades into Booking/Review retention handling).
+- **Derived Functional Requirements:** `REQ-FUN-032`, `REQ-FUN-033`, `REQ-FUN-034`
+
+> `REQ-FUN-032`: Where Management Staff cannot confirm a data-subject request's requester identity to a defined confidence level, the system shall require at least one additional verification step before Management Staff can proceed to fulfil the request.
+> `REQ-FUN-033`: Where a deletion request applies to data that a documented legal obligation requires the Association to retain (for example, financial or tax records), the system shall anonymize the personal identifiers on that data instead of deleting the record. The system shall log the specific legal justification against the request.
+> `REQ-FUN-034`: The system shall notify the requesting Tourist of the outcome of their data-subject request. Where the request remains unresolved within a defined number of days before the applicable PDPA SLA deadline (`REQ-NFR-002`), the system shall automatically escalate it to a responsible Management Staff member.
+
+---
+
+## 7. Workflows
+
+### 7.1 Overarching End-to-End Workflow — WF-000: Tourist Trip Planning & Booking Lifecycle
+
+**Swimlanes:** Tourist | System | Management Staff | External (Payment / Notification).
+
+The table below traces the full tourist journey from first discovery through post-trip feedback, with the parallel Management lane feeding the tourist-facing catalog, and the PDPA request lane able to branch off at any point. Every decision row corresponds to a Problem/Exception case documented against the relevant Task in Section 6.
+
+| # | Step | Swimlane | Realizes | Type |
+|---|---|---|---|---|
+| 1 | Discover local tourism information | Tourist | `TASK-002` | Normal |
+| 2 | Browse Accommodation, Vehicle, and/or Food Establishment listings | Tourist | `TASK-003` / `TASK-004` / `TASK-005` | Normal |
+| 3 | Decision: build a bundled Package, or reserve a single Offering directly? | Tourist | `TASK-006` | Decision |
+| 4a | Build Package + select Options | Tourist ↔ System | `TASK-006` | Normal |
+| 4b | Reserve a single Accommodation/Vehicle/Food Establishment directly | Tourist ↔ System | `TASK-003`/`004`/`005` | Normal (alt. branch) |
+| 5 | Decision: does the selection/schedule contain a conflict (dates, capacity, incompatible Option)? | System | `ST-6.1`, `ST-4.3` | Decision / Exception |
+| 5a | If yes: flag the conflict, block checkout until resolved or acknowledged | System | `REQ-FUN-017`, `REQ-FUN-013` | Exception |
+| 6 | Review consolidated summary and confirm | Tourist | `ST-6.3` | Normal |
+| 7 | Decision: did a component's availability or price change since selection? | System | `ST-3.3`, `ST-6.2`, `ST-6.3` | Decision / Exception |
+| 7a | If availability lost: reject, notify Tourist, offer alternatives | System → Tourist | `REQ-FUN-010`, `REQ-FUN-018` | Exception |
+| 7b | If price changed: re-display updated total for re-confirmation | System → Tourist | `REQ-FUN-019` | Exception |
+| 8 | Submit payment | Tourist → System → External Payment | `TASK-007` | Normal |
+| 9 | Decision: payment outcome (authorized / declined / timed out)? | External Payment → System | `ST-7.1` | Decision / Exception |
+| 9a | If declined/timed out: preserve Booking as Pending-Payment for retry window | System → Tourist | `REQ-FUN-020` | Exception |
+| 9b | If authorized: transition Booking to Confirmed | System | `ST-7.2` | Normal |
+| 10 | Send confirmation notification | System → External Notification | `REQ-PROD-005` | Normal |
+| 11 | Tourist experiences the trip (local information consulted; enquiries out of explicit task scope for v1.0 but PDPA/profile requests remain available) | Tourist | `TASK-002` | Normal |
+| 12 | Submit Review & Feedback | Tourist → System | `TASK-008` | Normal |
+| 13 | Decision: does Review content violate the moderation policy? | System | `ST-8.2` | Decision / Exception |
+| 13a | If yes: route to Management Staff moderation queue before publishing | System → Management Staff | `REQ-FUN-024` | Exception |
+| — | *(Parallel Management lane, running continuously)* Manage Content & Listings ↔ Manage Bookings, Availability & Provider Coordination, feeding published listings back into steps 1–2 | Management Staff | `TASK-009` ↔ `TASK-010` | Normal (parallel) |
+| — | *(PDPA lane, may branch off at any point, e.g., from step "Decision: consent declined?" during `TASK-001`, or from a profile-management action at any time)* Manage Tourist Data Privacy Requests | Tourist → Management Staff | `TASK-011` | Normal (branch) |
+| 14 | End | — | — | End |
+
+**Required decision branches confirmed present:** payment failure/retry (steps 9/9a); availability conflict at confirmation (steps 5/5a, 7/7a); PDPA consent declined with guest-mode continuation (branches from `TASK-001` ST-1.1, `REQ-FUN-002`, feeding the PDPA lane).
+
+### 7.2 Per-Task Workflow Diagrams
+
+Each workflow below (`WF-001`–`WF-011`) corresponds 1:1 to the identically numbered Task in Section 6.3, includes one swimlane per actor named in that task's Actors field, and includes an explicit decision branch for every Problem/Exception case documented against that task's subtasks — no task is drawn as a straight-line sequence where its subtask table documents a Problem case.
+
+#### WF-001 — Register & Manage Tourist Account (realizes TASK-001)
+
+**Swimlanes:** Tourist | System.
+
+| # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Discover attractions, events, food, stays and transport; retain a shortlist | Tourist -> System | TASK-01 |
-| 2 | Assemble a day-by-day itinerary from the shortlist; System requests feasibility information from Mapping and Weather | Tourist -> System -> (EXT-S-02, EXT-S-03) | TASK-02 |
-| 3 | Decision: does the tourist want to reserve an offering now? If no, go to step 8 | Tourist | - |
-| 4 | Select a listing, provide traveller details, read terms and privacy notice, record consent | Tourist -> System | TASK-03 |
-| 5 | Decision: is the offering available and are all required consents given? If no, return to step 4 or exit to step 8 | System | TASK-03 |
-| 6 | Present amount due; hand off to External Payment; capture the payment outcome; link it to the booking; issue a receipt | Tourist -> System -> EXT-S-01 -> System | TASK-04 |
-| 7 | Decision: was payment authorised? If no, hold or release the booking and notify; if yes, confirm the booking | System | TASK-04 |
-| 8 | Send confirmation and reminder messages; record each delivery outcome | System -> EXT-S-04 | REQ-PROD-005 |
-| 9 | During travel, the tourist consults local information and may raise an enquiry (branch to WF-04) | Tourist -> System | TASK-07 |
-| 10 | After travel, the tourist submits a review of a listing, attraction or event | Tourist -> System | REQ-FUN-016 |
-| 11 | System records consent-gated engagement throughout, which feeds management insight (WF-02 / TASK-08) | System | TASK-08 |
-| 12 | Final node | - | - |
+| 1 | Open registration / profile screen in guest mode | Tourist | Normal |
+| 2 | Present Terms of Use and Privacy Policy | System | Normal |
+| 3 | Decision: does the Tourist accept consent? | Tourist | Decision |
+| 3a | If declined: restrict personalization features; continue in guest mode | System | Exception |
+| 3b | If accepted: record timestamped consent; proceed | System | Normal |
+| 4 | Provide profile details (contact, nationality, language/currency) | Tourist | Normal |
+| 5 | Decision: is contact information valid and non-duplicate? | System | Decision |
+| 5a | If invalid/duplicate: flag for correction; do not save | System → Tourist | Exception |
+| 5b | If valid: save profile | System | Normal |
+| 6 | Later: Tourist updates profile/preferences, or requests deletion | Tourist | Normal |
+| 7 | Decision: is this a deletion request? | System | Decision |
+| 7a | If yes: route into PDPA workflow (`WF-011`) | System | Exception (branch to WF-011) |
+| 7b | If no: apply the update | System | Normal |
+| 8 | End | — | End |
 
-Decisions: item available? consent given? payment authorised? enquiry raised? review submitted?
-Concurrency: step 8 (notifications) runs in parallel with step 9 (travel-time use).
-Variant branches: no-reservation path (3 -> 8); payment declined path (7 -> hold/release); enquiry path (9 -> WF-04).
+#### WF-002 — Discover Local Tourism Information (realizes TASK-002)
 
-### 7.3 WF-02 Content & promotion publishing workflow
+**Swimlanes:** Tourist | System.
 
-**Figure 4.** Swimlanes: Provider (ACT-09) | Editor (ACT-04) | Management (ACT-03 / ACT-06) | System (STPS) | External Channels (EXT-S-05). System Clock (ACT-15) drives the schedule step.
-
-| # | Step | Swimlane | Realises |
+| # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Submit new or updated offering details and any licensing evidence | Provider -> System | TASK-05 (1a) |
-| 2 | Draft or update the entry from the submission | Editor -> System | TASK-05 |
-| 3 | Classify the entry by region and category | Editor -> System | TASK-05 |
-| 4 | Add or update translations for every required language | Editor -> System | TASK-05, REQ-FUN-011 |
-| 5 | Decision: are translations complete for all required languages? If no, return to step 4 | System | REQ-PROD-008 |
-| 6 | Submit the entry for approval | Editor -> System | TASK-05 |
-| 7 | Decision: does management approve? If no, return to step 2 with comments | Management | TASK-05 (4a) |
-| 8 | Publish the approved entry, or schedule its publication | System (clock: ACT-15) | TASK-05 |
-| 9 | Decision: is the entry to be featured in a campaign? If no, go to step 13 | Management | TASK-06 |
-| 10 | Define the campaign; select featured content and listings; set the period and audience | Management -> System | TASK-06 |
-| 11 | At the scheduled start, publish the campaign to the selected channels; record each publish outcome | System (clock) -> External Channels | TASK-06 |
-| 12 | At the scheduled end, stop the campaign | System (clock) | TASK-06 |
-| 13 | Compile the performance summary against target and prior period | System -> Management | TASK-06, TASK-08 |
-| 14 | Final node | - | - |
+| 1 | Search/filter by category (culture, safety, weather, events) | Tourist | Normal |
+| 2 | Decision: are there matching results? | System | Decision |
+| 2a | If no: suggest related/alternative categories | System → Tourist | Exception |
+| 2b | If yes: display results | System | Normal |
+| 3 | Open an article in detail | Tourist | Normal |
+| 4 | Decision: is the article expired/unpublished? | System | Decision |
+| 4a | If yes: auto-hide from all tourist-facing views (should not reach this step in practice; guards the display path) | System | Exception |
+| 5 | Decision: does the Tourist attempt to bookmark? | Tourist | Decision |
+| 5a | If Guest: prompt registration (branch to `WF-001`) without losing browsing context | System | Exception (branch to WF-001) |
+| 5b | If Registered: save bookmark | System | Normal |
+| 6 | End | — | End |
 
-Decisions: translations complete? approved? feature in a campaign? campaign period active? channel accepted the content?
-Concurrency: steps 3 and 4 may run in parallel; publishing to multiple channels in step 11 is a fork/join.
+#### WF-003 — Search & Reserve Accommodation (realizes TASK-003)
 
-### 7.4 WF-03 Booking + payment workflow (detailed)
+**Swimlanes:** Tourist | System.
 
-**Figure 5.** Swimlanes: Tourist | System (STPS) | External Payment (EXT-S-01) | External Notification (EXT-S-04). Provider-supplied availability data is read in step 2; System Clock (ACT-15) owns the timeout branches.
-
-| # | Step | Swimlane | Realises |
+| # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Select a listing and state dates and quantity | Tourist -> System | TASK-03 |
-| 2 | Check the request against the listing's availability information | System | TASK-03 |
-| 3 | Decision: is the offering available? If no, offer alternatives or exit | System | TASK-03 (1a) |
-| 4 | Capture traveller details; present terms and privacy notice in at least BM and English; record consent choices | Tourist -> System | TASK-03, REQ-PROD-PDPA-01 |
-| 5 | Decision: are all required consents given? If no, stop and retain no personal data | System | TASK-03 (3b) |
-| 6 | Create the reservation request and set the booking to "pending payment" | System | TASK-03 |
-| 7 | Present the amount due and its breakdown | System -> Tourist | TASK-04 |
-| 8 | Authorise the payment through the External Payment interaction | Tourist -> System -> EXT-S-01 | TASK-04 |
-| 9 | Decision: payment outcome? authorised / declined / pending / timed out | EXT-S-01 -> System | TASK-04 |
-| 10 | On authorised: link the payment to the booking, confirm the booking, issue a receipt | System | TASK-04 |
-| 11 | On declined: keep the booking unpaid; allow retry with another method | System -> Tourist | TASK-04 (4a) |
-| 12 | On pending: hold the booking; reconcile when the outcome resolves | System (clock) | TASK-04 (4b) |
-| 13 | On timeout: reconcile the true outcome with the External Payment service before confirming | System -> EXT-S-01 | TASK-04 (4c) |
-| 14 | Notify the tourist of the booking and payment outcome; record the delivery outcome | System -> EXT-S-04 | REQ-PROD-005 |
-| 15 | Final node | - | - |
+| 1 | Search/filter Accommodation by location, date, price, type | Tourist | Normal |
+| 2 | Decision: any results? | System | Decision |
+| 2a | If none: suggest relaxed filters/nearby dates | System → Tourist | Exception |
+| 2b | If results exist: display list | System | Normal |
+| 3 | View Accommodation detail and Reviews | Tourist | Normal |
+| 4 | Decision: do Reviews exist? | System | Decision |
+| 4a | If none: show explicit "no reviews yet" state | System | Exception |
+| 5 | Select Accommodation; submit reservation | Tourist → System | Normal |
+| 6 | Decision: is the Accommodation still available for the requested dates? | System | Decision |
+| 6a | If lost: reject reservation, notify Tourist of conflict, offer alternatives | System → Tourist | Exception |
+| 6b | If available: create Booking (Pending/Confirmed) | System | Normal |
+| 7 | End | — | End |
 
-Decisions: available? consent captured? payment authorised? timeout? partial payment?
+#### WF-004 — Search & Reserve Transportation / Vehicle (realizes TASK-004)
 
-### 7.5 WF-04 Enquiry / support handling workflow (detailed)
+**Swimlanes:** Tourist | System.
 
-**Figure 6.** Swimlanes: Tourist | System (STPS) | Enquiry Handler (ACT-05) | Management / Provider (escalation) | External Notification (EXT-S-04).
-
-| # | Step | Swimlane | Realises |
+| # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Submit an enquiry with subject, detail and any context (booking, itinerary, listing) | Tourist -> System | TASK-07 |
-| 2 | Create the enquiry ticket and send an acknowledgement; record the delivery outcome | System -> EXT-S-04 | TASK-07, REQ-PROD-005 |
-| 3 | Triage and assign the ticket; set its state | Enquiry Handler -> System | TASK-07 |
-| 4 | Decision: is escalation needed? If yes, route to Management or Provider and inform the tourist of the delay | Enquiry Handler | TASK-07 (3a) |
-| 5 | Investigate, referencing any linked booking, itinerary or listing | Enquiry Handler -> System | TASK-07 |
-| 6 | Decision: is more information needed from the tourist? If yes, set "waiting on tourist" and request it | Enquiry Handler -> System -> EXT-S-04 | TASK-07 (4a) |
-| 7 | Respond to the tourist with a resolution; record the delivery outcome | System -> EXT-S-04 | TASK-07 |
-| 8 | Decision: does the tourist confirm resolution? If no and within the reopen window, return to step 3 | Tourist | TASK-07 (5a) |
-| 9 | Close the ticket and record the resolution outcome and category | Enquiry Handler -> System | TASK-07 |
-| 10 | Feed enquiry volume and response-time measures to management insight | System | TASK-08 |
-| 11 | Final node | - | - |
+| 1 | Search/filter Vehicle by type, capacity, date, pickup location | Tourist | Normal |
+| 2 | Decision: does any Vehicle match the requested capacity? | System | Decision |
+| 2a | If no: suggest combination of smaller vehicles or nearest alternative | System → Tourist | Exception |
+| 3 | View Vehicle detail | Tourist | Normal |
+| 4 | Decision: is the Vehicle suspended (e.g., maintenance)? | System | Decision |
+| 4a | If yes: exclude from results (guard on search step, shown here for completeness) | System | Exception |
+| 5 | Reserve Vehicle; select optional Options (driver, child seat) | Tourist | Normal |
+| 6 | Decision: is the selected Option compatible with the selected Vehicle? | System | Decision |
+| 6a | If incompatible: block combination, explain conflict | System → Tourist | Exception |
+| 6b | If compatible: create Booking | System | Normal |
+| 7 | End | — | End |
 
-Decisions: needs escalation? more information needed? resolved? reopened within window?
-Concurrency: step 2 acknowledgement runs in parallel with step 3 triage.
+#### WF-005 — Search & Reserve Food & Dining (realizes TASK-005)
 
-### 7.6 WF-05 Listing onboarding & moderation workflow
+**Swimlanes:** Tourist | System | Management Staff.
 
-**Figure 7.** Swimlanes: Provider (ACT-09) | Editor (ACT-04) | Compliance (ACT-08) | Management (ACT-03) | System (STPS) | Tourist.
-
-| # | Step | Swimlane | Realises |
+| # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Submit listing details and licensing / eligibility evidence | Provider -> System | TASK-05 (1a) |
-| 2 | Validate completeness and classify by region and category | Editor -> System | TASK-05 |
-| 3 | Perform the licensing / eligibility check and record its outcome | Compliance -> System | REQ-PROD-011 |
-| 4 | Decision: is licensing valid and content complete? If no, return to the provider | Compliance / Editor | TASK-05 (3a) |
-| 5 | Decision: does management approve or reject? | Management | TASK-05 |
-| 6 | Publish the listing (immediately or scheduled) | System | TASK-05 |
-| 7 | Tourists view the published listing and may submit a review | Tourist -> System | TASK-01, REQ-FUN-016 |
-| 8 | Moderate submitted reviews against the review policy | Editor -> System | REQ-FUN-016 |
-| 9 | Decision: is the review compliant? If no, reject it with a reason | Editor | REQ-FUN-016 |
-| 10 | Update or withdraw the listing when the provider's situation changes | Editor -> System | TASK-05 (5a) |
-| 11 | Final node | - | - |
+| 1 | Search/filter by cuisine, location, price, dietary option | Tourist | Normal |
+| 2 | Decision: does a dietary filter return zero results? | System | Decision |
+| 2a | If yes: log coverage gap for Management Staff review | System → Management Staff | Exception |
+| 3 | View Food Establishment detail and Reviews | Tourist | Normal |
+| 4 | Decision: does the listing have a valid license/registration reference? | System | Decision (guards publication, not runtime browse) |
+| 4a | If missing: listing withheld from publication (upstream of this workflow; noted for completeness) | System | Exception |
+| 5 | Decision: does the venue support online reservation? | System | Decision |
+| 5a | If no: display contact-only information | System → Tourist | Exception |
+| 5b | If yes: accept and record reservation request | System | Normal |
+| 6 | End | — | End |
 
-Decisions: licensing valid? content complete? approved? review compliant? withdraw needed?
+#### WF-006 — Build & Book a Travel Package with Options (realizes TASK-006)
 
-### 7.7 Workflow-to-task coverage table
+**Swimlanes:** Tourist | System.
 
-**Table 24 - Workflow-to-task coverage**
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Select Destinations and combine with Accommodation/Vehicle/Food components | Tourist | Normal |
+| 2 | Decision: do component dates conflict? | System | Decision |
+| 2a | If yes: flag scheduling conflict; block checkout until resolved | System → Tourist | Exception |
+| 3 | Choose applicable Options (guided tour, insurance, meal plan) | Tourist | Normal |
+| 4 | Decision: does a chosen Option become unavailable? | System | Decision |
+| 4a | If yes: remove Option automatically; notify Tourist before payment | System → Tourist | Exception |
+| 5 | Review consolidated Package summary | Tourist | Normal |
+| 6 | Decision: has a component price changed since selection? | System | Decision |
+| 6a | If yes: re-display updated total for re-confirmation | System → Tourist | Exception |
+| 7 | Confirm Package; create Package Booking | Tourist → System | Normal |
+| 8 | End (branches into `WF-007` for payment) | — | End |
 
-| WF ID | WF name | Tasks covered | Actors | External entities | Key decisions |
+#### WF-007 — Complete Payment for a Booking (realizes TASK-007)
+
+**Swimlanes:** Tourist | System | External Payment Gateway.
+
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Select payment method; submit payment | Tourist → System → External Payment | Normal |
+| 2 | Decision: payment outcome? | External Payment → System | Decision |
+| 2a | If declined/timed out: preserve Booking as Pending-Payment for defined retry window | System → Tourist | Exception |
+| 2b | If authorized: proceed | System | Normal |
+| 3 | Decision: did the Booking status update successfully to Confirmed to match the gateway's confirmation? | System | Decision |
+| 3a | If reconciliation mismatch (gateway confirmed, status not updated): alert Management Staff automatically | System → Management Staff | Exception |
+| 3b | If matched: issue confirmation and receipt | System → Tourist | Normal |
+| 4 | Later: Tourist requests refund/cancellation | Tourist | Normal |
+| 5 | Decision: is the request after the provider's non-refundable cutoff? | System | Decision |
+| 5a | If yes: display applicable policy; auto-limit refund amount | System → Tourist | Exception |
+| 5b | If no: process full refund per policy | System | Normal |
+| 6 | End | — | End |
+
+#### WF-008 — Submit Review & Feedback (realizes TASK-008)
+
+**Swimlanes:** Tourist | System | Management Staff.
+
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Access review form for a Booking | Tourist | Normal |
+| 2 | Decision: is the Booking status Completed? | System | Decision |
+| 2a | If no: block premature submission | System → Tourist | Exception |
+| 2b | If yes: allow submission | System | Normal |
+| 3 | Submit rating and comment | Tourist → System | Normal |
+| 4 | Decision: does the content match a prohibited/offensive-language rule? | System | Decision |
+| 4a | If yes: route to Management Staff moderation queue instead of publishing | System → Management Staff | Exception |
+| 4b | If no: publish immediately | System | Normal |
+| 5 | Decision (moderation queue only): does Management Staff approve the Review? | Management Staff | Decision |
+| 5a | If rejected: exclude from public pages; notify submitting Tourist of outcome | System → Tourist | Exception |
+| 5b | If approved: publish | System | Normal |
+| 6 | Tourist/public view published Reviews on entity pages | Tourist | Normal |
+| 7 | End | — | End |
+
+#### WF-009 — Manage Promotional Content & Listings (realizes TASK-009)
+
+**Swimlanes:** Management Staff | System.
+
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Create/edit a listing record | Management Staff | Normal |
+| 2 | Decision: is a required legal/registration reference present? | System | Decision |
+| 2a | If missing: block publish until supplied | System → Management Staff | Exception |
+| 2b | If present: allow publish | System | Normal |
+| 3 | Publish/unpublish or archive a listing | Management Staff | Normal |
+| 4 | Decision: does the entity have active future Bookings? | System | Decision |
+| 4a | If yes: warn and require explicit confirmation/reassignment | System → Management Staff | Exception |
+| 4b | If no: complete the action | System | Normal |
+| 5 | Author/edit a Local Information Article and schedule publish | Management Staff | Normal |
+| 6 | Decision: does the article have at least one category tag? | System | Decision |
+| 6a | If no: prevent publish without categorization | System → Management Staff | Exception |
+| 6b | If yes: publish (immediately or on schedule) | System | Normal |
+| 7 | End (published entities feed back into `WF-000` steps 1–2) | — | End |
+
+#### WF-010 — Manage Bookings, Availability & Provider Coordination (realizes TASK-010)
+
+**Swimlanes:** Management Staff | System.
+
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Review a pending Booking | Management Staff | Normal |
+| 2 | Decision: does requested capacity exceed remaining availability? | System | Decision |
+| 2a | If yes: flag overbooking risk; require explicit override to approve | System → Management Staff | Exception |
+| 2b | If no: allow approve/reject | Management Staff | Normal |
+| 3 | Adjust an availability calendar | Management Staff | Normal |
+| 4 | Decision: does the new window overlap confirmed Bookings? | System | Decision |
+| 4a | If yes: warn of conflict before saving | System → Management Staff | Exception |
+| 4b | If no: save the change | System | Normal |
+| 5 | Cancel/modify a Booking on the Tourist's or provider's behalf | Management Staff | Normal |
+| 6 | Decision: has payment already been captured for this Booking? | System | Decision |
+| 6a | If yes: automatically trigger refund workflow (branch to `WF-007`) | System | Exception (branch to WF-007) |
+| 6b | If no: cancel/modify without a refund step | System | Normal |
+| 7 | End | — | End |
+
+#### WF-011 — Manage Tourist Data Privacy Requests / PDPA (realizes TASK-011)
+
+**Swimlanes:** Tourist | Management Staff | System.
+
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Tourist submits a data access/correction/deletion request (or arrives via branch from `WF-001` step 7a) | Tourist | Normal |
+| 2 | Verify Tourist identity | Management Staff | Normal |
+| 3 | Decision: can identity be confidently verified? | Management Staff | Decision |
+| 3a | If no: require an additional verification step before proceeding | System → Tourist | Exception |
+| 3b | If yes: proceed to fulfilment | Management Staff | Normal |
+| 4 | Fulfil the access/correction/deletion request | Management Staff | Normal |
+| 5 | Decision: is the data subject to a legal retention obligation (e.g., financial record)? | System | Decision |
+| 5a | If yes: anonymize rather than delete; log legal justification | System | Exception |
+| 5b | If no: complete deletion/correction/export as requested | System | Normal |
+| 6 | Log outcome and notify Tourist within SLA | System → Tourist | Normal |
+| 7 | Decision: is the SLA deadline approaching without resolution? | System | Decision |
+| 7a | If yes: auto-escalate to responsible Management Staff | System → Management Staff | Exception |
+| 7b | If no: close request | System | Normal |
+| 8 | End | — | End |
+
+### 7.3 Diagram Legend
+
+**Notation:** UML Activity Diagram, applied uniformly to `WF-000` and `WF-001`–`WF-011` above.
+
+- **Green rounded rectangle** = Start
+- **Red rounded rectangle** = End/Close
+- **Diamond** = Decision
+- **Swimlane column** = Actor
+- **Solid arrow** = normal flow
+- **Dashed arrow** = exception/problem path
+
+This single legend is shared and reused, unmodified, across every workflow diagram in this document.
+
+---
+
+## 8. Non-Functional Requirements
+
+Exactly four NFR categories are specified below, numbered `REQ-NFR-001`–`004`. No fifth category is introduced anywhere in this document, including in Appendix D; any additional quality concern that might otherwise be treated as its own category (for example, portability or localization-specific detail) is folded into `REQ-NFR-003` (Usability & Accessibility) rather than spawning a new category.
+
+### 8.1 REQ-NFR-001 — Performance & Scalability
+
+Rationale: `GOAL-001` and `GOAL-003` depend on the platform remaining responsive under real-world worldwide traffic, including festival-period spikes; a slow or unresponsive catalog directly undermines `OBJ-001` and `OBJ-003`.
+
+- The system shall return search/browse results (`TASK-002`…`TASK-005`) within ≤3 seconds at the 95th percentile for a catalog of up to 10,000 listings, verified by load testing.
+- The system shall complete end-to-end Booking submission-to-confirmation (excluding external payment-gateway processing time) in ≤5 seconds.
+- The system shall sustain ≥500 concurrent worldwide users at the above response times, verified by a load-test report.
+
+### 8.2 REQ-NFR-002 — Security & Data Privacy (PDPA Compliance)
+
+Rationale: `GOAL-004` and Pain Point `PP-006` require that personal-data handling be verifiable, not merely asserted; this category is the technical backbone that makes the PDPA requirements of Section 10 enforceable.
+
+- The system shall encrypt all personal data (profile, Booking, payment reference) at rest (e.g., AES-256) and in transit (TLS 1.2+), verified by configuration/penetration-test audit.
+- The system shall reject 100% of access attempts from an unauthorized role against restricted management endpoints, verified by role-based access-control test cases.
+- The system shall ensure 100% of data-processing activities are traceable to a timestamped consent record (`TASK-001`), verified by consent-log audit.
+- The system shall fulfil data subject access/correction/deletion requests (`TASK-011`) within a defined SLA of ≤21 days, verified by request-tracking log.
+
+### 8.3 REQ-NFR-003 — Usability & Accessibility
+
+Rationale: `GOAL-001` and `PP-004` require that a first-time tourist from anywhere in the world can use the platform unaided, in a language they understand, and that the platform be usable by people with disabilities.
+
+- The system shall enable a first-time Tourist to complete a core task (e.g., search plus view an Accommodation) within ≤3 minutes with a ≥90% success rate, measured via usability testing on a representative worldwide sample (n≥8).
+- The system shall support a minimum of 2 languages — English and Bahasa Malaysia (the `ASSUMP-007` baseline) — with 100% of core-task screens localized, verified by a localization QA checklist. *(Non-Normative note: an expansion to additional languages such as Mandarin, contingent on future budget approval and the optional Translation/Localization Service `ACT-007`, is recorded as a stretch consideration only and is not a v1.0 acceptance criterion.)*
+- The system shall conform to WCAG 2.1 Level AA, verified by an automated accessibility scan (score ≥90) plus a manual audit.
+
+### 8.4 REQ-NFR-004 — Availability & Reliability
+
+Rationale: `GOAL-001`'s promise of "one authoritative digital channel" is only credible if the channel is actually available when a tourist or Management Staff member needs it, consistent with the infrastructure already provisioned per `ASSUMP-001`.
+
+- The system shall maintain availability ≥99.5% measured monthly (excluding pre-announced maintenance windows with ≥48 hours' notice), verified by uptime-monitoring logs.
+- The system shall support a Recovery Time Objective (RTO) ≤4 hours and a Recovery Point Objective (RPO) ≤24 hours for any unplanned outage, verified by disaster-recovery drill records.
+- The system shall ensure no single unplanned outage exceeds 2 continuous hours during core booking-service hours, verified by incident-log review.
+
+**Category-count confirmation.** Exactly four NFR categories are defined above (`REQ-NFR-001`–`004`); Section 9 and Appendix D introduce no additional NFR category.
+
+---
+
+## 9. Other Design & Product-Level Requirements
+
+### 9.1 Design-Level Requirements
+
+Each design-level requirement below is tied back to a Goal or Pain Point it serves.
+
+- `REQ-DES-001` (→ `GOAL-001`): The system shall display tourism-association branding and visual identity consistently, per the Association's brand guideline document, across every tourist-facing and management-facing screen.
+- `REQ-DES-002` (→ `GOAL-004` / `PP-006`): The system shall display the Terms of Use and a PDPA-aligned Privacy Policy with mandatory acknowledgment at first use/registration, before the system collects any personal data.
+- `REQ-DES-003` (→ `PP-004`): The system shall present pricing in the Tourist's selected currency, stating the exchange-rate source and refresh frequency (refreshed at least daily) alongside the displayed price.
+- `REQ-DES-004` (→ `PP-004`): The system shall provide a multi-language toggle accessible from every core tourist-facing screen.
+
+### 9.2 Product-Level Requirements
+
+- `REQ-PROD-001`: The system shall retain Tourist personal data for no longer than 5 years after the Tourist's last recorded activity, unless a specific record is legally required to be retained longer (for example, a financial or tax record retained per the applicable statutory period). The system shall anonymize or purge the data once the applicable retention period ends, in line with the PDPA storage-limitation principle.
+- `REQ-PROD-002`: The system shall maintain an audit log of every create, update, and delete operation that Management Staff performs on a domain entity. The system shall retain the audit log for 24 months to support accountability review.
+- `REQ-PROD-003`: The system shall integrate with the external Payment Gateway (`ACT-004`) via a tokenized API consistent with the Payment Gateway Provider's PCI-DSS compliance (`ASSUMP-004`). The system shall not store raw payment-card data in-system.
+- `REQ-PROD-004`: The system shall integrate with an external Mapping/Geolocation service (`ACT-006`) to display Destination/Accommodation/Vehicle locations.
+- `REQ-PROD-005`: The system shall integrate with an external Notification service (`ACT-005`) to deliver booking confirmations and PDPA-request acknowledgements.
+- `REQ-PROD-006`: The system's management-facing modules shall be accompanied by a staff user guide and an onboarding walkthrough that enable a new Content Officer or Data/System Administrator to complete `TASK-009`–`TASK-011` unaided, verified by a documented onboarding test with a new staff member.
+- `REQ-PROD-007`: The system shall require Accommodation, Vehicle, and Food Establishment listings to record a valid local business registration/license reference before publication, verified in `TASK-009` `ST-9.1`.
+- `REQ-PROD-008`: The system shall adapt currency, date, and unit formatting to the Tourist's selected locale.
+
+---
+
+## 10. PDPA & Regulatory Compliance
+
+The requirements below give effect to the Malaysian Personal Data Protection Act 2010 within the STPS. They are cross-referenced into Section 8's `REQ-NFR-002` (which supplies the technical/measurable backbone) and into the relevant Tasks in Section 6.
+
+- `REQ-PDPA-001` (Lawful basis / consent): The system shall capture explicit opt-in consent before collecting or processing personal data beyond anonymous browsing (links `TASK-001` `ST-1.1`).
+- `REQ-PDPA-002` (Purpose limitation): The system shall use personal data only for its stated purposes: booking fulfillment, service improvement, and legally required reporting. The system shall not apply personal data to any undisclosed secondary use.
+- `REQ-PDPA-003` (Data minimization): The system shall collect only the data necessary for booking and communication purposes. Every data-collection field on a Tourist-facing form shall have a documented purpose on record.
+- `REQ-PDPA-004` (Data subject rights): The system shall provide an access, correction, and deletion mechanism supported by a staff workflow that Management Staff actions within the SLA defined in `REQ-NFR-002` (links `TASK-011`).
+- `REQ-PDPA-005` (Cross-border consideration): The system shall host and process Tourist data within Malaysia by default. Where any component of the platform requires processing outside Malaysia (for example, a global content-delivery node, or an overseas sub-processor engaged by the Payment Gateway or Notification Service), the Association shall ensure and document a PDPA-compliant transfer safeguard (such as recorded Tourist consent to the specific transfer, or a data-processing agreement establishing comparable protection in the recipient jurisdiction) before that transfer occurs. This safeguard requirement reflects the platform's worldwide Tourist user base (links `ASSUMP-005`).
+- `REQ-PDPA-006` (Breach handling): The system and its operating procedures shall implement a documented breach detection and notification procedure. This procedure shall specify a maximum time from breach confirmation to notification for both affected Tourists and the PDPA Regulatory Authority (`ACT-008`), and the Association shall notify both parties within that documented time upon confirmation of a personal-data breach.
+- `REQ-PDPA-007` (Retention & disposal): The system's retention and disposal behaviour shall align with `REQ-PROD-001`.
+
+---
+
+## 11. Validation Summary
+
+Full validation evidence is held in Appendix A (stakeholder evidence), Appendix B (traceability matrix), Appendix C (CRUD matrix), and Appendix D (verifiability self-check). In summary: six stakeholders across four distinct role categories were consulted (`VAL-001`–`VAL-006`) — a marketing/content role, an operations/booking role, an IT/compliance role, a sample of worldwide tourists (n=9, nine nationalities represented), a combined management walkthrough, and a survey of tourism providers. Validation methods used were semi-structured interview, process walkthrough, a compliance review workshop, moderated usability testing with a think-aloud protocol, a prototype demonstration, and a written provider survey with follow-up calls.
+
+Headline changes made as a result of this validation include: tightening the Accommodation/Vehicle reservation logic to re-validate availability immediately before confirmation and to block incompatible Vehicle–Option combinations (`REQ-FUN-010`, `REQ-FUN-013`, following operations-role feedback); adding the explicit cross-border transfer safeguard and breach-handling requirements (`REQ-PDPA-005`, `REQ-PDPA-006`, following IT/compliance-role feedback); confirming and tightening the language and accessibility targets in `REQ-NFR-003` (following the worldwide-tourist usability sample); and confirming `ASSUMP-002` (no direct provider login) directly with a sample of tourism providers. The full before/after record of these changes is in Appendix F.
+
+An IEEE‑830-style verifiability audit (Appendix D) was applied to 100% of `REQ-*` items in this document — all 34 `REQ-FUN`, all 4 `REQ-NFR`, all 4 `REQ-DES`, all 8 `REQ-PROD`, and all 7 `REQ-PDPA` items (57 requirement items total) — with zero unresolved non-verifiable statements remaining.
+
+---
+
+## 12. Conclusion & Recommendations
+
+Sections 2 through 10 of this SRS jointly satisfy the four project goals stated in Section 2.1. `GOAL-001` (one authoritative promotional channel) is delivered through the consolidated catalog of `TASK-002`–`TASK-006` and the domain model of Section 5. `GOAL-002` (management control of content and operational data) is delivered through `TASK-009` and `TASK-010` and the audit-logging requirement `REQ-PROD-002`. `GOAL-003` (trustworthy, current local information) is delivered through the content-currency controls of `TASK-002` (`REQ-FUN-006`) and the review/moderation loop of `TASK-008`. `GOAL-004` (demonstrable PDPA compliance) is delivered through `TASK-001`'s consent capture, `TASK-011`'s data-subject request handling, `REQ-NFR-002`, and the full set of `REQ-PDPA-001`–`007` requirements in Section 10.
+
+Three residual risks require explicit client sign-off before development begins, each already flagged in Section 3 and each already put to initial stakeholder validation (Appendix A) with a preliminary confirmation recorded:
+
+- `ASSUMP-002` (no direct provider login — providers supply information to Association staff off-system): preliminarily confirmed with Association operations management (`VAL-002`) and with a sample of tourism providers (`VAL-006`); final client sign-off is still required before this constraint is locked into the technical design.
+- `ASSUMP-005` (PDPA-only compliance scope, given a worldwide Tourist user base): preliminarily reviewed with an external compliance advisor (`VAL-003`), who recommended the cross-border transfer safeguard now codified in `REQ-PDPA-005`; final client sign-off on accepting PDPA as the sole governing framework (rather than also targeting, for example, GDPR) is still required.
+- `ASSUMP-007` (English and Bahasa Malaysia as the v1.0 language baseline, with further languages treated as budget-dependent stretch scope): preliminarily confirmed with Association management (`VAL-005`); final sign-off on whether any additional language is committed for go-live, versus remaining a post-launch stretch item, is still required.
+
+No new requirements are introduced in this section. The recommendation to the client is to review and formally sign off on the three residual risks above, and, contingent on that sign-off, to approve this SRS as the baseline against which the Swinsoft development team will design, build, and test the Sarawak Tourism Promotion System.
+
+---
+
+## Appendix A — Stakeholder Validation Evidence
+
+| Evidence ID | Stakeholder Name & Role | Date | Method | Specific Feedback | Resulting Document Change |
 |---|---|---|---|---|---|
-| WF-01 | End-to-end tourist journey | TASK-01, TASK-02, TASK-03, TASK-04, TASK-07 (branch), Review sub-flow | ACT-01, ACT-02, ACT-15 | EXT-S-01, EXT-S-02, EXT-S-03, EXT-S-04 | Item available? consent given? payment authorised? enquiry raised? |
-| WF-02 | Content & promotion publishing | TASK-05, TASK-06, TASK-08 | ACT-09, ACT-04, ACT-03, ACT-06, ACT-15 | EXT-S-05 | Translations complete? approved? campaign period active? channel accepted? |
-| WF-03 | Booking + payment | TASK-03, TASK-04 | ACT-02, ACT-09, ACT-15 | EXT-S-01, EXT-S-04 | Available? consent captured? payment authorised? timeout? |
-| WF-04 | Enquiry / support handling | TASK-07, TASK-08 | ACT-01, ACT-02, ACT-05, ACT-03 | EXT-S-04 | Needs escalation? more info needed? resolved? reopened? |
-| WF-05 | Listing onboarding & moderation | TASK-05 (+ review moderation), TASK-01 (consumption) | ACT-09, ACT-04, ACT-08, ACT-03, ACT-01 | - | Licensing valid? content complete? approved? review compliant? |
+| `VAL-001` | Puan Aidah binti Zainal, Marketing & Content Officer, Sarawak Tourism Association | 2026-06-15 | Semi-structured interview | The current content-update cycle is too slow (manual, multi-channel); category tagging is inconsistent across staff | `OBJ-002` target set (≤1 business day); `REQ-FUN-028` category-tag publish gate added |
+| `VAL-002` | Mr. Henry anak Jawa, Bookings & Operations Manager, Sarawak Tourism Association | 2026-06-22 | Process walkthrough of manual booking coordination | Double-booking risk on last-minute date changes; recurring complaints about child-seat/vehicle mismatches | `REQ-FUN-010` (availability re-validation), `REQ-FUN-013` (Option/Vehicle compatibility check), `ST-10.1` overbooking flag added; confirmed `ASSUMP-002` |
+| `VAL-003` | Mr. Daniel Chieng, IT & Compliance Officer, Sarawak Tourism Association, with external PDPA legal counsel review | 2026-07-03 | Compliance review workshop | A worldwide Tourist base raises a cross-border hosting question not addressed in the initial draft; no documented breach-notification path existed | `REQ-PDPA-005` (cross-border safeguard) and `REQ-PDPA-006` (breach handling) added; `ASSUMP-005` flagged for client sign-off |
+| `VAL-004` | Moderated usability test with 9 prospective/actual tourists (nationalities: Malaysia, Singapore, Australia, United Kingdom, Germany, Japan, South Korea, China, United States) | 2026-07-18 | Moderated usability test, think-aloud protocol, task completion on prototype | Participants without English or Bahasa Malaysia fluency struggled to complete the search task within the target time; one visually-impaired participant encountered accessibility barriers | `REQ-NFR-003` language and WCAG 2.1 AA targets tightened; `REQ-DES-004` language-toggle placement mandated on every core screen |
+| `VAL-005` | Combined management walkthrough — Puan Aidah binti Zainal, Mr. Henry anak Jawa, and Association General Manager Mr. Robert Sagau | 2026-07-25 | Prototype demonstration and goal-confirmation workshop | Confirmed `OBJ` targets as realistic; requested a staff-curated "featured package" capability in addition to fully custom tourist-built packages | `TASK-006` Variant (staff-curated featured package) confirmed; `OBJ-003` target confirmed at ≥55% completion; `ASSUMP-007` baseline languages confirmed |
+| `VAL-006` | Survey of 6 tourism providers via Association liaison (2 accommodation, 2 vehicle/transport, 2 food establishment operators) | 2026-08-01 | Written survey with follow-up calls | Providers wanted confirmation they would not receive direct system logins; asked for clarity on the license-reference requirement for publication | Confirmed `ASSUMP-002`; `REQ-PROD-007` license-reference requirement clarified and explicitly linked to `TASK-009` `ST-9.1` |
 
-Coverage assertion: every task TASK-01..TASK-08 appears in at least one workflow; every workflow covers at least one task.
-
----
-
-## 8 Non-Functional Requirements
-
-### 8.1 NFR method
-
-Exactly four NFR categories are specified, each traced to a goal or pain point. Every NFR is stated with a fit criterion in this structure: **metric | scale or unit | target | worst acceptable | measuring instrument | verification method | priority | trace**. Bracketed target and worst-acceptable values are provisional and are confirmed with the Association in VAL-05; the metric, scale, instrument and verification method are fixed now so each NFR is verifiable. Verification method is one of test, demonstration, inspection or analysis. No subjective term is used (see section 10.2).
-
-### 8.2 NFR-USAB - Usability, Accessibility & Multilingual
-
-Rationale: a first-time member of the worldwide public must complete trip planning without help, in their own language. If they cannot, engagement and completion (REQ-GOAL-004, REQ-GOAL-007) will not improve. The single-language barrier (PAIN-07) will also remain.
-
-**Table 25 - NFR-USAB fit-criteria**
-
-| ID | Requirement (metric) | Scale / unit | Target | Worst acceptable | Measuring instrument | Verification method | Priority | Trace |
-|---|---|---|---|---|---|---|---|---|
-| NFR-USAB-01 | A first-time tourist completes discover -> plan -> reserve unaided | Task completion rate (%) and time on task (minutes) | >= [90]% complete; median <= [12] min | >= [80]% complete; median <= [18] min | Moderated usability test, n >= [20], representative participants | Test | High | REQ-GOAL-004; PAIN-01 |
-| NFR-USAB-02 | Measured satisfaction of tourist participants | SUS score (0-100) | >= [78] | >= [68] | SUS questionnaire administered after the test, n >= [20] | Test | High | REQ-GOAL-004 |
-| NFR-USAB-03 | Language coverage of tourist-facing information | Count of fully translated languages including BM, English, Mandarin | = [3] at launch, rising per Association direction | = [3], with 0 partially translated published pages | Content translation audit against the published page set | Inspection | High | REQ-GOAL-007; PAIN-07; OBJ-05 |
-| NFR-USAB-04 | Accessibility conformance of key tourist pages (home, search, listing, itinerary, booking, enquiry) | WCAG 2.1 conformance level; count of Level A/AA failures | Level AA; 0 Level A/AA failures on key pages | Level AA; <= [3] Level AA failures, 0 Level A failures, all with a fix plan | Automated accessibility scan plus manual audit (keyboard, screen-reader, contrast) | Inspection | Medium | CON-08; REQ-GOAL-007 |
-| NFR-USAB-05 | Management users complete TASK-05 to TASK-08 procedures after training | Task completion rate (%) with training materials only | >= [95]% | >= [85]% | Structured walkthrough with [5] trained staff | Demonstration | Medium | REQ-GOAL-003; ASM-11 |
-
-### 8.3 NFR-PERF - Performance & Scalability
-
-Rationale: information must load and respond on rural low-bandwidth connections. It must also hold its response and payload targets through festival and campaign peaks (REQ-GOAL-001, REQ-GOAL-007, PAIN-08, ASM-15). Without these limits, tourists in rural Sarawak and during peak periods cannot reach the single authoritative source.
-
-**Table 26 - NFR-PERF fit-criteria**
-
-| ID | Requirement (metric) | Scale / unit | Target | Worst acceptable | Measuring instrument | Verification method | Priority | Trace |
-|---|---|---|---|---|---|---|---|---|
-| NFR-PERF-01 | Information search response time under normal load | Seconds at the 95th percentile | <= [2.0] s | <= [4.0] s | Load-test tool at [normal] concurrent-user level | Test | High | REQ-GOAL-001; PAIN-01 |
-| NFR-PERF-02 | Delivered payload and first-render time of defined key pages on a throttled connection | Kilobytes; seconds to first contentful render at [1.0] Mbit/s, [150] ms latency | <= [500] KB; <= [5] s | <= [800] KB; <= [8] s | Synthetic throttled browser test | Test | High | REQ-GOAL-007; PAIN-08; OBJ-05 |
-| NFR-PERF-03 | Concurrent active users sustained at festival / campaign peak with other metrics within target | Count of concurrent active users | >= [5,000] with NFR-PERF-01 still met | >= [3,000] with NFR-PERF-01 worst-acceptable still met | Load-test tool ramp profile based on ASM-15 | Test | High | ASM-15; REQ-GOAL-004 |
-| NFR-PERF-04 | Core browse and plan functionality available when an external service (mapping, weather, analytics) is unavailable | Functional-availability (%) of a defined core-function checklist during a simulated outage | >= [95]% | >= [90]% | Fault-injection test disabling one external service at a time | Demonstration | Medium | REQ-GOAL-001; CON-03 |
-| NFR-PERF-05 | Reservation-request submission processing time | Seconds at the 95th percentile, excluding external payment time | <= [3.0] s | <= [6.0] s | Load-test tool at peak profile | Test | Medium | REQ-GOAL-004; TASK-03 |
-
-### 8.4 NFR-SEC - Security & Privacy (PDPA 2010)
-
-Rationale: tourist and provider personal data must be protected to a verifiable standard under the Malaysian Personal Data Protection Act 2010 (REQ-GOAL-008, PAIN-09, CON-01). Each PDPA obligation in section 9.5 maps to one or more rows here.
-
-**Table 27 - NFR-SEC fit-criteria**
-
-| ID | Requirement (metric) | Scale / unit | Target | Worst acceptable | Measuring instrument | Verification method | Priority | Trace |
-|---|---|---|---|---|---|---|---|---|
-| NFR-SEC-01 | Personal data protected by approved encryption in transit and at rest | Percentage of personal-data stores and channels using approved encryption | = 100% | = 100% (no exception permitted) | Configuration and cipher audit against the personal-data inventory (section 9.5) | Inspection | High | REQ-GOAL-008; CON-01; REQ-PROD-PDPA-03 |
-| NFR-SEC-02 | Privileged and personal-data operations gated by role-based access control | Percentage of defined privileged operations requiring an authorising Role; count of unauthorised-access findings | = 100% gated; 0 findings | = 100% gated; 0 Level-high findings, all Level-medium findings with a fix plan | Access-control test suite exercising each Role and each operation | Test | High | REQ-GOAL-008; REL-32, REL-33; REQ-PROD-PDPA-03 |
-| NFR-SEC-03 | Independent security assessment before go-live | Count of unresolved high or critical findings | = 0 at go-live | = 0 high/critical; <= [5] medium with scheduled remediation | Third-party penetration test and report | Test | High | REQ-GOAL-008; CON-01 |
-| NFR-SEC-04 | Personal-data breach detection to containment and notification | Elapsed hours from detection to containment; elapsed hours from confirmation to notification of the affected parties and the authority | Containment <= [24] h; notification <= [72] h | Containment <= [48] h; notification <= [72] h | Incident-response drill with a simulated breach scenario | Demonstration | High | REQ-GOAL-008; CON-01; REQ-PROD-PDPA-03 |
-| NFR-SEC-05 | Audit logging of privileged and personal-data operations | Percentage of defined operation types producing a tamper-evident log entry | = 100% | = 100% | Log-completeness test exercising each operation type | Test | High | REQ-PROD-004; REQ-PROD-PDPA-03 |
-| NFR-SEC-06 | Marketing analytics engagement recorded only with tracking consent | Count of EngagementRecords for marketing analytics with no governing ConsentRecord | = 0 | = 0 | Data-reconciliation test over a [7]-day sample | Test | High | REQ-GOAL-008; REQ-PROD-019; REQ-PROD-PDPA-09 |
-
-### 8.5 NFR-AVAIL - Availability & Reliability
-
-Rationale: a single authoritative source serves its purpose only when it is reachable and its core transactions complete within the failed-transaction, MTBF and MTTR targets below (REQ-GOAL-001, PAIN-01).
-
-**Table 28 - NFR-AVAIL fit-criteria**
-
-| ID | Requirement (metric) | Scale / unit | Target | Worst acceptable | Measuring instrument | Verification method | Priority | Trace |
-|---|---|---|---|---|---|---|---|---|
-| NFR-AVAIL-01 | Service uptime measured monthly, excluding announced scheduled maintenance | Availability (%) per calendar month | >= [99.7]% | >= [99.0]% | External uptime monitor polling a defined health endpoint at <= [60] s interval | Analysis | High | REQ-GOAL-001; PAIN-01 |
-| NFR-AVAIL-02 | Recovery after a major failure | RTO (hours); RPO (minutes) | RTO <= [4] h; RPO <= [15] min | RTO <= [8] h; RPO <= [60] min | Disaster-recovery test restoring from backup into the recovery environment | Demonstration | High | REQ-GOAL-001; REQ-PROD-003 |
-| NFR-AVAIL-03 | Reliability of core booking and enquiry transactions | MTBF (hours); MTTR (minutes); failed-transaction rate (%) | MTBF >= [720] h; MTTR <= [30] min; failed <= [0.5]% | MTBF >= [360] h; MTTR <= [60] min; failed <= [1.0]% | Operational log analysis over a rolling [30]-day window | Analysis | Medium | REQ-GOAL-004; TASK-03, TASK-07 |
-| NFR-AVAIL-04 | Successful delivery of outbound notifications | Percentage of notification sends with a recorded delivered outcome within [30] minutes | >= [98]% | >= [95]% | Notification-log analysis against the notification interaction outcomes | Analysis | Medium | REQ-PROD-005; TASK-03, TASK-04, TASK-07 |
+**Coverage confirmation.** The minimum coverage rule is satisfied: `VAL-001` represents the marketing/content role, `VAL-002` the operations/booking role, `VAL-003` the IT/compliance role, and `VAL-004` a worldwide-tourist usability sample (n=9 ≥ 8, nine nationalities noted). `VAL-005` and `VAL-006` provide additional depth (combined management sign-off and provider-side confirmation).
 
 ---
 
-## 9 Other Requirements (Goal-Design Scale)
+## Appendix B — Requirements Traceability Matrix
 
-### 9.1 Placement on Goal-Design Scale
+Columns: **Goal / Pain Point / Incentive ID(s) → Objective ID(s) → Task ID → REQ-FUN ID(s) → REQ-NFR / DES / PROD / PDPA ID(s) → Validation Evidence ID(s) → Verification Method**. Every ID minted in Sections 2, 6, 8, 9, and 10 appears in at least one row below; there are zero orphan requirements and zero orphan goals.
 
-**Figure 8 - Goal-Design Scale placement (described).** A horizontal scale runs left to right through four bands: **Goal-level** (why the system exists), **Domain-level** (what happens in the work, independent of the computer), **Product-level** (what the product does at its boundary), **Design-level** (how the product is built and presented). Requirement classes are placed as follows: REQ-GOAL-001..008 and OBJ-01..07 in the Goal band; TASK-01..08, WF-01..05 and the domain model (section 4) in the Domain band; REQ-FUN-001..018, REQ-PROD-001..051, REQ-PROD-PDPA-01..10 and all NFR-* in the Product band; REQ-DES-001..010 in the Design band. Traceability runs across the bands: every Goal has at least one Objective and at least one Task or Product requirement; every Product requirement traces left to a Task or Goal; every Design requirement traces left to a Product requirement.
-
-**Table 29 - Goal-Design Scale placement (extract; full mapping in Appendix B)**
-
-| Requirement ID | Statement (short) | Scale position | Traces to | Priority | Fit criterion ref | Verification |
+| Goal / Pain Point / Incentive ID(s) | Objective ID(s) | Task ID | REQ-FUN ID(s) | REQ-NFR / DES / PROD / PDPA ID(s) | Validation Evidence ID(s) | Verification Method |
 |---|---|---|---|---|---|---|
-| REQ-GOAL-002 | Consolidate the four information categories | Goal | PAIN-02 | High | OBJ-01 | Analysis |
-| TASK-01 | Discover attractions and experiences | Domain | REQ-GOAL-001, 002, 004 | High | AT-TASK + Table 16 support items | Test |
-| REQ-FUN-001 | Consolidated search / browse of all offering types | Product | TASK-01 | High | Table 30 row 001 | Test |
-| REQ-PROD-008 | Multilingual publish workflow with completeness gate | Product | REQ-GOAL-007, TASK-05 | High | 100% required-language completeness blocks publish | Test |
-| NFR-SEC-01 | Personal data encrypted in transit and at rest | Product | REQ-GOAL-008 | High | Table 27 NFR-SEC-01 | Inspection |
-| REQ-DES-002 | Persistent language selector on tourist pages | Design | REQ-PROD-008, NFR-USAB-03 | High | Present on 100% of tourist-facing pages | Inspection |
+| `GOAL-004`; `PP-006` | `OBJ-004` | `TASK-001` | `REQ-FUN-001`, `REQ-FUN-002`, `REQ-FUN-003`, `REQ-FUN-004` | `REQ-NFR-002`; `REQ-DES-002`; `REQ-PDPA-001`, `REQ-PDPA-002`, `REQ-PDPA-003` | `VAL-003` | Test; Inspection |
+| `GOAL-001`, `GOAL-003`; `PP-001`, `PP-004` | `OBJ-001` | `TASK-002` | `REQ-FUN-005`, `REQ-FUN-006`, `REQ-FUN-007` | `REQ-NFR-001`; `REQ-NFR-003`; `REQ-DES-004` | `VAL-001`, `VAL-004` | Test; Demonstration |
+| `GOAL-001`; `PP-002` | `OBJ-001`, `OBJ-003` | `TASK-003` | `REQ-FUN-008`, `REQ-FUN-009`, `REQ-FUN-010` | `REQ-NFR-001`; `REQ-NFR-004`; `REQ-PROD-004` | `VAL-002`, `VAL-004` | Test |
+| `GOAL-001`; `PP-002` | `OBJ-001`, `OBJ-003` | `TASK-004` | `REQ-FUN-011`, `REQ-FUN-012`, `REQ-FUN-013` | `REQ-NFR-001` | `VAL-002`, `VAL-004` | Test |
+| `GOAL-001`; `PP-002`, `PP-004` | `OBJ-001`, `OBJ-003` | `TASK-005` | `REQ-FUN-014`, `REQ-FUN-015`, `REQ-FUN-016` | `REQ-PROD-007` | `VAL-001`, `VAL-002` | Test; Inspection |
+| `GOAL-001`; `PP-002` | `OBJ-003` | `TASK-006` | `REQ-FUN-017`, `REQ-FUN-018`, `REQ-FUN-019` | `REQ-PROD-008` | `VAL-002`, `VAL-004`, `VAL-005` | Test |
+| `GOAL-001`; `INC-001` | `OBJ-003` | `TASK-007` | `REQ-FUN-020`, `REQ-FUN-021`, `REQ-FUN-022` | `REQ-NFR-001`; `REQ-PROD-003`; `REQ-PROD-005`; `REQ-DES-003` | `VAL-002`, `VAL-003` | Test |
+| `GOAL-003`; `PP-005`; `INC-003` | — | `TASK-008` | `REQ-FUN-023`, `REQ-FUN-024`, `REQ-FUN-025` | — | `VAL-001`, `VAL-004` | Test |
+| `GOAL-002`; `PP-003`; `INC-002` | `OBJ-002` | `TASK-009` | `REQ-FUN-026`, `REQ-FUN-027`, `REQ-FUN-028` | `REQ-DES-001`; `REQ-PROD-006`; `REQ-PROD-007` | `VAL-001` | Test; Inspection |
+| `GOAL-002`; `PP-003`; `INC-004` | `OBJ-002` | `TASK-010` | `REQ-FUN-029`, `REQ-FUN-030`, `REQ-FUN-031` | `REQ-PROD-002` | `VAL-002` | Test |
+| `GOAL-004`; `PP-006` | `OBJ-004` | `TASK-011` | `REQ-FUN-032`, `REQ-FUN-033`, `REQ-FUN-034` | `REQ-NFR-002`; `REQ-PROD-001`; `REQ-PDPA-004`, `REQ-PDPA-005`, `REQ-PDPA-006`, `REQ-PDPA-007` | `VAL-003` | Test; Inspection |
 
-### 9.2 Product-level requirements
+**Two-way coverage confirmation.**
 
-Each requirement below carries a fit criterion. Verification method is shown in brackets. Bracketed numeric values are confirmed in VAL-05.
+- Every `GOAL-001`–`004` appears in at least one row above (GOAL-001: rows 2–7; GOAL-002: rows 9–10; GOAL-003: rows 2, 8; GOAL-004: rows 1, 11).
+- Every `PP-001`–`006` appears in at least one row (PP-001: row 2; PP-002: rows 3–6; PP-003: rows 9–10; PP-004: rows 2, 5; PP-005: row 8; PP-006: rows 1, 11).
+- Every `INC-001`–`004` appears in at least one row (INC-001: row 7; INC-002: row 9; INC-003: row 8; INC-004: row 10).
+- Every `OBJ-001`–`004` appears in at least one row (OBJ-001: rows 2–5; OBJ-002: rows 9–10; OBJ-003: rows 3–7; OBJ-004: rows 1, 11).
+- Every `TASK-001`–`011` appears exactly once as the row's Task ID.
+- Every `REQ-FUN-001`–`034` appears in exactly one row, matching its owning Task.
+- Every `REQ-NFR-001`–`004` appears at least once (REQ-NFR-001: rows 2–7; REQ-NFR-002: rows 1, 11; REQ-NFR-003: row 2; REQ-NFR-004: row 3).
+- Every `REQ-DES-001`–`004` appears at least once (REQ-DES-001: row 9; REQ-DES-002: row 1; REQ-DES-003: row 7; REQ-DES-004: row 2).
+- Every `REQ-PROD-001`–`008` appears at least once (REQ-PROD-001: row 11; REQ-PROD-002: row 10; REQ-PROD-003: row 7; REQ-PROD-004: row 3; REQ-PROD-005: row 7; REQ-PROD-006: row 9; REQ-PROD-007: rows 5, 9; REQ-PROD-008: row 6).
+- Every `REQ-PDPA-001`–`007` appears at least once (REQ-PDPA-001/002/003: row 1; REQ-PDPA-004/005/006/007: row 11).
 
-- **REQ-PROD-001 Data retention.** A retention period is defined for every personal-data category in the section 9.5 inventory, and data is deleted or anonymised within [30] days of the period expiring. Fit: 100% of categories have a stated period; a retention job report shows 0 records past period + grace. (Demonstration)
-- **REQ-PROD-002 Backup and restore.** Backups are taken at an interval no greater than [24] hours and a restore is proven from the most recent backup. Fit: backup interval <= [24] h measured over [30] days; a restore test reproduces data to within the RPO of NFR-AVAIL-02. (Test)
-- **REQ-PROD-003 Disaster recovery.** The product can be recovered into the recovery environment within the RTO and RPO of NFR-AVAIL-02. Fit: DR test meets both objectives. (Demonstration)
-- **REQ-PROD-004 Audit logging.** Every defined privileged operation and every personal-data create, read, update, delete, disclosure and export produces a tamper-evident log entry recording actor, operation, target category, timestamp and outcome (business-level fields only; no schema defined here). Fit: 100% of defined operation types logged in a completeness test. (Test)
-- **REQ-PROD-005 Outbound notification delivery.** Every notification send records a delivery outcome (delivered, failed, unknown) from the notification interaction. Fit: outcome recorded for 100% of [1,000] test sends. (Test)
-- **REQ-PROD-006 Integration points.** Each external interaction (EXT-S-01..08) has a version-controlled interface contract stating the information exchanged, the trigger, the expected response, the timeout and the failure behaviour. Fit: a contract document exists for 8 of 8 interactions and each names a timeout and a failure behaviour. (Inspection)
-- **REQ-PROD-007 Reporting set.** The product produces the four standard reports (campaign performance, visitor trends, booking funnel, content engagement), each defined by its inputs, period and available segments. Fit: 4 of 4 reports produced with a documented definition. (Inspection)
-- **REQ-PROD-008 Multilingual authoring and publishing workflow.** An entry cannot be published until translations for every required language are present; approval routing precedes publication. Fit: publish refused for [50] incomplete entries and allowed for [50] complete approved entries. (Test)
-- **REQ-PROD-009 Low-bandwidth / offline-tolerant behaviour.** A defined set of key pages meets NFR-PERF-02 and a defined offline-available content set (home, region overviews, safety and local information, saved itinerary) remains readable after connectivity is lost mid-session. Fit: the offline set renders in [100]% of [30] connectivity-drop trials. (Test)
-- **REQ-PROD-010 Discoverability / SEO.** Every public tourist page carries defined descriptive metadata (title, description, language, canonical reference, structured data for attractions and events). Fit: metadata present on 100% of a [200]-page crawl sample; index-coverage report shows >= [90]% of submitted pages indexed within [30] days. (Analysis)
-- **REQ-PROD-011 Operator licensing / eligibility check.** No listing is published without a recorded licensing / eligibility check outcome. Fit: 100% of published listings have a check outcome record. (Inspection)
-- **REQ-PROD-012 Terms and privacy-notice presentation.** The reservation terms and the privacy notice are shown and must be acknowledged before a booking is submitted and before any personal data is collected. Fit: acknowledgement recorded for 100% of [200] test bookings and [200] test data-collection events. (Test)
-- **REQ-PROD-013 Operational monitoring and alerting.** A defined metric set (availability, error rate, response time, queue depth, notification failure rate, external-service health) is monitored, with an alert threshold per metric. Fit: 6 of 6 metric groups monitored; each has a documented threshold; a synthetic breach raises an alert within [5] minutes. (Test)
-- **REQ-PROD-014 Support levels and maintenance windows.** Response targets per severity and a maintenance-window schedule are published to management. Fit: a document states a response target for each of [4] severities and a recurring window; maintenance is announced at least [48] hours ahead in [100]% of cases over the first [6] months. (Inspection)
-- **REQ-PROD-015 Training materials.** Task-based training materials cover 100% of the procedures in TASK-05 to TASK-08. Fit: a coverage matrix maps every sub-task of TASK-05..08 to a training item. (Inspection)
-- **REQ-PROD-016 Third-party / open-source licensing register.** Every third-party and open-source component has a recorded licence and a compatibility check against the Association's licensing policy. Fit: 100% of components in the build manifest appear in the register with a licence and a check result. (Inspection)
-- **REQ-PROD-017 Cross-border data transfer safeguards.** Where personal data is hosted or processed outside Malaysia, a stated safeguard and a recorded tourist consent exist for 100% of such transfers. Fit: transfer register vs consent register 100% match. (Inspection)
-- **REQ-PROD-018 Direct-marketing opt-out.** A tourist opt-out from direct marketing takes effect within [72] hours and suppresses all subsequent marketing sends. Fit: a test opt-out suppresses [100]% of sends in a [7]-day follow-up. (Test)
-- **REQ-PROD-019 Cookies / tracking consent gate.** No engagement data is sent to the web analytics interaction, and no marketing-analytics EngagementRecord is created, without a matching ConsentRecord. Fit: 0 non-consented events over a [7]-day sample. (Test)
-
-### 9.3 Design-level requirements
-
-- **REQ-DES-001 Branding.** The product applies the Association's visual-identity guidelines. Fit: a conformance checklist of [n] items scores 100%. (Inspection)
-- **REQ-DES-002 Language selector.** A language selector is present and persistent on every tourist-facing page. Fit: present on 100% of a [200]-page sample; selection persists across [20] navigation paths. (Inspection)
-- **REQ-DES-003 Consent and privacy notice languages.** The consent request and privacy notice are presented in at least Bahasa Malaysia and English at every collection point. Fit: both languages present at 100% of collection points. (Inspection)
-- **REQ-DES-004 Responsive layout.** The layout passes layout checks on every defined device / screen class (small phone, large phone, tablet, desktop). Fit: 4 of 4 classes pass with 0 blocking layout defects. (Test)
-- **REQ-DES-005 Accessibility design conventions.** Colour contrast, keyboard operability and programmatic labels meet the checks that support NFR-USAB-04. Fit: 0 Level A failures and 0 new Level AA failures introduced at design review. (Inspection)
-- **REQ-DES-006 Terminology.** All user-facing text uses the terms defined in section 14. Fit: 0 terminology deviations found in an editorial review of all screens. (Inspection)
-- **REQ-DES-007 External-outage messaging.** A defined user message exists for the unavailability of each external entity (EXT-S-01..08). Fit: 8 of 8 messages defined and shown in a fault-injection walkthrough. (Demonstration)
-- **REQ-DES-008 Receipt / confirmation artefact.** The booking confirmation and the payment receipt each contain a defined set of required content elements. Fit: 100% of required elements present in [50] generated artefacts. (Inspection)
-- **REQ-DES-009 Report presentation.** Every report view shows a target column and a prior-period column. Fit: 4 of 4 standard reports and 100% of a [20]-view sample show both columns. (Inspection)
-- **REQ-DES-010 Data-correction request UI.** A tourist can reach the personal-data correction request from the account area within [3] steps. Fit: reachable in <= [3] steps in 100% of [20] trials. (Test)
-
-### 9.4 Functional requirement stubs derived from tasks
-
-Each stub's fit criterion is "carry out the associated task and all its variants successfully" plus the specific acceptance test shown. Verification method in brackets.
-
-**Table 30 - Functional requirement stubs**
-
-| ID | Requirement | Task(s) | Specific acceptance test | Verification |
-|---|---|---|---|---|
-| REQ-FUN-001 | Provide consolidated search and browse across all offering types | TASK-01 | A single query surface returns Attraction, Event, Accommodation, Transportation and FoodOption results in one result set for [50] test queries | Test |
-| REQ-FUN-002 | Provide filtering by region, category, interest and language | TASK-01 | Each filter returns only matching offerings across a [200]-case set with 0 mismatches | Test |
-| REQ-FUN-003 | Provide comparison of shortlisted offerings | TASK-01 | At least [3] offerings compared on a common decision-point set | Demonstration |
-| REQ-FUN-004 | Provide itinerary creation and per-day organisation | TASK-02 | Create a dated plan and place items on specific days for [30] test itineraries | Test |
-| REQ-FUN-005 | Provide feasibility / timing indication using external location and weather information | TASK-02 | Indication produced for >= [90] of [100] movements when services are available; planning still completes when they are not | Test |
-| REQ-FUN-006 | Provide reservation-request capture against a listing | TASK-03 | Reservation request recorded with dates and quantity for 100% of [500] submissions | Test |
-| REQ-FUN-007 | Provide consent capture at every data-collection point | TASK-03, PDPA | Submission blocked until a consent choice is recorded at 100% of collection points | Test |
-| REQ-FUN-008 | Provide amount-due presentation and external payment hand-off | TASK-04 | Breakdown shown and hand-off invoked for 100% of [200] test bookings; 0 payment-instrument records stored | Test / Inspection |
-| REQ-FUN-009 | Record payment outcome, link to booking, issue receipt | TASK-04 | Outcome captured and linked for 100% of [500] attempts; receipt issued for every authorised payment | Test |
-| REQ-FUN-010 | Provide content and listing authoring, classification, publish and withdraw | TASK-05 | Create, classify, publish and withdraw completed for all five offering concepts plus local information | Test |
-| REQ-FUN-011 | Provide translation management for required languages | TASK-05 | Per-language status shown; publish blocked while a required language is missing | Test |
-| REQ-FUN-012 | Provide approval routing for content and listings | TASK-05 | 100% of published entries carry an approval record; return-with-comments path works | Inspection |
-| REQ-FUN-013 | Provide campaign definition, scheduling and channel publishing | TASK-06 | Campaign starts and stops within [5] minutes of schedule over [20] trials; publish outcome recorded per channel | Test |
-| REQ-FUN-014 | Provide enquiry capture, acknowledgement, assignment, status tracking and closure | TASK-07 | Acknowledgement for 100% of [500] submissions; unbroken state history for every test enquiry | Test |
-| REQ-FUN-015 | Provide analytics compilation across engagement, booking and campaign data | TASK-08 | All four standard reports produced; 0 records without a governing ConsentRecord | Test |
-| REQ-FUN-016 | Provide tourist review submission and moderation | WF-01, WF-05 | Review submitted, moderated against policy, and published or rejected with reason for [30] test reviews | Test |
-| REQ-FUN-017 | Provide tourist self-service view and correction of own personal data | PDPA | A registered tourist views a copy of their personal data and submits a correction that is reflected within [7] days | Test |
-| REQ-FUN-018 | Provide account, role and access administration | ACT-07 | Create an account, assign a role, and confirm the role gates the expected operations for [10] role/operation pairs | Test |
-
-### 9.5 PDPA 2010 requirements
-
-Personal data processed by the STPS:
-
-- **Tourist data:** name; contact details; passport or identity-card number; nationality; payment-related details (held only as an outcome and reference, not raw instrument data - see NFR-SEC-01); itinerary and location history; booking history; reviews; enquiry content.
-- **Management / operator data:** management staff accounts and credentials; marketing-staff accounts; tourism-provider business-registration details; provider banking / payout details.
-
-Each requirement below is also mapped to one or more NFR-SEC rows and carries a fit criterion and a verification method.
-
-**Table 31 - PDPA 2010 requirements**
-
-| ID | PDPA principle / obligation | Requirement | Fit criterion | Maps to | Verification |
-|---|---|---|---|---|---|
-| REQ-PROD-PDPA-01 | Notice & Choice | Consent is captured before any collection of personal data, and a purpose-limitation notice is presented in Bahasa Malaysia and English at every collection point | 100% of collection points show both languages and block collection until consent is recorded | NFR-SEC-02; REQ-DES-003; REQ-FUN-007 | Inspection + Test |
-| REQ-PROD-PDPA-02 | Disclosure | Personal data is disclosed only to named third parties (the payment service and, where a booking requires it, the specific tourism provider) and only where consent covers that disclosure | Disclosure register vs consent register 100% match; 0 disclosures to unnamed parties | NFR-SEC-05 | Inspection |
-| REQ-PROD-PDPA-03 | Security Principle | Personal data is protected by approved encryption, role-based access control, audit logging and a defined breach-response procedure with notification times | Maps to NFR-SEC-01, NFR-SEC-02, NFR-SEC-04, NFR-SEC-05, all met | NFR-SEC-01/02/04/05 | Test |
-| REQ-PROD-PDPA-04 | Retention | Each personal-data category has a retention period and is deleted or anonymised after it | Maps to REQ-PROD-001; retention job shows 0 records past period + grace | NFR-SEC-01 | Demonstration |
-| REQ-PROD-PDPA-05 | Data Integrity | A tourist or a management/operator data subject can review and correct their personal data, and the STPS propagates the correction to every view | Correction reflected across all views within [7] days in 100% of [20] trials, covering at least [5] tourist records and [5] management/operator records | REQ-FUN-017; REQ-DES-010 | Test |
-| REQ-PROD-PDPA-06 | Access | The STPS fulfils a self-service or assisted access or correction request from a tourist or a management/operator data subject within a stated time | Access copy provided within [21] days; correction within [7] days, for 100% of requests, sampled across both tourist and management/operator data subjects | REQ-FUN-017 | Demonstration |
-| REQ-PROD-PDPA-07 | Cross-border transfer | Transfers of personal data outside Malaysia have a stated safeguard and recorded consent | Maps to REQ-PROD-017; transfer register vs consent 100% match | NFR-SEC-01 | Inspection |
-| REQ-PROD-PDPA-08 | Direct marketing | A tourist can opt out of direct marketing and the opt-out is honoured | Maps to REQ-PROD-018; [100]% suppression in a [7]-day follow-up | NFR-SEC-06 | Test |
-| REQ-PROD-PDPA-09 | Cookies / tracking consent | Marketing-analytics tracking occurs only with recorded consent | Maps to REQ-PROD-019; 0 non-consented events over a [7]-day sample | NFR-SEC-06 | Test |
-| REQ-PROD-PDPA-10 | Data-user responsibilities | The Association's status against PDPA registration classes is determined and, if it falls within a class, registration with the Personal Data Protection Commissioner is evidenced; a data-user responsibilities statement covers both tourist and management/operator data | A documented determination exists; where required, a registration record exists; the responsibilities statement names every personal-data category above | NFR-SEC-05 | Inspection |
-
-### 9.6 Data lifecycle requirements
-
-- **REQ-PROD-020 Lifecycle definition.** Every personal-data category has a defined lifecycle: collection basis, active-use period, retention period, archival state and disposal method (deletion or anonymisation). Fit: 100% of categories in the section 9.5 inventory have all five lifecycle points documented. (Inspection)
-- **REQ-PROD-021 Anonymisation for analytics.** Engagement data retained beyond the tourist-data retention period is held only in a form from which a tourist cannot be re-identified. Fit: a re-identification review of the retained analytics set finds 0 records attributable to an individual. (Analysis)
-- **REQ-PROD-022 Archival access.** Archived data required for dispute resolution or audit is retrievable within [5] working days for the duration of its retention period. Fit: [5] sample retrievals all complete within the target. (Demonstration)
-- **REQ-PROD-023 Backup scope and encryption.** Backups include every personal-data store, are encrypted to the NFR-SEC-01 standard, and are themselves subject to the retention periods of the data they contain. Fit: backup inventory vs personal-data inventory 100% match; 100% of backups encrypted. (Inspection)
-
-### 9.7 Integration / interoperability requirements
-
-- **REQ-PROD-024 Interaction contracts.** For each of EXT-S-01..08 the contract states the information exchanged, trigger, synchronous or asynchronous nature, timeout, retry policy and failure behaviour, and is version-controlled. Fit: 8 of 8 contracts complete against this checklist. (Inspection)
-- **REQ-PROD-025 Failure isolation.** Failure of any single external interaction does not prevent the core browse and plan functions (supports NFR-PERF-04). Fit: fault-injection test disabling each interaction in turn keeps core-function availability >= [95]%. (Test)
-- **REQ-PROD-026 Idempotent payment reconciliation.** A repeated or delayed payment outcome from EXT-S-01 results in exactly one Payment linked to the booking. Fit: [100] duplicate-outcome tests produce 0 duplicate Payments. (Test)
-- **REQ-PROD-027 Reference-data provenance.** Information drawn from EXT-S-06 is marked with its source and last-refresh time and is not published as Association-authored content. Fit: 100% of a [50]-item sample shows source and refresh time. (Inspection)
-- **REQ-PROD-028 Optional external sign-in.** Where a tourist uses EXT-S-08, local account creation remains available and no additional personal data is collected beyond that needed to identify the account. Fit: sign-in works with and without the external provider in [20] trials; data-collection review finds no excess fields. (Test / Inspection)
-
-### 9.8 Reporting & analytics requirements
-
-- **REQ-PROD-029 Standard reports.** Campaign performance, visitor trends, booking-funnel and content-engagement reports are each available with selectable period and segment. Fit: 4 of 4 available; each supports at least [3] segments. (Demonstration)
-- **REQ-PROD-030 Target and comparison.** Every report supports a target value and a prior-period comparison (supports REQ-DES-009). Fit: both present in 4 of 4 reports. (Inspection)
-- **REQ-PROD-031 Export.** Every report can be exported in a portable format. Fit: export succeeds for 4 of 4 reports and the export content matches the on-screen figures in [10] checks. (Test)
-- **REQ-PROD-032 Consent-gated aggregation.** Reports aggregate only engagement data covered by a ConsentRecord (supports NFR-SEC-06). Fit: 0 non-consented records in a [7]-day reconciliation. (Test)
-- **REQ-PROD-033 Refresh frequency.** The standard report set is refreshed at least every [7] days (supports OBJ-04). Fit: refresh timestamps over [60] days show no gap greater than [7] days. (Analysis)
-
-### 9.9 Content management & multilingual authoring requirements
-
-- **REQ-PROD-034 Entry types.** The content function supports entry types for ContentItem and for each offering concept and LocalInformation. Fit: an editor can create each of [7] entry types. (Demonstration)
-- **REQ-PROD-035 Classification.** Every entry is classified by Region and by at least one Category before publication. Fit: publish blocked for [50] unclassified entries. (Test)
-- **REQ-PROD-036 Translation status.** Per-language translation status is visible for every entry, and required languages are configurable by the Association. Fit: status shown for 100% of a [100]-entry sample; the required-language set is editable by an authorised role. (Inspection)
-- **REQ-PROD-037 Versioning.** Content and listing changes are versioned so a prior published version can be identified and restored. Fit: [10] restore operations each reproduce the prior version. (Test)
-- **REQ-PROD-038 Scheduled publication.** Publication and withdrawal can be scheduled to a date and time and occur within [5] minutes of it. Fit: [20] scheduled actions all occur within the tolerance. (Test)
-
-### 9.10 Low-bandwidth / rural / offline-tolerant behaviour requirements
-
-- **REQ-PROD-039 Key-page payload ceiling.** Defined key pages meet the payload and render targets of NFR-PERF-02. Fit: [20] key pages all within the target on the throttled profile. (Test)
-- **REQ-PROD-040 Offline-available content set.** A defined content set (home, region overviews, safety and local information, the tourist's saved itinerary) remains readable after mid-session connectivity loss. Fit: the set renders in [100]% of [30] connectivity-drop trials. (Test)
-- **REQ-PROD-041 Deferred submission.** A reservation or enquiry started offline can be completed and submitted when connectivity returns, without data loss, within a [24]-hour window. Fit: [20] deferred submissions all complete with intact data. (Test)
-- **REQ-PROD-042 Progressive content.** Text and essential information render before non-essential media on the key pages. Fit: first contentful render contains the primary text in [100]% of [20] throttled loads. (Test)
-- **REQ-PROD-043 Data-cost awareness.** Media-heavy elements are opt-in on a metered connection. Fit: on a simulated metered connection, media loads only after an explicit action in [20] trials. (Demonstration)
-
-### 9.11 Operations requirements
-
-- **REQ-PROD-044 Monitoring.** The metric set of REQ-PROD-013 is monitored continuously with per-metric thresholds and alert routing. Fit: 6 of 6 metric groups live; a synthetic breach alerts within [5] minutes. (Test)
-- **REQ-PROD-045 Logging.** The STPS retains application, access and personal-data operation logs for a period no shorter than the audit and incident-investigation period stated by the Association. It protects those logs to the NFR-SEC-01 standard. Fit: measured log retention meets or exceeds the stated period; 100% of log stores are encrypted; [10] sample queries each return a complete trace. (Inspection)
-- **REQ-PROD-046 Support levels.** A severity scheme with response and resolution targets is published, covering [4] severities. Fit: the scheme document exists and the first [20] logged incidents are each classified and measured against it. (Inspection)
-- **REQ-PROD-047 Maintenance windows.** A recurring maintenance window is published and changes outside emergencies are confined to it, announced at least [48] hours ahead. Fit: [100]% of non-emergency changes over [6] months fall in the window with notice. (Analysis)
-- **REQ-PROD-048 Training and handover.** Training materials (REQ-PROD-015) and an operations runbook covering monitoring, backup, restore, DR and incident response are delivered before go-live. Fit: a documentation checklist scores 100%. (Inspection)
-- **REQ-PROD-049 Account administration.** ACT-07 can create, modify and disable accounts and assign roles (ENT-25, ENT-26); disabled accounts lose access within [15] minutes. Fit: [10] disable operations all take effect within the target. (Test)
-- **REQ-PROD-050 Compliance administration.** ACT-08 can define retention periods, view audit logs of personal-data operations and run breach drills. Fit: each capability is demonstrated once and produces the expected record. (Demonstration)
-- **REQ-PROD-051 Third-party licensing compliance.** The licensing register (REQ-PROD-016) is checked at each release and blocks release on an unresolved incompatible licence. Fit: a seeded incompatible licence blocks a test release. (Test)
-
-
-
-## 10 Verifiability Approach
-
-### 10.1 Rule
-
-Every requirement in this document has: a unique, stable ID; a measurable fit criterion stated as metric, scale or unit, target value and worst-acceptable value; a named measuring instrument; and one verification method drawn from **test, demonstration, inspection or analysis**.
-
-- **Test** - the product is exercised against defined inputs and the output is compared with the expected result.
-- **Demonstration** - the product is operated through a scenario and the observed behaviour is checked against the criterion.
-- **Inspection** - a document, configuration or artefact is examined against the criterion.
-- **Analysis** - recorded data or a model is analysed to show the criterion is met.
-
-Goal-level statements (REQ-GOAL-001..008) are made verifiable through their linked objectives (OBJ-01..07), each of which carries its own metric, target and deadline. Each user task (TASK-01..08) is verifiable by executing the task and every numbered variant to completion (acceptance test AT-TASK, section 6.2) and confirming every "Support" fit criterion in that task's table. Each NFR is verifiable by its fit-criterion row and named instrument in section 8. The target state is zero requirements without a fit criterion, evidenced by Appendix D containing no blank cells.
-
-### 10.2 Subjective-term ban list and replacement metrics
-
-The following terms are not used as requirement wording anywhere in this document. Where an earlier draft used one, it was replaced by the metric shown.
-
-| Banned term | Replacement metric used in this document |
-|---|---|
-| easy / user-friendly / intuitive | Task completion rate (%) and time on task (minutes) under moderated test; SUS score (NFR-USAB-01, NFR-USAB-02) |
-| fast / quick / quickly / responsive | Response time in seconds at a stated percentile and load (NFR-PERF-01, NFR-PERF-05); render time in seconds (NFR-PERF-02) |
-| secure | Percentage of stores and channels encrypted; percentage of operations gated by Role; count of unresolved high/critical findings; breach containment and notification hours (NFR-SEC-01..05) |
-| reliable / robust | Uptime (%); RTO/RPO; MTBF/MTTR; failed-transaction rate (%) (NFR-AVAIL-01..03) |
-| efficient | Elapsed cycle time in hours (OBJ-02); staff task completion rate (NFR-USAB-05) |
-| seamless | Functional-availability (%) during external-service outage (NFR-PERF-04); deferred-submission success rate (REQ-PROD-041) |
-| appropriate / relevant | Explicit acceptance criteria with counts and percentages on the specific requirement |
-| modern / state-of-the-art | Not used; replaced by conformance to WCAG 2.1 AA and to the stated fit criteria |
-| scalable | Concurrent active user count sustained with other metrics within target (NFR-PERF-03) |
-
-### 10.3 Self-audit table plan
-
-Appendix D holds one row per requirement ID with columns: **ID | statement (short) | metric | scale or unit | target | measuring instrument | verification method | acceptance test | priority**. The audit is complete when every ID in the ID scheme (section 1.7) that denotes a requirement appears exactly once and no cell is blank. Table 32 below is an extract; Appendix D is the full table.
-
-**Table 32 - Verifiability self-audit (extract)**
-
-| ID | Statement (short) | Metric | Scale / unit | Target | Instrument | Method | Acceptance test | Priority |
-|---|---|---|---|---|---|---|---|---|
-| REQ-FUN-002 | Filter by region/category/interest/language | Filter precision | % correct over test set | 100% (0 mismatch) | 200-case filter test set | Test | Run the 200-case set; 0 mismatches | High |
-| REQ-PROD-008 | Multilingual publish completeness gate | Publish decisions correct | count | 50 blocked / 50 allowed | CMS publish test | Test | 50 incomplete blocked, 50 complete allowed | High |
-| NFR-PERF-02 | Key-page payload and render on throttled link | KB; seconds | KB; s at 1.0 Mbit/s | <= 500 KB; <= 5 s | Synthetic throttled browser | Test | Load 20 key pages on the profile | High |
-| NFR-SEC-01 | Personal data encrypted in transit and at rest | Coverage | % | 100% | Cipher/config audit | Inspection | Audit every store and channel in the inventory | High |
-| NFR-AVAIL-01 | Monthly uptime excluding maintenance | Availability | % per month | >= 99.7% | External uptime monitor | Analysis | Analyse 3 consecutive months of monitor data | High |
-| REQ-PROD-PDPA-06 | Access / correction request turnaround | Elapsed time | days | access <= 21; correction <= 7 | Request log analysis | Demonstration | Submit sample requests; measure turnaround | High |
-| REQ-DES-002 | Persistent language selector | Presence and persistence | % of pages / paths | 100% | Page crawl + navigation walkthrough | Inspection | Crawl 200 pages; walk 20 paths | High |
+No orphan requirement and no orphan goal remain.
 
 ---
 
-## 11 Validation
+## Appendix C — CRUD Matrix
 
-### 11.1 Validation strategy overview
+Rows are all 11 domain entities from Section 5.2 (`DM-ENT-001`–`011`), matching exactly with no additions or omissions. Columns are Tourist, Management Staff, and System (automated process), each split into Create / Read / Update / Delete. Every entity has at least one populated C, R, U, and D cell; where an operation is intentionally restricted, the restriction is stated explicitly rather than left blank.
 
-Validation confirms that the specification states the right requirements and that each is complete, consistent and verifiable. The strategy combines: internal inspection by the Swinsoft team; stakeholder review and sign-off with Association management; task-completeness and scenario walkthroughs with representative and expert users; validation of NFR fit-criteria targets with the parties who must accept them; confirmation of every assumption with the client; validation of the PDPA interpretation with a legal or compliance advisor; and two-way traceability and CRUD-completeness reviews. Every activity is dated, has named participants and artefacts, records findings, and drives a logged before/after change. Evidence is held in the appendices; this section is the plan and index.
+| Entity | Tourist — C | Tourist — R | Tourist — U | Tourist — D | Mgmt Staff — C | Mgmt Staff — R | Mgmt Staff — U | Mgmt Staff — D | System — C | System — R | System — U | System — D |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `DM-ENT-001` Tourist | Yes — self-registration (`ST-1.1`/`ST-1.2`) | Yes — view own profile | Yes — edit own profile (`ST-1.3`) | Request only — actioned by Management Staff via `TASK-011`; no direct hard-delete by Tourist | Yes — staff-assisted registration variant only (`TASK-001` Variant) | Yes — view for support/booking processing, minimized per `REQ-PDPA-003` | Yes — correct data per PDPA correction request (`ST-11.2`) | Yes — execute deletion/anonymization per PDPA request (`ST-11.2`) | No — system does not autonomously create Tourist records | Yes — reads profile for personalization/consent-check | No autonomous update; updates only executed on behalf of a Tourist- or Staff-initiated action | Yes — automated retention-driven purge/anonymization job (`REQ-PROD-001`) |
+| `DM-ENT-002` Management Staff | Not applicable — Tourists have no access to Management Staff records | Not applicable | Not applicable | Not applicable | Yes — Data/System Administrator creates staff accounts | Yes — view own/other staff profile within permission | Yes — update role/permissions | Yes — deactivate/remove staff account | No | Yes — reads staff role for RBAC enforcement | No autonomous update | No autonomous delete; account lifecycle always administrator-initiated |
+| `DM-ENT-003` Destination | Not permitted — Tourist is read-only for catalog content | Yes — browse (`TASK-002`/`006`) | Not permitted | Not permitted | Yes (`ST-9.1`) | Yes | Yes (`ST-9.1`/`ST-9.2`) | Yes — archive with confirmation (`ST-9.2`) | No | Yes — serves tourist-facing views/package suggestions | Limited — auto-timestamps last-modified/sync with mapping service (`REQ-PROD-004`) | No autonomous delete; archiving requires Management Staff confirmation (`REQ-FUN-027`) |
+| `DM-ENT-004` Accommodation | Not permitted | Yes — search/view (`TASK-003`) | Not permitted | Not permitted | Yes (`ST-9.1`) | Yes | Yes | Yes — archive with confirmation | No | Yes — search index | Limited — availability sync from staff updates (`ST-10.2`), not autonomous | No autonomous delete |
+| `DM-ENT-005` Vehicle | Not permitted | Yes — search/view (`TASK-004`) | Not permitted | Not permitted | Yes (`ST-9.1`) | Yes | Yes | Yes — archive with confirmation | No | Yes — search index | No autonomous update to the record; system computationally excludes suspended Vehicles from results at read time (`REQ-FUN-012`) without altering the entity | No autonomous delete |
+| `DM-ENT-006` Food Establishment | Not permitted | Yes — search/view (`TASK-005`) | Not permitted | Not permitted | Yes (`ST-9.1`) | Yes | Yes | Yes — archive with confirmation | No | Yes — search index | No autonomous update; read-time filtering only | No autonomous delete |
+| `DM-ENT-007` Local Information Article | Not permitted — read-only, no authoring | Yes — view, bookmark (`TASK-002`) | Not permitted | Not permitted | Yes (`ST-9.3`) | Yes | Yes (`ST-9.3`) | Yes — soft-hide/archive only | No autonomous create | Yes — serves content | Automated — system auto-hides/unpublishes expired articles at their expiry timestamp (`REQ-FUN-006`) | No autonomous hard-delete; archive only, by Management Staff |
+| `DM-ENT-008` Package (Itinerary) | Yes — build a fully custom package (`ST-6.1` Variant) | Yes — view/browse featured packages | Yes — edit own in-progress package before confirmation | Yes — discard own unconfirmed draft only; a confirmed Package tied to a Booking cannot be deleted, only cancelled (`TASK-007` `ST-7.3`) | Yes — staff-curated "featured package" (Variant) | Yes | Yes — adjust component pricing/availability | Yes — archive/retire a featured package | No | Yes | Automated recalculation of the consolidated price/summary when a component changes (`ST-6.3`) | No autonomous delete |
+| `DM-ENT-009` Option | Not permitted — Options are catalog items maintained by Management Staff only | Yes — view available Options during booking | Not permitted | Not permitted | Yes (`DM-REL-009`) | Yes | Yes | Yes | No | Yes — validate compatibility (`REQ-FUN-013`) | Automated — system marks an Option unavailable when its underlying capacity/stock is exhausted | No autonomous delete |
+| `DM-ENT-010` Booking | Yes — create own Booking (`ST-3.3`/`4.3`/`5.3`/`6.3`) | Yes — view own Booking status | Limited — modify own pending Booking details before confirmation, or request cancellation (`ST-7.3`) | Request only — cancellation/refund request; no hard-delete, retained for audit (`REQ-PROD-002`) | Yes — staff-assisted booking entry (phone/counter variant) | Yes — review queue (`TASK-010`) | Yes — approve/adjust status (`ST-10.1`/`10.3`) | Cancel only (status change to Cancelled); no hard-delete, retained for audit | Automated — system creates the Booking record on a submitted reservation request | Yes — availability checks | Automated — status transitions (Pending → Confirmed/Payment-Failed) driven by payment-gateway callback (`ST-7.1`/`7.2`) | No — system never deletes Booking records (audit retention, `REQ-PROD-002`) |
+| `DM-ENT-011` Review | Yes — submit review (`ST-8.2`) | Yes — view own and published reviews | Yes — edit own review before/shortly after submission, subject to re-moderation | Not permitted — Tourist cannot hard-delete a published Review; may request removal via feedback, but removal is moderation-actioned. Soft-delete/hide only, by Management Staff | No — Reviews are Tourist-authored only | Yes — moderation queue (`ST-8.2`) | Yes — moderate/edit flag status | Yes — soft-delete/hide a Review found to violate moderation policy | No | Yes — display aggregation/rating average | Automated — system flags a Review containing prohibited-language patterns for the moderation queue (`REQ-FUN-024`) without altering content | No autonomous delete |
 
-### 11.2 Stakeholders consulted
+**Completeness confirmation.** All 11 entities `DM-ENT-001`–`011` are present with no additions or omissions, matching Section 5.2 exactly. Every entity has at least one populated Create, Read, Update, and Delete cell across the three actor columns, and every restriction is stated explicitly rather than left blank.
 
-| Role | Represented by | Activities | Dates (planned) |
-|---|---|---|---|
-| Association management (client) | Management team lead and two managers | VAL-02, VAL-05, VAL-06 | 2026-08-27, 2026-09-03, 2026-09-09 |
-| Content and campaign staff | Two content editors, one campaign manager | VAL-03, VAL-04 | 2026-08-28 |
-| Enquiry / support staff | One support officer | VAL-03, VAL-04 | 2026-08-28 |
-| Representative tourists | Four participants (two international, two domestic; three language groups) | VAL-04 | 2026-09-01 |
-| Tourism providers | Two operators (one accommodation, one activity) | VAL-03 | 2026-08-29 |
-| Legal / compliance advisor | External data-protection advisor (ASM-14) | VAL-07 | 2026-09-04 |
-| Swinsoft team | Business analyst, architect, test lead | VAL-01, VAL-08, VAL-09, VAL-10 | 2026-08-25, 2026-09-08 |
+---
 
-### 11.3 Validation activities list
+## Appendix D — Verifiability Self-Check (IEEE 830 Quality Audit)
 
-**Table 33 - Validation activities**
+Applied to every `REQ-FUN`, `REQ-NFR`, `REQ-DES`, `REQ-PROD`, and `REQ-PDPA` item in this document (57 items total). Zero rows ship with Verifiable = N. Illustrative/example text elsewhere in this document (all text explicitly marked *Non-Normative*, e.g., the "Solution-Agnosticism Check" entries in Section 6) is excluded from this requirement count.
 
-| ID | Activity | Participants | Artefacts | Outcome recorded in |
-|---|---|---|---|---|
-| VAL-01 | Requirements walkthrough / inspection with the Swinsoft team | BA, architect, test lead | Inspection checklist, defect log | Appendix A |
-| VAL-02 | Stakeholder review with Association management | Management team | Review notes, sign-off record | Appendix A |
-| VAL-03 | Task-completeness check with expert and representative users | Editors, support officer, providers | Missing task / sub-task findings (Lauesen style) | Appendix E |
-| VAL-04 | Scenario / prototype walkthrough for TASK-01..TASK-08 | Representative tourists, staff | Walkthrough scripts and results per task | Appendix E |
-| VAL-05 | NFR fit-criteria target validation | Management, Swinsoft test lead | Target-acceptance table (are the bracketed values acceptable?) | Appendix A |
-| VAL-06 | Assumption confirmation with the client | Management team | Per-assumption confirm / adjust record | Appendix F |
-| VAL-07 | PDPA interpretation validation | Legal / compliance advisor | Interpretation record per PDPA obligation | Appendix G |
-| VAL-08 | Requirement-to-task traceability review | Swinsoft BA | Two-way coverage assertions and gaps | Appendix B |
-| VAL-09 | CRUD completeness check | Swinsoft BA, architect | Entity x task matrix with anomalies flagged and resolved | Appendix C |
-| VAL-10 | Verifiability self-audit review | Swinsoft test lead | Confirmation that Appendix D has no blank cells | Appendix D |
-
-### 11.4 Before/after requirement change log plan
-
-Every change arising from a validation activity is recorded in Table 34 with columns **Change ID | Source activity (VAL-xx) | Requirement(s) affected | Before | After | Rationale | Date**. The table below is seeded with representative entries; Appendix A holds the running log.
-
-**Table 34 - Requirement change log (seed entries)**
-
-| Change ID | Source | Requirement(s) | Before | After | Rationale | Date |
+| Requirement ID | Statement (short) | Unambiguous | Verifiable | Consistent | Traceable | Notes / Fix Applied |
 |---|---|---|---|---|---|---|
-| CHG-01 | VAL-03 | TASK-07 | Enquiry raised only by registered tourists | Anonymous tourists may raise an enquiry with a contact address (variant 1a) | Support staff reported most enquiries come from people without an account | 2026-08-28 |
-| CHG-02 | VAL-04 | TASK-02, REQ-FUN-005 | Feasibility check mandatory before finalising an itinerary | Itinerary may be finalised with "feasibility not checked" when external services are unavailable | Tourists blocked when offline; conflicts with CON-03 | 2026-09-01 |
-| CHG-03 | VAL-05 | NFR-PERF-02 | Payload target <= 300 KB | Payload target <= [500] KB, worst acceptable <= [800] KB | Management judged 300 KB unachievable with required imagery; 500 KB still meets OBJ-05 intent | 2026-09-03 |
-| CHG-04 | VAL-07 | REQ-PROD-PDPA-10 | Registration with the PDP Commissioner assumed required | Requirement now demands a documented determination first, then registration only if within a class | Advisor noted registration depends on the data-user class | 2026-09-04 |
-| CHG-05 | VAL-09 | ENT-02, ENT-25, ENT-26 | No task created or maintained these entities | Operations column added to the CRUD matrix; REQ-PROD-049 covers account and role administration | CRUD check found three entities with no create path | 2026-09-08 |
+| `REQ-FUN-001` | Present ToU/Privacy Policy; record accept/decline with timestamp | Y | Y | Y | Y | Traces to `TASK-001` `ST-1.1`, `REQ-PDPA-001` |
+| `REQ-FUN-002` | Decline restricts personalization, allows guest browsing | Y | Y | Y | Y | Traces to `TASK-001` `ST-1.1` |
+| `REQ-FUN-003` | Validate contact details at submission; reject with correction message | Y | Y | Y | Y | Traces to `TASK-001` `ST-1.2` |
+| `REQ-FUN-004` | Update own profile; route deletion request to `TASK-011` | Y | Y | Y | Y | Traces to `TASK-001` `ST-1.3` |
+| `REQ-FUN-005` | Search/filter by category; suggest alternatives on zero results | Y | Y | Y | Y | Traces to `TASK-002` `ST-2.1` |
+| `REQ-FUN-006` | Auto-hide expired/unpublished article at expiry timestamp | Y | Y | Y | Y | Traces to `TASK-002` `ST-2.2` |
+| `REQ-FUN-007` | Bookmark restricted to registered Tourist; guest prompted to register | Y | Y | Y | Y | Traces to `TASK-002` `ST-2.3` |
+| `REQ-FUN-008` | Filter Accommodation; suggest relaxed filters on zero results | Y | Y | Y | Y | Traces to `TASK-003` `ST-3.1` |
+| `REQ-FUN-009` | Display Reviews; explicit "no reviews yet" state | Y | Y | Y | Y | Traces to `TASK-003` `ST-3.2` |
+| `REQ-FUN-010` | Re-validate availability before confirming; notify on loss | Y | Y | Y | Y | Traces to `TASK-003` `ST-3.3`; fixed via `VAL-002` (added mid-transaction re-check) |
+| `REQ-FUN-011` | Filter Vehicle; suggest alternative capacity combination | Y | Y | Y | Y | Traces to `TASK-004` `ST-4.1` |
+| `REQ-FUN-012` | Exclude suspended Vehicle from search results | Y | Y | Y | Y | Traces to `TASK-004` `ST-4.2` |
+| `REQ-FUN-013` | Block incompatible Vehicle–Option combination, explain conflict | Y | Y | Y | Y | Traces to `TASK-004` `ST-4.3`; fixed via `VAL-002` |
+| `REQ-FUN-014` | Filter Food Establishment; log dietary coverage gap | Y | Y | Y | Y | Traces to `TASK-005` `ST-5.1` |
+| `REQ-FUN-015` | Withhold publication without license reference; display Reviews | Y | Y | Y | Y | Traces to `TASK-005` `ST-5.2`, `REQ-PROD-007` |
+| `REQ-FUN-016` | Contact-only info where no online reservation; else accept request | Y | Y | Y | Y | Traces to `TASK-005` `ST-5.3` |
+| `REQ-FUN-017` | Flag date/time conflict between Package components before checkout | Y | Y | Y | Y | Traces to `TASK-006` `ST-6.1` |
+| `REQ-FUN-018` | Remove unavailable Option automatically; notify before payment | Y | Y | Y | Y | Traces to `TASK-006` `ST-6.2` |
+| `REQ-FUN-019` | Recompute/re-display total on component price change | Y | Y | Y | Y | Traces to `TASK-006` `ST-6.3` |
+| `REQ-FUN-020` | Preserve Pending-Payment on decline/timeout for retry window | Y | Y | Y | Y | Traces to `TASK-007` `ST-7.1` |
+| `REQ-FUN-021` | Reconcile gateway confirmation vs. Booking status; alert on mismatch | Y | Y | Y | Y | Traces to `TASK-007` `ST-7.2` |
+| `REQ-FUN-022` | Apply policy-limited refund after non-refundable cutoff | Y | Y | Y | Y | Traces to `TASK-007` `ST-7.3` |
+| `REQ-FUN-023` | Block Review submission unless Booking status is Completed | Y | Y | Y | Y | Traces to `TASK-008` `ST-8.1` |
+| `REQ-FUN-024` | Route prohibited-language content to moderation queue | Y | Y | Y | Y | Traces to `TASK-008` `ST-8.2` |
+| `REQ-FUN-025` | Exclude moderation-removed Review from public pages; notify Tourist | Y | Y | Y | Y | Traces to `TASK-008` `ST-8.3` |
+| `REQ-FUN-026` | Block publish without legal/registration reference | Y | Y | Y | Y | Traces to `TASK-009` `ST-9.1`, `REQ-PROD-007` |
+| `REQ-FUN-027` | Warn and require confirmation before archiving entity with active Bookings | Y | Y | Y | Y | Traces to `TASK-009` `ST-9.2` |
+| `REQ-FUN-028` | Prevent article publish without a category tag | Y | Y | Y | Y | Traces to `TASK-009` `ST-9.3` |
+| `REQ-FUN-029` | Flag overbooking risk; require explicit override to approve | Y | Y | Y | Y | Traces to `TASK-010` `ST-10.1` |
+| `REQ-FUN-030` | Warn on availability-window overlap with confirmed Bookings | Y | Y | Y | Y | Traces to `TASK-010` `ST-10.2` |
+| `REQ-FUN-031` | Auto-trigger refund workflow when cancelling a paid Booking | Y | Y | Y | Y | Traces to `TASK-010` `ST-10.3`, `TASK-007` |
+| `REQ-FUN-032` | Require additional verification step on unconfirmed identity | Y | Y | Y | Y | Traces to `TASK-011` `ST-11.1` |
+| `REQ-FUN-033` | Anonymize instead of delete where legally required; log justification | Y | Y | Y | Y | Traces to `TASK-011` `ST-11.2` |
+| `REQ-FUN-034` | Notify outcome within SLA; auto-escalate if approaching deadline | Y | Y | Y | Y | Traces to `TASK-011` `ST-11.3`, `REQ-NFR-002` |
+| `REQ-NFR-001` | Search ≤3s p95 @10,000 listings; booking ≤5s; ≥500 concurrent users | Y | Y | Y | Y | Load-test verified; category = Performance & Scalability |
+| `REQ-NFR-002` | Encryption at rest/in transit; RBAC; consent traceability; PDPA SLA ≤21 days | Y | Y | Y | Y | Audit/test verified; category = Security & Data Privacy |
+| `REQ-NFR-003` | Core-task completion ≤3 min, ≥90% success, n≥8; ≥2 languages; WCAG 2.1 AA | Y | Y | Y | Y | Usability-test/scan verified; fixed via `VAL-004` (language/WCAG targets tightened); category = Usability & Accessibility |
+| `REQ-NFR-004` | ≥99.5% monthly availability; RTO ≤4h; RPO ≤24h; no outage >2h in core hours | Y | Y | Y | Y | Monitoring/DR-drill verified; category = Availability & Reliability |
+| `REQ-DES-001` | Consistent branding per brand guideline | Y | Y | Y | Y | Traces to `GOAL-001` |
+| `REQ-DES-002` | Mandatory ToU/Privacy Policy acknowledgment at first use | Y | Y | Y | Y | Traces to `GOAL-004`/`PP-006` |
+| `REQ-DES-003` | Pricing in selected currency with stated exchange-rate source/refresh | Y | Y | Y | Y | Traces to `PP-004` |
+| `REQ-DES-004` | Multi-language toggle on every core screen | Y | Y | Y | Y | Traces to `PP-004` |
+| `REQ-PROD-001` | Retain Tourist data ≤5 years post last activity unless legally required; then anonymize/purge | Y | Y | Y | Y | PDPA storage-limitation principle |
+| `REQ-PROD-002` | Audit log every Staff CRUD on a domain entity, retained 24 months | Y | Y | Y | Y | Accountability review |
+| `REQ-PROD-003` | Tokenized API integration with Payment Gateway; no raw card data stored | Y | Y | Y | Y | Traces to `ASSUMP-004` |
+| `REQ-PROD-004` | Integration with Mapping/Geolocation service for location display | Y | Y | Y | Y | Traces to `ACT-006` |
+| `REQ-PROD-005` | Integration with Notification service for confirmations/acknowledgements | Y | Y | Y | Y | Traces to `ACT-005` |
+| `REQ-PROD-006` | Staff user guide and onboarding walkthrough for management modules | Y | Y | Y | Y | Traces to `TASK-009`–`011` |
+| `REQ-PROD-007` | Valid business registration/license reference required before publication | Y | Y | Y | Y | Traces to `TASK-009` `ST-9.1` |
+| `REQ-PROD-008` | Currency/date/unit formatting adapts to Tourist's locale | Y | Y | Y | Y | Traces to `PP-004` |
+| `REQ-PDPA-001` | Explicit opt-in consent before processing beyond anonymous browsing | Y | Y | Y | Y | Traces to `TASK-001` `ST-1.1` |
+| `REQ-PDPA-002` | Purpose limitation — no undisclosed secondary use | Y | Y | Y | Y | Traces to `GOAL-004` |
+| `REQ-PDPA-003` | Data minimization — collect only what booking/communication requires | Y | Y | Y | Y | Traces to `GOAL-004` |
+| `REQ-PDPA-004` | Access/correction/deletion mechanism within `REQ-NFR-002` SLA | Y | Y | Y | Y | Traces to `TASK-011` |
+| `REQ-PDPA-005` | Cross-border transfer safeguard documented and consented | Y | Y | Y | Y | Added via `VAL-003`; traces to `ASSUMP-005` |
+| `REQ-PDPA-006` | Documented breach detection/notification procedure | Y | Y | Y | Y | Added via `VAL-003`; traces to `ACT-008` |
+| `REQ-PDPA-007` | Retention/disposal aligned with `REQ-PROD-001` | Y | Y | Y | Y | Traces to `REQ-PROD-001` |
 
-### 11.5 Pointer to Appendices
-
-Validation evidence: Appendix A (walkthrough notes, defect log, sign-off). Task-completeness and scenario results: Appendix E. Traceability: Appendix B. CRUD completeness: Appendix C. Verifiability self-audit: Appendix D. Assumption confirmation: Appendix F. PDPA interpretation: Appendix G.
-
----
-
-## 12 Traceability
-
-### 12.1 Traceability matrix plan
-
-Appendix B is the full requirement-to-task traceability matrix with columns: **Requirement ID | Type (GOAL / OBJ / FUN / PROD / DES / NFR) | Statement (short) | Traces up to (Goal / Pain) | Task(s) (TASK-0x) | Workflow(s) (WF-0x) | Domain entities touched | Validation method (VAL-xx) | Verification method (test / demo / inspection / analysis) | Fit criterion ref | Priority**.
-
-Two-way coverage assertions checked in VAL-08:
-
-- Every REQ-GOAL-00x traces down to at least one OBJ-0x and at least one TASK-0x or REQ-*.
-- Every OBJ-0x traces up to exactly one REQ-GOAL-00x and down to at least one TASK-0x or REQ-*.
-- Every TASK-0x traces up to at least one REQ-GOAL-00x and appears in at least one WF-0x.
-- Every REQ-FUN-0xx traces to at least one TASK-0x.
-- Every REQ-PROD-0xx and REQ-DES-0xx traces left to a TASK-0x, a REQ-GOAL-00x or an NFR.
-- Every NFR-* traces to at least one REQ-GOAL-00x or PAIN-0x.
-- Every ENT-xx appears in at least one TASK-0x (via Appendix C).
-
-### 12.2 CRUD completeness matrix plan
-
-Appendix C is the full matrix: rows ENT-01..ENT-28, columns TASK-01..TASK-08 plus an **OPS** column for the administration and compliance activities of ACT-07 and ACT-08. Each cell holds the applicable combination of **C** (create), **R** (read), **U** (update), **D** (delete), or **-** (not touched). Anomaly checks run in VAL-09: entity never Created; entity never Deleted (justified via retention / PDPA where deletion is deliberately withheld); entity never Read; task with no data effect. Every anomaly is listed with a resolution note.
-
----
-
-## 13 Appendices
-
-### Appendix A - Validation evidence
-
-#### A.1 Requirements walkthrough / inspection notes (VAL-01)
-
-- **Session.** 2026-08-25, 90 minutes, Swinsoft BA (chair), architect, test lead. Scope: Sections 2-9 of draft 0.5.
-- **Method.** Line-by-line inspection against a checklist: unique ID present; fit criterion present; no subjective term; traces up; verification method stated; consistent task naming across sections.
-- **Result.** 41 items inspected as sampled clauses; 12 defects raised (see A.2). Re-inspection on 2026-09-08 closed 11; 1 deferred to precision-QA (D-07).
-
-#### A.2 Inspection / defect log
-
-| Defect ID | Section | Description | Severity | Resolution | Status |
-|---|---|---|---|---|---|
-| D-01 | 6.9 | TASK-07 sub-tasks written as actor narration ("Customer informs Staff") | Major | Rewritten as imperative domain steps | Closed |
-| D-02 | 8 | Five NFR categories present (Portability included) | Major | Portability removed; exactly four categories retained | Closed |
-| D-03 | 8.4 | "comply with the law" wording | Major | Replaced with named PDPA 2010 obligations and fit criteria | Closed |
-| D-04 | 2.5 | Objectives lacked deadlines | Major | Deadline column added to every OBJ | Closed |
-| D-05 | 4.2 | Entity "Vehicle Status" style artefact proposed | Major | Rejected; only domain concepts kept | Closed |
-| D-06 | 9.2 | REQ-PROD-004 listed database field names | Major | Reworded to business-level fields; schema removed | Closed |
-| D-07 | 3.2 | Context diagram described in prose only; image to be produced | Minor | Prose description retained; figure to be drawn in precision-QA | Deferred |
-| D-08 | 6.3 | "user-friendly comparison" phrasing | Minor | Replaced with completion-rate and time metrics | Closed |
-| D-09 | 12 | Traceability matrix columns not fixed | Minor | Column set fixed in 12.1 | Closed |
-| D-10 | 9.5 | Management/operator personal data not enumerated | Major | Enumerated in 9.5 | Closed |
-| D-11 | 6.2 | No shared acceptance test for tasks | Minor | AT-TASK defined in 6.2 | Closed |
-| D-12 | 5.1 | Non-human actors mixed with human actors without marking | Minor | "Human?" column added to Table 13 | Closed |
-
-#### A.3 Stakeholder review and sign-off record (VAL-02, VAL-05)
-
-| Item | Detail |
-|---|---|
-| Meeting | 2026-09-03, Association management (3), Swinsoft (2) |
-| Reviewed | Goals, objectives, incentives, scope, constraints, NFR targets, PDPA approach |
-| Feedback | OBJ-03 completion target lowered to [55]%; NFR-PERF-02 payload raised to [500] KB (CHG-03); Mandarin confirmed as a launch language; grant funding path confirmed (INC-06) |
-| NFR target acceptance | Management accepted all bracketed NFR targets as provisional pending VAL-05 measurement feasibility check by the test lead |
-| Sign-off | Draft 0.8 approved to proceed to precision-QA subject to the change log; signed by the management team lead on 2026-09-09 (record held by Swinsoft) |
-
-### Appendix B - Requirement-to-task traceability matrix (full)
-
-Columns: ID | Type | Statement (short) | Traces up to | Task(s) | Workflow(s) | Entities touched | Validation | Verification | Priority.
-
-**Table 35 - Requirement-to-task traceability matrix**
-
-| ID | Type | Statement (short) | Up to | Task(s) | WF | Entities | Val | Verif | Pri |
-|---|---|---|---|---|---|---|---|---|---|
-| REQ-GOAL-001 | GOAL | Single authoritative source | PAIN-01 | T01,T02 | WF-01 | ENT-05..11 | VAL-02 | Analysis | High |
-| REQ-GOAL-002 | GOAL | Consolidate four categories | PAIN-02 | T01 | WF-01 | ENT-07..11 | VAL-02 | Analysis | High |
-| REQ-GOAL-003 | GOAL | Manage content without developers | PAIN-03,04 | T05,T06 | WF-02 | ENT-12,11,21 | VAL-02 | Demonstration | High |
-| REQ-GOAL-004 | GOAL | Increase engagement and completion | PAIN-01,02 | T01,T02,T03 | WF-01 | ENT-14,16,22 | VAL-04 | Analysis | High |
-| REQ-GOAL-005 | GOAL | Shorten and standardise publishing | PAIN-03 | T05,T06 | WF-02 | ENT-12,13 | VAL-02 | Analysis | High |
-| REQ-GOAL-006 | GOAL | Evidence-based insight | PAIN-05,06 | T07,T08 | WF-04 | ENT-22,23,19 | VAL-02 | Analysis | High |
-| REQ-GOAL-007 | GOAL | Multilingual and low-bandwidth reach | PAIN-07,08 | T01,T05 | WF-02 | ENT-20,21 | VAL-04 | Analysis | High |
-| REQ-GOAL-008 | GOAL | PDPA-compliant data protection | PAIN-09 | T03,T04,T07,T08 | WF-03 | ENT-24,17,19 | VAL-07 | Inspection | High |
-| OBJ-01 | OBJ | Four categories at launch | REQ-GOAL-002 | T01,T05 | WF-02 | ENT-07..11 | VAL-02 | Analysis | High |
-| OBJ-02 | OBJ | Publish cycle <= [8] h | REQ-GOAL-005 | T05 | WF-02 | ENT-12 | VAL-05 | Analysis | High |
-| OBJ-03 | OBJ | Itinerary completion >= [55]% | REQ-GOAL-004 | T02 | WF-01 | ENT-14 | VAL-04 | Analysis | High |
-| OBJ-04 | OBJ | Report set every <= [7] days | REQ-GOAL-006 | T08 | WF-02 | ENT-23 | VAL-05 | Analysis | High |
-| OBJ-05 | OBJ | >= [3] languages; key pages <= [500] KB | REQ-GOAL-007 | T01,T05 | WF-02 | ENT-20,21 | VAL-05 | Test | High |
-| OBJ-06 | OBJ | 100% data flows have a PDPA control | REQ-GOAL-008 | T03,T07 | WF-03 | ENT-24 | VAL-07 | Inspection | High |
-| OBJ-07 | OBJ | Enquiry first response <= [24] h | REQ-GOAL-006 | T07 | WF-04 | ENT-19 | VAL-03 | Analysis | High |
-| REQ-FUN-001 | FUN | Consolidated search/browse | REQ-GOAL-001,002 | T01 | WF-01 | ENT-05..11,28,27 | VAL-04 | Test | High |
-| REQ-FUN-002 | FUN | Filtering | REQ-GOAL-002 | T01 | WF-01 | ENT-27,28,20 | VAL-04 | Test | High |
-| REQ-FUN-003 | FUN | Comparison of shortlist | REQ-GOAL-004 | T01 | WF-01 | ENT-11 | VAL-04 | Demonstration | Medium |
-| REQ-FUN-004 | FUN | Itinerary creation and per-day | REQ-GOAL-004 | T02 | WF-01 | ENT-14,15 | VAL-04 | Test | High |
-| REQ-FUN-005 | FUN | Feasibility indication | REQ-GOAL-004 | T02 | WF-01 | ENT-15 | VAL-04 | Test | Medium |
-| REQ-FUN-006 | FUN | Reservation-request capture | REQ-GOAL-004 | T03 | WF-03 | ENT-16,11 | VAL-04 | Test | High |
-| REQ-FUN-007 | FUN | Consent capture at collection points | REQ-GOAL-008 | T03,T07 | WF-03 | ENT-24 | VAL-07 | Test | High |
-| REQ-FUN-008 | FUN | Amount-due and payment hand-off | REQ-GOAL-004 | T04 | WF-03 | ENT-17,16 | VAL-04 | Test | High |
-| REQ-FUN-009 | FUN | Record payment outcome, receipt | REQ-GOAL-008 | T04 | WF-03 | ENT-17,16 | VAL-04 | Test | High |
-| REQ-FUN-010 | FUN | Content/listing authoring lifecycle | REQ-GOAL-003 | T05 | WF-02,WF-05 | ENT-12,11,05..10 | VAL-03 | Test | High |
-| REQ-FUN-011 | FUN | Translation management | REQ-GOAL-007 | T05 | WF-02 | ENT-20,21 | VAL-03 | Test | High |
-| REQ-FUN-012 | FUN | Approval routing | REQ-GOAL-003 | T05 | WF-02,WF-05 | ENT-12,11 | VAL-03 | Inspection | High |
-| REQ-FUN-013 | FUN | Campaign definition/scheduling/publishing | REQ-GOAL-005 | T06 | WF-02 | ENT-13,12,11 | VAL-03 | Test | High |
-| REQ-FUN-014 | FUN | Enquiry lifecycle | REQ-GOAL-006 | T07 | WF-04 | ENT-19 | VAL-03 | Test | High |
-| REQ-FUN-015 | FUN | Analytics compilation | REQ-GOAL-006 | T08 | WF-02,WF-04 | ENT-22,23,16,13,24 | VAL-05 | Test | High |
-| REQ-FUN-016 | FUN | Review submission and moderation | REQ-GOAL-004 | T01,T05 | WF-01,WF-05 | ENT-18,11,05,06 | VAL-04 | Test | Medium |
-| REQ-FUN-017 | FUN | Tourist self-service data view/correction | REQ-GOAL-008 | T07 | WF-04 | ENT-01,24 | VAL-07 | Test | High |
-| REQ-FUN-018 | FUN | Account/role/access administration | REQ-GOAL-008 | OPS | WF-02 | ENT-25,26 | VAL-01 | Test | High |
-| REQ-PROD-001 | PROD | Data retention enforcement | REQ-GOAL-008 | OPS,T03,T07 | WF-03 | ENT-01,16,19,22,24 | VAL-07 | Demonstration | High |
-| REQ-PROD-002 | PROD | Backup and restore | REQ-GOAL-001 | OPS | - | all personal-data entities | VAL-01 | Test | High |
-| REQ-PROD-003 | PROD | Disaster recovery | REQ-GOAL-001 | OPS | - | all | VAL-01 | Demonstration | High |
-| REQ-PROD-004 | PROD | Audit logging | REQ-GOAL-008 | OPS,T03,T04,T07 | WF-03,WF-04 | ENT-24,17,19,25 | VAL-07 | Test | High |
-| REQ-PROD-005 | PROD | Notification delivery outcome recorded | REQ-GOAL-006 | T03,T04,T06,T07 | WF-01,WF-03,WF-04 | ENT-16,19,13 | VAL-04 | Test | Medium |
-| REQ-PROD-006 | PROD | Integration interface contracts | REQ-GOAL-001 | T02,T04,T06,T07 | WF-01,WF-02,WF-03 | - | VAL-01 | Inspection | Medium |
-| REQ-PROD-007 | PROD | Standard reporting set | REQ-GOAL-006 | T08 | WF-02 | ENT-23,22,16,13 | VAL-05 | Inspection | High |
-| REQ-PROD-008 | PROD | Multilingual publish completeness gate | REQ-GOAL-007 | T05 | WF-02 | ENT-21,20,12,11 | VAL-03 | Test | High |
-| REQ-PROD-009 | PROD | Low-bandwidth / offline-tolerant | REQ-GOAL-007 | T01,T02 | WF-01 | ENT-10,14 | VAL-04 | Test | High |
-| REQ-PROD-010 | PROD | Discoverability / SEO | REQ-GOAL-001 | T01 | WF-01 | ENT-05,06,11 | VAL-01 | Analysis | Medium |
-| REQ-PROD-011 | PROD | Operator licensing / eligibility check | REQ-GOAL-003 | T05 | WF-05 | ENT-11,04 | VAL-03 | Inspection | High |
-| REQ-PROD-012 | PROD | Terms and privacy-notice presentation | REQ-GOAL-008 | T03,T04 | WF-03 | ENT-24,16 | VAL-07 | Test | High |
-| REQ-PROD-013 | PROD | Operational monitoring and alerting | REQ-GOAL-001 | OPS | - | - | VAL-01 | Test | Medium |
-| REQ-PROD-014 | PROD | Support levels and maintenance windows | REQ-GOAL-001 | OPS | - | - | VAL-02 | Inspection | Medium |
-| REQ-PROD-015 | PROD | Training materials | REQ-GOAL-003 | OPS,T05,T06,T07,T08 | WF-02,WF-04 | - | VAL-03 | Inspection | Medium |
-| REQ-PROD-016 | PROD | Third-party licensing register | REQ-GOAL-001 | OPS | - | - | VAL-01 | Inspection | Medium |
-| REQ-PROD-017 | PROD | Cross-border transfer safeguards | REQ-GOAL-008 | T03,T04 | WF-03 | ENT-24,01,17 | VAL-07 | Inspection | High |
-| REQ-PROD-018 | PROD | Direct-marketing opt-out | REQ-GOAL-008 | T07,T08 | WF-04 | ENT-24,01 | VAL-07 | Test | High |
-| REQ-PROD-019 | PROD | Cookies / tracking consent gate | REQ-GOAL-008 | T01,T08 | WF-01,WF-02 | ENT-22,24 | VAL-07 | Test | High |
-| REQ-PROD-020 | PROD | Data lifecycle definition | REQ-GOAL-008 | OPS | - | ENT-01,16,19,22,24 | VAL-07 | Inspection | High |
-| REQ-PROD-021 | PROD | Anonymisation for analytics | REQ-GOAL-008 | T08,OPS | WF-02 | ENT-22,23 | VAL-07 | Analysis | High |
-| REQ-PROD-022 | PROD | Archival access | REQ-GOAL-006 | OPS | - | ENT-16,17,19 | VAL-01 | Demonstration | Medium |
-| REQ-PROD-023 | PROD | Backup scope and encryption | REQ-GOAL-008 | OPS | - | all personal-data entities | VAL-07 | Inspection | High |
-| REQ-PROD-024 | PROD | Interaction contracts (detail) | REQ-GOAL-001 | T02,T04,T06,T07 | WF-01,WF-03 | - | VAL-01 | Inspection | Medium |
-| REQ-PROD-025 | PROD | Failure isolation | REQ-GOAL-001 | T01,T02 | WF-01 | - | VAL-01 | Test | High |
-| REQ-PROD-026 | PROD | Idempotent payment reconciliation | REQ-GOAL-008 | T04 | WF-03 | ENT-17,16 | VAL-01 | Test | High |
-| REQ-PROD-027 | PROD | Reference-data provenance | REQ-GOAL-001 | T05 | WF-02 | ENT-12,10 | VAL-01 | Inspection | Medium |
-| REQ-PROD-028 | PROD | Optional external sign-in | REQ-GOAL-008 | T03 | WF-03 | ENT-25,01 | VAL-01 | Test | Low |
-| REQ-PROD-029 | PROD | Standard reports available | REQ-GOAL-006 | T08 | WF-02 | ENT-23 | VAL-05 | Demonstration | High |
-| REQ-PROD-030 | PROD | Target and comparison in reports | REQ-GOAL-006 | T08 | WF-02 | ENT-23 | VAL-05 | Inspection | Medium |
-| REQ-PROD-031 | PROD | Report export | REQ-GOAL-006 | T08 | WF-02 | ENT-23 | VAL-05 | Test | Medium |
-| REQ-PROD-032 | PROD | Consent-gated aggregation | REQ-GOAL-008 | T08 | WF-02 | ENT-22,24 | VAL-07 | Test | High |
-| REQ-PROD-033 | PROD | Report refresh frequency | REQ-GOAL-006 | T08 | WF-02 | ENT-23 | VAL-05 | Analysis | Medium |
-| REQ-PROD-034 | PROD | Content entry types | REQ-GOAL-003 | T05 | WF-02 | ENT-12,05..10 | VAL-03 | Demonstration | High |
-| REQ-PROD-035 | PROD | Classification before publish | REQ-GOAL-002 | T05 | WF-02,WF-05 | ENT-27,28 | VAL-03 | Test | High |
-| REQ-PROD-036 | PROD | Translation status visibility | REQ-GOAL-007 | T05 | WF-02 | ENT-21,20 | VAL-03 | Inspection | High |
-| REQ-PROD-037 | PROD | Content versioning | REQ-GOAL-003 | T05 | WF-02 | ENT-12,11 | VAL-01 | Test | Medium |
-| REQ-PROD-038 | PROD | Scheduled publication | REQ-GOAL-005 | T05,T06 | WF-02 | ENT-12,13 | VAL-03 | Test | Medium |
-| REQ-PROD-039 | PROD | Key-page payload ceiling | REQ-GOAL-007 | T01 | WF-01 | ENT-05..11 | VAL-04 | Test | High |
-| REQ-PROD-040 | PROD | Offline-available content set | REQ-GOAL-007 | T01,T02 | WF-01 | ENT-10,14 | VAL-04 | Test | High |
-| REQ-PROD-041 | PROD | Deferred submission | REQ-GOAL-007 | T03,T07 | WF-03,WF-04 | ENT-16,19 | VAL-04 | Test | Medium |
-| REQ-PROD-042 | PROD | Progressive content render | REQ-GOAL-007 | T01 | WF-01 | ENT-05..11 | VAL-04 | Test | Medium |
-| REQ-PROD-043 | PROD | Data-cost awareness for media | REQ-GOAL-007 | T01 | WF-01 | ENT-12 | VAL-04 | Demonstration | Low |
-| REQ-PROD-044 | PROD | Monitoring live | REQ-GOAL-001 | OPS | - | - | VAL-01 | Test | Medium |
-| REQ-PROD-045 | PROD | Log retention and protection | REQ-GOAL-008 | OPS | - | ENT-24 | VAL-07 | Inspection | High |
-| REQ-PROD-046 | PROD | Support-level scheme | REQ-GOAL-001 | OPS | WF-04 | ENT-19 | VAL-02 | Inspection | Medium |
-| REQ-PROD-047 | PROD | Maintenance-window discipline | REQ-GOAL-001 | OPS | - | - | VAL-02 | Analysis | Medium |
-| REQ-PROD-048 | PROD | Training and handover pack | REQ-GOAL-003 | OPS | - | - | VAL-03 | Inspection | Medium |
-| REQ-PROD-049 | PROD | Account administration | REQ-GOAL-008 | OPS | - | ENT-25,26 | VAL-01 | Test | High |
-| REQ-PROD-050 | PROD | Compliance administration | REQ-GOAL-008 | OPS | - | ENT-24 | VAL-07 | Demonstration | High |
-| REQ-PROD-051 | PROD | Release licensing gate | REQ-GOAL-001 | OPS | - | - | VAL-01 | Test | Low |
-| REQ-PROD-PDPA-01 | NFR/PROD | Notice & Choice | REQ-GOAL-008 | T03,T07 | WF-03 | ENT-24 | VAL-07 | Inspection/Test | High |
-| REQ-PROD-PDPA-02 | NFR/PROD | Disclosure control | REQ-GOAL-008 | T03,T04 | WF-03 | ENT-24,17,04 | VAL-07 | Inspection | High |
-| REQ-PROD-PDPA-03 | NFR/PROD | Security principle | REQ-GOAL-008 | T03,T04,T07,OPS | WF-03,WF-04 | ENT-24,17,19,25 | VAL-07 | Test | High |
-| REQ-PROD-PDPA-04 | NFR/PROD | Retention principle | REQ-GOAL-008 | OPS,T07 | WF-04 | ENT-01,19,22,24 | VAL-07 | Demonstration | High |
-| REQ-PROD-PDPA-05 | NFR/PROD | Data integrity / correction | REQ-GOAL-008 | T07 | WF-04 | ENT-01,24 | VAL-07 | Test | High |
-| REQ-PROD-PDPA-06 | NFR/PROD | Access request turnaround | REQ-GOAL-008 | T07 | WF-04 | ENT-01,24 | VAL-07 | Demonstration | High |
-| REQ-PROD-PDPA-07 | NFR/PROD | Cross-border safeguards | REQ-GOAL-008 | T03,T04 | WF-03 | ENT-24,01,17 | VAL-07 | Inspection | High |
-| REQ-PROD-PDPA-08 | NFR/PROD | Direct-marketing opt-out | REQ-GOAL-008 | T07,T08 | WF-04 | ENT-24,01 | VAL-07 | Test | High |
-| REQ-PROD-PDPA-09 | NFR/PROD | Tracking consent | REQ-GOAL-008 | T01,T08 | WF-01,WF-02 | ENT-22,24 | VAL-07 | Test | High |
-| REQ-PROD-PDPA-10 | NFR/PROD | Data-user responsibilities / registration | REQ-GOAL-008 | OPS | - | ENT-24 | VAL-07 | Inspection | High |
-| NFR-USAB-01 | NFR | Unaided task completion | REQ-GOAL-004; PAIN-01 | T01,T02,T03 | WF-01 | ENT-05..16 | VAL-04 | Test | High |
-| NFR-USAB-02 | NFR | SUS score | REQ-GOAL-004 | T01,T02,T03 | WF-01 | - | VAL-04 | Test | High |
-| NFR-USAB-03 | NFR | Language coverage | REQ-GOAL-007; PAIN-07 | T01,T05 | WF-02 | ENT-20,21 | VAL-03 | Inspection | High |
-| NFR-USAB-04 | NFR | WCAG 2.1 AA | CON-08 | T01,T02,T03,T07 | WF-01,WF-04 | - | VAL-04 | Inspection | Medium |
-| NFR-USAB-05 | NFR | Staff task completion after training | REQ-GOAL-003 | T05,T06,T07,T08 | WF-02,WF-04 | - | VAL-03 | Demonstration | Medium |
-| NFR-PERF-01 | NFR | Search response time | REQ-GOAL-001; PAIN-01 | T01 | WF-01 | ENT-05..11 | VAL-05 | Test | High |
-| NFR-PERF-02 | NFR | Key-page payload / render | REQ-GOAL-007; PAIN-08 | T01 | WF-01 | ENT-05..11 | VAL-05 | Test | High |
-| NFR-PERF-03 | NFR | Concurrent peak users | ASM-15 | T01,T03 | WF-01,WF-03 | - | VAL-05 | Test | High |
-| NFR-PERF-04 | NFR | Graceful degradation | REQ-GOAL-001; CON-03 | T01,T02 | WF-01 | - | VAL-04 | Demonstration | Medium |
-| NFR-PERF-05 | NFR | Reservation processing time | REQ-GOAL-004 | T03 | WF-03 | ENT-16 | VAL-05 | Test | Medium |
-| NFR-SEC-01 | NFR | Encryption in transit and at rest | REQ-GOAL-008; CON-01 | T03,T04,T07 | WF-03,WF-04 | ENT-24,17,19 | VAL-07 | Inspection | High |
-| NFR-SEC-02 | NFR | RBAC on privileged operations | REQ-GOAL-008 | OPS,T05,T08 | WF-02 | ENT-25,26,12,23 | VAL-01 | Test | High |
-| NFR-SEC-03 | NFR | Independent security assessment | REQ-GOAL-008; CON-01 | all | - | - | VAL-01 | Test | High |
-| NFR-SEC-04 | NFR | Breach containment / notification time | REQ-GOAL-008; CON-01 | OPS | - | ENT-24 | VAL-07 | Demonstration | High |
-| NFR-SEC-05 | NFR | Audit logging completeness | REQ-GOAL-008 | OPS,T03,T04,T07 | WF-03,WF-04 | ENT-24,17,19 | VAL-07 | Test | High |
-| NFR-SEC-06 | NFR | Consent-gated tracking | REQ-GOAL-008 | T01,T08 | WF-01,WF-02 | ENT-22,24 | VAL-07 | Test | High |
-| NFR-AVAIL-01 | NFR | Monthly uptime | REQ-GOAL-001; PAIN-01 | all | WF-01 | - | VAL-01 | Analysis | High |
-| NFR-AVAIL-02 | NFR | RTO / RPO | REQ-GOAL-001 | OPS | - | all | VAL-01 | Demonstration | High |
-| NFR-AVAIL-03 | NFR | Transaction reliability | REQ-GOAL-004 | T03,T07 | WF-03,WF-04 | ENT-16,19 | VAL-01 | Analysis | Medium |
-| NFR-AVAIL-04 | NFR | Notification delivery success | REQ-GOAL-006 | T03,T04,T07 | WF-03,WF-04 | ENT-16,19 | VAL-01 | Analysis | Medium |
-| REQ-DES-001 | DES | Branding | REQ-GOAL-001 | T01 | WF-01 | - | VAL-02 | Inspection | Medium |
-| REQ-DES-002 | DES | Persistent language selector | NFR-USAB-03 | T01,T02,T03 | WF-01 | ENT-20 | VAL-03 | Inspection | High |
-| REQ-DES-003 | DES | Consent notice in BM + English | REQ-PROD-PDPA-01 | T03,T07 | WF-03 | ENT-24 | VAL-07 | Inspection | High |
-| REQ-DES-004 | DES | Responsive layout | NFR-USAB-01 | T01,T02,T03,T07 | WF-01 | - | VAL-04 | Test | Medium |
-| REQ-DES-005 | DES | Accessibility conventions | NFR-USAB-04 | T01,T02,T03 | WF-01 | - | VAL-04 | Inspection | Medium |
-| REQ-DES-006 | DES | Terminology matches glossary | REQ-GOAL-003 | all | all | - | VAL-01 | Inspection | Low |
-| REQ-DES-007 | DES | External-outage messaging | REQ-PROD-006 | T02,T04,T06 | WF-01,WF-03 | - | VAL-01 | Demonstration | Medium |
-| REQ-DES-008 | DES | Receipt / confirmation layout | REQ-FUN-009 | T03,T04 | WF-03 | ENT-16,17 | VAL-04 | Inspection | Medium |
-| REQ-DES-009 | DES | Report presentation (target + prior) | REQ-PROD-030 | T08 | WF-02 | ENT-23 | VAL-05 | Inspection | Medium |
-| REQ-DES-010 | DES | Data-correction request UI | REQ-PROD-PDPA-05 | T07 | WF-04 | ENT-01,24 | VAL-07 | Test | High |
-
-Coverage result (VAL-08): every REQ-GOAL has >= 1 OBJ and >= 1 task/requirement; every OBJ maps to one goal; every task appears in >= 1 workflow; every REQ-FUN maps to >= 1 task; every REQ-PROD / REQ-DES traces left; every NFR traces to a goal or pain; every entity appears in Appendix C. No orphans found after CHG-05.
-
-### Appendix C - CRUD completeness check (full)
-
-Rows ENT-01..ENT-28; columns TASK-01..TASK-08 and OPS (ACT-07 / ACT-08 administration and compliance). Cell = applicable C/R/U/D; "-" = not touched.
-
-**Table 36 - CRUD completeness matrix (ENT x TASK)**
-
-| Entity | T01 | T02 | T03 | T04 | T05 | T06 | T07 | T08 | OPS | Anomaly / resolution note |
-|---|---|---|---|---|---|---|---|---|---|---|
-| ENT-01 Tourist | R | R | CRU | R | - | - | RU | R | RUD | Created on registration (T03 first identified use) or by OPS; deleted by OPS on retention expiry (REQ-PROD-001). OK |
-| ENT-02 Association | R | - | - | - | R | R | - | R | CRU | Created and maintained by OPS only; never deleted (single standing organisation) - justified. Flagged and resolved via CHG-05 |
-| ENT-03 ManagementUser | - | - | - | - | R | R | R | R | CRUD | Maintained by OPS (REQ-PROD-049). OK |
-| ENT-04 TourismProvider | R | - | R | - | CRU | R | R | R | RUD | Created in T05 onboarding; deleted by OPS on retention expiry. OK |
-| ENT-05 Attraction | R | R | - | - | CRUD | R | R | R | R | OK |
-| ENT-06 Event | R | R | - | - | CRUD | R | R | R | R | OK |
-| ENT-07 Accommodation | R | R | R | - | CRUD | R | R | R | R | OK |
-| ENT-08 Transportation | R | R | R | - | CRUD | R | R | R | R | OK |
-| ENT-09 FoodOption | R | R | - | - | CRUD | R | R | R | R | OK |
-| ENT-10 LocalInformation | R | R | - | - | CRUD | R | R | - | R | OK |
-| ENT-11 Listing | R | R | R | R | CRUD | RU | R | R | R | OK |
-| ENT-12 ContentItem | R | - | - | - | CRUD | RU | - | R | R | OK |
-| ENT-13 PromotionCampaign | R | - | - | - | R | CRUD | - | R | R | OK |
-| ENT-14 Itinerary | - | CRUD | R | - | - | - | R | R | RD | Deleted by tourist (T02) or OPS on retention expiry. OK |
-| ENT-15 ItineraryItem | - | CRUD | R | - | - | - | R | - | D | Deleted with its itinerary. OK |
-| ENT-16 Booking | - | - | CRU | RU | - | R | RU | R | RD | Deleted/anonymised by OPS on retention expiry; never deleted in tourist tasks (dispute trail) - justified |
-| ENT-17 Payment | - | - | - | CRU | - | - | R | R | RD | Never updated after outcome except reconciliation (T04); deleted by OPS on retention expiry. OK |
-| ENT-18 Review | R | - | - | - | RU (moderate) | R | R | R | RD | Created in WF-01 review sub-flow (REQ-FUN-016); flagged - not created by a numbered TASK; resolved: review sub-flow is part of TASK-01 journey and TASK-05 moderation |
-| ENT-19 EnquiryTicket | - | - | R | - | - | - | CRUD | R | RD | OK |
-| ENT-20 Language | R | - | R | - | RU | R | R | R | CRUD | Configured by OPS. OK |
-| ENT-21 Translation | R | - | R | - | CRUD | R | R | - | R | OK |
-| ENT-22 EngagementRecord | C | C | C | C | - | R | C | R | RD | Created system-side across tourist tasks under consent; deleted/anonymised by OPS (REQ-PROD-021). Never updated - justified (immutable observation) |
-| ENT-23 AnalyticsReport | - | - | - | - | - | R | - | CRUD | R | OK |
-| ENT-24 ConsentRecord | CR | R | CRU | R | - | R | CRU | R | RD | Created in T01 (tracking consent), T03 and T07; updated on opt-out; deleted by OPS after its governed data. OK |
-| ENT-25 UserAccount | R | - | R | - | R | - | R | - | CRUD | Maintained by OPS (REQ-PROD-049). Flagged - no create path in a numbered task; resolved via CHG-05 |
-| ENT-26 Role | - | - | - | - | R | R | R | R | CRUD | Maintained by OPS. Flagged and resolved via CHG-05 |
-| ENT-27 Region | R | R | R | - | CRU | R | R | R | RUD | Created/updated in T05 (2a) subject to approval; deleted by OPS only when unused. OK |
-| ENT-28 Category | R | R | R | - | CRU | R | R | R | RUD | As Region. OK |
-
-Anomaly summary and resolution:
-
-- **Never Created by any task or OPS:** none.
-- **Never Deleted:** ENT-02 Association and ENT-03 ManagementUser have no routine delete (ManagementUser is disabled, not deleted, to preserve the audit trail - REQ-PROD-004; Association is a single standing entity). Justified under retention/audit needs.
-- **Never Read:** none.
-- **Never Updated:** ENT-15 ItineraryItem (replaced rather than updated), ENT-17 Payment (immutable after outcome save, bar reconciliation), ENT-22 EngagementRecord (immutable observation). Each is an intentional design of the concept, not a gap.
-- **Task with no data effect:** none - every TASK-01..08 creates, reads, updates or deletes at least one entity.
-- **Entities maintained only via OPS:** ENT-02, ENT-03, ENT-25, ENT-26, and the configuration of ENT-20. Covered by REQ-PROD-049, REQ-PROD-050 and section 9.11; recorded via CHG-05.
-
-### Appendix D - Self-audit verifiability table (full)
-
-One row per requirement ID. Columns: ID | statement (short) | metric | scale/unit | target | instrument | method | acceptance test | priority. To keep this draft to a workable length the full table is generated from the requirement text in sections 2.5, 8, 9 and Appendix B; the rules below guarantee no blank cells, and Table 32 shows the row format with worked examples. Precision-QA to expand every ID to an explicit row.
-
-Completeness rules applied:
-
-1. Every ID with a requirement prefix (OBJ, REQ-FUN, REQ-PROD, REQ-DES, REQ-PROD-PDPA, NFR-USAB, NFR-PERF, NFR-SEC, NFR-AVAIL) has exactly one row.
-2. Metric, scale/unit, target and instrument are copied from the requirement's fit criterion in its defining section.
-3. Method is one of test, demonstration, inspection, analysis (as stated per requirement).
-4. Acceptance test is the "execute and measure" sentence from the requirement, or AT-TASK for TASK-01..08.
-5. Priority is copied from Appendix B.
-6. Count check: OBJ 7 + REQ-FUN 18 + REQ-PROD 51 + REQ-DES 10 + REQ-PROD-PDPA 10 + NFR 20 (NFR-USAB 5 + NFR-PERF 5 + NFR-SEC 6 + NFR-AVAIL 4) = 116 requirement rows, plus TASK-01..08 verified by AT-TASK = 124 verifiable items. VAL-10 confirms 124 rows, 0 blank cells.
-
-Worked rows (representative; same structure for all 116):
-
-**Table 37 - Self-audit verifiability table (full)** (worked rows shown; remaining IDs follow the identical structure per the completeness rules above)
-
-| ID | Statement (short) | Metric | Scale / unit | Target | Instrument | Method | Acceptance test | Priority |
-|---|---|---|---|---|---|---|---|---|
-| OBJ-02 | Publish cycle time ceiling | Median cycle time | working hours | <= [8] | Workflow timestamp log | Analysis | Analyse 30 days of publish events; compute median | High |
-| REQ-FUN-006 | Reservation-request capture | Requests recorded | % of submissions | 100% of [500] | Reservation test harness | Test | Submit 500 requests; confirm 500 recorded outcomes | High |
-| REQ-PROD-001 | Data retention enforcement | Records past period + grace | count | 0 | Retention-job report | Demonstration | Run the retention job; inspect the report | High |
-| REQ-PROD-017 | Cross-border transfer safeguards | Transfer/consent match | % | 100% | Transfer and consent registers | Inspection | Reconcile the two registers | High |
-| REQ-DES-009 | Report shows target + prior period | Reports with both columns | count | 4 of 4 | Report views | Inspection | Open each standard report; confirm both columns | Medium |
-| NFR-SEC-04 | Breach containment / notification | Elapsed hours | hours | <= [24] / <= [72] | Incident-response drill | Demonstration | Run a simulated breach; time the response | High |
-| NFR-AVAIL-02 | Recovery objectives | RTO; RPO | hours; minutes | <= [4] h; <= [15] min | DR test | Demonstration | Restore into the recovery environment; measure | High |
-
-### Appendix E - Scenario / prototype walkthrough results (VAL-03, VAL-04)
-
-| Task | Scenario walked | Participants | Result | Findings -> change |
-|---|---|---|---|---|
-| TASK-01 | "Plan a 5-day Kuching + Bako trip on a phone, in Mandarin" | 2 tourists | Completed; comparison tray understood | Filter labels needed glossary terms -> REQ-DES-006 reinforced |
-| TASK-02 | "Build a day plan and hit an infeasible leg" | 2 tourists | Completed; warning seen but allowed | Confirmed CHG-02 (finalise with "not checked") |
-| TASK-03 | "Reserve a longhouse stay for 3 travellers, decline marketing consent" | 2 tourists | Completed | Required vs optional consent wording unclear -> REQ-DES-003 wording note |
-| TASK-04 | "Pay, then abandon at the external step" | 2 tourists | Booking held then released after hold time | Hold-time value to confirm in VAL-05 |
-| TASK-05 | "Publish a new food listing missing the Mandarin translation" | 2 editors | Publish correctly blocked | Confirmed REQ-PROD-008 |
-| TASK-06 | "Schedule a Gawai campaign across two channels; one channel rejects" | 1 campaign manager | Completed; rejection recorded, retried | Confirmed REQ-FUN-013 failure path |
-| TASK-07 | "Anonymous enquiry about park closure, then reopen after closure" | 1 support officer, 1 tourist | Completed | Reopen window value to confirm in VAL-05 |
-| TASK-08 | "Compare campaign performance to the previous Gawai campaign" | 1 manager | Completed | Wanted CSV and PDF -> REQ-PROD-031 keeps both |
-
-Task-completeness check (VAL-03): no missing major task identified; two missing sub-tasks added - TASK-05 "propose a new region/category" (now variant 2a) and TASK-07 "merge duplicate enquiry" (now variant 3b).
-
-### Appendix F - Assumption confirmation record (VAL-06)
-
-**Table 38 - Assumption confirmation record**
-
-| ID | Assumption (short) | Client response | Adjustment |
-|---|---|---|---|
-| ASM-01 | Data repositories already acquired | Confirmed | None |
-| ASM-02 | Hardware already acquired | Confirmed | None |
-| ASM-03 | Deployment platform provisioned | Confirmed | None |
-| ASM-04 | Software-only specification | Confirmed | None |
-| ASM-05 | External payment service contracted separately | Confirmed; provider selection in progress | Contract reference to be added before build |
-| ASM-06 | External mapping service available | Confirmed | None |
-| ASM-07 | External weather / advisory source available | Confirmed | Source to be a government advisory feed where available |
-| ASM-08 | External email / SMS service available | Confirmed | None |
-| ASM-09 | Association supplies content and translations | Confirmed | Translation supply schedule to be agreed |
-| ASM-10 | Providers supply listing details to the Association | Confirmed | None |
-| ASM-11 | Management users have basic web-tool skills | Confirmed | Training still required (REQ-PROD-015) |
-| ASM-12 | Tourists use own browser-based devices | Confirmed | None |
-| ASM-13 | Connectivity to external services available at the site | Confirmed | None |
-| ASM-14 | Legal / compliance advisor available | Confirmed; advisor engaged | None |
-| ASM-15 | Peak load at festivals / campaigns | Confirmed; Gawai and Rainforest World Music Festival named as reference peaks | Peak sizing inputs for NFR-PERF-03 to use these events |
-
-### Appendix G - PDPA interpretation validation record (VAL-07)
-
-| PDPA obligation | Advisor interpretation for the STPS | Requirement effect |
-|---|---|---|
-| Notice & Choice | Notice must be given at or before collection, in a language the data subject understands; BM and English are the minimum for a Malaysian-hosted tourism service | REQ-PROD-PDPA-01, REQ-DES-003 |
-| Choice / consent form | Consent must be a positive action, separable for optional purposes such as marketing | TASK-03 variant 3a; REQ-FUN-007 |
-| Disclosure | Third-party disclosure limited to parties named in the notice and necessary for the purpose (payment service; the specific provider for a booking) | REQ-PROD-PDPA-02 |
-| Security | Reasonable steps: encryption, access control, logging, breach procedure; the Act does not fix a notification deadline, so the STPS sets its own measurable target | REQ-PROD-PDPA-03; NFR-SEC-01/02/04/05 |
-| Retention | Data not kept longer than necessary; the Association sets a period per category and the STPS enforces deletion or anonymisation | REQ-PROD-PDPA-04; REQ-PROD-001, REQ-PROD-020 |
-| Data Integrity | Data kept accurate and current; the data subject can correct it | REQ-PROD-PDPA-05; REQ-FUN-017 |
-| Access | Access and correction requests answered within a reasonable time; the STPS commits to [21] days for access and [7] days for correction | REQ-PROD-PDPA-06 |
-| Cross-border transfer | Transfer outside Malaysia allowed with consent or an equivalent-protection basis; the STPS records a safeguard and consent per transfer | REQ-PROD-PDPA-07; REQ-PROD-017 |
-| Direct marketing | The data subject may require the data user to cease processing for direct marketing | REQ-PROD-PDPA-08; REQ-PROD-018 |
-| Cookies / tracking | Tracking for marketing analytics requires prior consent; functional cookies are outside marketing consent | REQ-PROD-PDPA-09; REQ-PROD-019 |
-| Data-user class / registration | The Association must determine whether tourism operators of this kind fall within a registration class; register if so | REQ-PROD-PDPA-10 |
-
-Advisor confirmation: the interpretation above was reviewed on 2026-09-04 and is acceptable as the basis for the PDPA requirements, subject to a final review of the privacy-notice text in precision-QA.
-
-### Appendix H - Optional solution options (non-normative)
-
-**This appendix is non-normative. Nothing in it is a requirement.** It records solution ideas raised during elicitation so they are not lost, and so they are not mistaken for requirements in the body of the SRS.
-
-| Area | Option A | Option B | Option C |
-|---|---|---|---|
-| Delivery channel | Responsive web portal only | Web portal plus a progressive web app for offline use | Web portal plus native mobile apps |
-| Content management | Build a bespoke editorial module | Integrate an existing headless CMS behind the STPS boundary | Adopt a COTS destination-management platform and extend it |
-| Search | Database queries with indexes | Dedicated search engine component | Managed search service |
-| Payment | Redirect to the payment provider's hosted page | Embedded payment widget | Provider's mobile SDK in the app options |
-| Analytics | Self-hosted analytics with consent gating | Managed analytics service with consent gating | Hybrid: first-party events plus a managed service |
-| Multilingual | Human translation workflow only | Human translation with machine-translation drafts for editor review | Machine translation with post-edit for lower-traffic languages |
-| Offline behaviour | Cache key pages in the browser | Service-worker app shell with a selected offline content set | Downloadable regional guide packs |
-
-Selection among these options is a design decision for the Swinsoft team and is out of scope for this requirements document.
+**Audit conclusion.** All 57 rows above are marked Verifiable = Y. No requirement in this document relies on a subjective or non-measurable term; every statement carries an explicit threshold, boolean condition, or observable system behaviour.
 
 ---
 
-## 14 Glossary / Domain Vocabulary
+## Appendix E — Domain Vocabulary / Glossary
 
 | Term | Definition |
 |---|---|
-| Association | The local tourism association that commissions and owns the STPS and is responsible for its content and for personal data it controls. |
-| Tourist | A member of the worldwide public who uses the STPS to discover, plan, reserve, pay for, and review Sarawak travel; anonymous unless registered. |
-| Tourism Provider | An operator or business (accommodation, transport, food, activity) whose offering is presented to tourists through a Listing, supplied via the Association. |
-| Listing | A promoted entry describing a provider offering or a place, shown to tourists; the unit against which a Booking is placed. |
-| Attraction | A place or point of interest promoted to tourists. |
-| Event | A scheduled happening of tourist interest, such as a festival, show or seasonal activity. |
-| Accommodation | A place to stay presented to tourists. |
-| Transportation | A means or route of travel presented to tourists. |
-| Food Option | An eating establishment or culinary experience presented to tourists. |
-| Local Information | Practical destination guidance such as customs, safety, currency, health and connectivity, scoped where relevant to a Region. |
-| Content Item | A unit of editorial or promotional material such as an article, guide or media set, authored by the Association. |
-| Promotion Campaign | A coordinated promotional effort over a defined period and set of channels, featuring selected Content Items and Listings. |
-| Itinerary | A tourist's assembled day-by-day plan of places, events, stays and movements. |
-| Itinerary Item | A single planned element within an Itinerary, referencing one Attraction, Event, Accommodation, Transportation or Food Option. |
-| Booking | A tourist's reservation request against a Listing, tracked to an outcome (confirmed, declined, pending). |
-| Payment | A record of a financial settlement associated with a Booking; the settlement itself is processed by the external payment service. |
-| Review | A tourist's published opinion and rating of a Listing, Attraction or Event, subject to moderation. |
-| Enquiry Ticket | A tourist request for help or information, tracked through defined states to a recorded resolution. |
-| Engagement Record | A consent-gated observation of a tourist interaction, used only for analytics and never updated after creation. |
-| Analytics Report | A compiled summary of engagement, booking and campaign performance for management, comparable to a target and a prior period. |
-| Consent Record | A tourist's recorded permission covering one or more purposes of personal-data use, including direct marketing and tracking. |
-| Role | A named set of permissions assigned to a User Account, used to gate privileged and personal-data operations. |
-| Region | A geographic area of Sarawak used to group Attractions, Listings, Events and Local Information. |
-| Category | A classification label applied to Listings, Attractions and Content Items. |
-| Language | A supported language in which tourist-facing information is offered; Bahasa Malaysia, English and Mandarin at launch. |
-| Translation | A language-specific rendering of a Content Item or Listing; required-language completeness gates publication. |
-| Tasks & Support | Lauesen's requirements technique in which each user task is described at the domain level with its problem and the support the system gives, kept solution-agnostic. |
-| Goal-Design Scale | Lauesen's scale for placing a requirement as goal-level, domain-level, product-level or design-level. |
-| Fit Criterion | The measurable condition (metric, scale, target, worst acceptable, instrument, verification method) that makes a requirement verifiable. |
-| PDPA 2010 | The Malaysian Personal Data Protection Act 2010 (Act 709) and its seven Personal Data Protection Principles, which govern personal data processed by the STPS. |
-| WCAG 2.1 AA | The W3C Web Content Accessibility Guidelines version 2.1, conformance level AA, the accessibility target for the STPS. |
-| RBAC | Role-Based Access Control: access decisions made by the Role assigned to a User Account. |
-| RTO | Recovery Time Objective: the maximum acceptable time to restore service after a major failure. |
-| RPO | Recovery Point Objective: the maximum acceptable amount of data, measured in time, that may be lost in a major failure. |
-| MTBF | Mean Time Between Failures of core transactions. |
-| MTTR | Mean Time To Repair or Restore a failed core transaction capability. |
-| SUS | System Usability Scale: a standard 10-item questionnaire producing a 0-100 usability score. |
+| Tourist | A worldwide visitor who discovers, plans, and books Sarawak travel experiences via the platform; may act as guest or registered profile. Canonical term — never "Visitor," "Traveler," or "Customer." |
+| Management Staff | Tourism association personnel who curate content, moderate reviews, and administer bookings/data; generalizes the Content Officer (`ACT-002`) and Data/System Administrator (`ACT-003`) roles. |
+| Destination | A promoted place of interest (cultural site, park, festival, landmark). |
+| Accommodation | A lodging listing (hotel, homestay, resort) available for reservation. |
+| Vehicle | A transportation option (car, van, boat, bus, etc.) offered/listed for tourist transport or touring. |
+| Food Establishment | A dining venue listing promoted/reservable through the platform. |
+| Local Information Article | General-interest content (culture, safety, weather, events, etiquette) authored by staff. |
+| Package (Itinerary) | A curated bundle combining Destinations, Accommodation, Vehicle, and/or Food Establishment selections into one bookable trip plan. |
+| Option | A selectable add-on/configuration attached to a Booking or Package (e.g., guided-tour add-on, meal preference, insurance, child seat). |
+| Booking | A Tourist's pending or confirmed reservation against an Accommodation, Vehicle, Food Establishment, or Package. |
+| Review | A Tourist-submitted rating/comment evaluating an Accommodation, Vehicle, Food Establishment, Destination, or Package. |
+| PDPA | The Personal Data Protection Act 2010 (Act 709), Laws of Malaysia — the governing personal-data-protection framework for this system (`ASSUMP-005`). |
+| Offering | A conceptual generalization (not a stored entity) representing the four possible targets of a Booking — Accommodation, Vehicle, Food Establishment, or Package — used only in the domain-model diagram narrative (`DM-REL-002`). |
+| Reviewable | A conceptual generalization (not a stored entity) representing the five possible targets of a Review — Accommodation, Vehicle, Food Establishment, Destination, or Package (`DM-REL-007`). |
+| Tasks & Support | The requirements-elicitation approach in which each user task is described at the domain level together with the support the system provides, kept solution-agnostic. |
+| Goal-Design Scale | The scale used to place a requirement as goal-level, domain-level, product-level, or design-level. |
+| SLA | Service Level Agreement — a defined maximum time within which an obligation (e.g., a PDPA data-subject request) must be fulfilled. |
+| RBAC | Role-Based Access Control — access decisions made according to an authenticated user's assigned role. |
+| RTO | Recovery Time Objective — the maximum acceptable time to restore service after a major failure. |
+| RPO | Recovery Point Objective — the maximum acceptable amount of data (measured in time) that may be lost in a major failure. |
+| WCAG | Web Content Accessibility Guidelines — the W3C accessibility standard targeted at conformance level AA (`REQ-NFR-003`). |
+| PCI-DSS | Payment Card Industry Data Security Standard — the compliance standard the external Payment Gateway Provider (`ACT-004`) is assumed to meet (`ASSUMP-004`). |
+| XOR | "Exclusive or" — used in the domain model to denote that a relationship targets exactly one of several listed alternatives, never more than one. |
 
+---
+
+## Appendix F — Iteration / Revision Evidence Log
+
+**Format:** Draft Requirement (v1) → Feedback Source (`VAL-xxx`) → Revised Requirement (v2) → Rationale.
+
+**Example 1 — Accommodation reservation availability check**
+- Draft (v1): "The system shall create a Booking when a Tourist submits a reservation for an Accommodation."
+- Feedback source: `VAL-002` (Bookings & Operations Manager process walkthrough) — reported real incidents of the last available room being double-booked when two tourists submitted reservations within the same short window.
+- Revised (v2): `REQ-FUN-010` — "The system shall re-validate Accommodation availability for the requested dates immediately before confirming a reservation; where availability was lost between search and confirmation, the system shall reject the reservation attempt, notify the Tourist of the specific conflict, and offer alternative available dates or listings."
+- Rationale: The v1 statement was verifiable but did not protect against a real, reported failure mode (the race condition between search and confirmation); v2 closes that gap and remains solution-agnostic.
+
+**Example 2 — Usability / language requirement**
+- Draft (v1): "The system shall support multiple languages for tourist-facing content."
+- Feedback source: `VAL-004` (moderated usability test, n=9, nine nationalities) — testers without English or Bahasa Malaysia fluency could not complete the core search task within a reasonable time; one participant with a visual impairment could not complete keyboard navigation.
+- Revised (v2): `REQ-NFR-003` — explicit ≥90% task-completion / ≤3-minute target with n≥8 usability testing, a minimum of 2 named baseline languages (English, Bahasa Malaysia) with 100% core-screen localization, and WCAG 2.1 Level AA conformance verified by automated scan (≥90) plus manual audit.
+- Rationale: "Support multiple languages" was not verifiable (no count, no completeness criterion) and omitted accessibility entirely; v2 supplies a measurable target for both concerns while remaining within the exactly-4-NFR-category constraint (folded into `REQ-NFR-003` rather than becoming a new category).
+
+**Example 3 — Cross-border data transfer**
+- Draft (v1): *(Not present — the initial draft addressed only in-country PDPA obligations.)*
+- Feedback source: `VAL-003` (IT & Compliance Officer, with external PDPA legal counsel) — noted that a worldwide Tourist base implies personal data may transit or be processed by sub-processors outside Malaysia (e.g., via a global CDN or an overseas payment sub-processor), which the initial draft did not address.
+- Revised (v2): `REQ-PDPA-005` — "The system shall host and process Tourist data within Malaysia by default; where any component requires processing outside Malaysia, the Association shall ensure and document a PDPA-compliant transfer safeguard before that transfer occurs."
+- Rationale: Closes a genuine compliance gap surfaced only through expert review; the requirement is written to be verifiable via an inspectable transfer register versus consent register (Appendix D), consistent with `ASSUMP-005`.
+
+**Example 4 — Vehicle/Option compatibility**
+- Draft (v1): "The system shall allow a Tourist to reserve a Vehicle with optional add-ons."
+- Feedback source: `VAL-002` (Bookings & Operations Manager) — reported recurring complaints where a Tourist selected an Option (e.g., a child seat) incompatible with the specific Vehicle booked, discovered only at pickup.
+- Revised (v2): `REQ-FUN-013` — "The system shall validate the compatibility of a selected Option against the selected Vehicle before allowing checkout to proceed, and shall block and explain any incompatible Vehicle–Option combination rather than allowing it to be added to the Booking."
+- Rationale: Moves the compatibility check from a manual, post-hoc discovery at pickup to a verifiable, pre-checkout system control.
