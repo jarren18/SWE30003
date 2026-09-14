@@ -33,6 +33,7 @@
 | 0.9 | 2026-09-08 | Swinsoft Consulting — Technical Documenter | Domain model redesigned and rendered as a Mermaid diagram; traceability and CRUD matrices completed in full; cross-checked against blueprint hard constraints | Internal design review of Section 5 |
 | 1.0 | 2026-09-11 | Swinsoft Consulting — Technical Documenter | Consolidated draft assembled for hand-off to the precision-QA / verifiability pass | Completion of blueprint expansion |
 | 1.1 | 2026-09-11 | Swinsoft Consulting — Technical Documenter | Readability revision applied throughout — every identifier is now presented as a descriptive name with its tracking code attached in backticks, never as a bare code — combined with a final precision-QA pass: restored active-voice, single-clause phrasing for every "shall" requirement statement where the readability rewrite had re-merged previously split sentences with "and," replaced the one reintroduced subjective term ("secure" in the payment-gateway integration requirement) with a concrete, verifiable criterion (PCI-DSS compliance), restored a verification clause the rewrite had dropped from the staff onboarding requirement, and re-confirmed Malaysian PDPA-compliant language throughout Section 10 | Readability revision hand-off; final precision-QA pass |
+| 1.2 | 2026-09-15 | Swinsoft Consulting — Technical Documenter | Added a scoped Local Service Provider self-service capability: new actor/entity (`ACT-009`/`DM-ENT-012`), new task (`TASK-012`) and workflow (`WF-012`) letting an accommodation, vehicle, or food-establishment operator set their own daily slot availability and approve/decline Bookings against their own listings, with all listing-content management remaining Management-Staff-only; narrowed the Association-Only Content Ownership assumption (`ASSUMP-002`) accordingly; added `REQ-FUN-035`–`037`, `REQ-PROD-009`–`010`, `REQ-PDPA-008`; extended Appendices A–F for traceability, CRUD, verifiability, glossary, and revision-evidence coverage; flagged the change as a new residual risk pending dedicated provider validation (`VAL-007`, provisional — not yet conducted) | Client-directed enhancement request following review of v1.1: providers had no direct way to manage day-to-day slot capacity or respond to bookings, forcing 100% staff-mediated coordination through `TASK-010` |
 
 ### 0.3 Table of Contents
 
@@ -97,7 +98,7 @@ This Software Requirements Specification (SRS) defines, at a level of detail suf
 
 ### 1.2 Scope
 
-The scope of this SRS is **software only**. Hardware, physical servers, network provisioning, end-user devices, and the data-repository and deployment platforms are assumed already acquired by the client — the Infrastructure Already Provisioned assumption (`ASSUMP-001`) — and are explicitly out of scope for specification here; they are treated as pre-existing infrastructure onto which the STPS software is deployed. Within that software scope, this SRS covers: the tourist-facing modules that support discovery, planning, reservation, payment initiation, and feedback (Section 6.3, the tasks named Register & Manage Tourist Account through Submit Review & Feedback); the management-facing modules that support content curation, booking and availability administration, and PDPA-related privacy administration (Section 6.3, the tasks named Manage Promotional Content & Listings through Manage Tourist Data Privacy Requests); the business logic that connects these modules to the conceptual domain model (Section 5); and the integration logic that governs the system's interaction with external services such as the Payment Gateway Provider and Notification Service (Section 4.2). The internal implementation of those external, third-party services is explicitly out of scope; they are treated as black boxes accessed only through their documented interaction contract.
+The scope of this SRS is **software only**. Hardware, physical servers, network provisioning, end-user devices, and the data-repository and deployment platforms are assumed already acquired by the client — the Infrastructure Already Provisioned assumption (`ASSUMP-001`) — and are explicitly out of scope for specification here; they are treated as pre-existing infrastructure onto which the STPS software is deployed. Within that software scope, this SRS covers: the tourist-facing modules that support discovery, planning, reservation, payment initiation, and feedback (Section 6.3, the tasks named Register & Manage Tourist Account through Submit Review & Feedback); the management-facing modules that support content curation, booking and availability administration, and PDPA-related privacy administration (Section 6.3, the tasks named Manage Promotional Content & Listings through Manage Tourist Data Privacy Requests); the scoped Local Service Provider self-service module that lets an accommodation, vehicle, or food-establishment operator set their own daily slot availability and approve/decline Bookings against their own listings, without access to listing-content management (Section 6.3, Manage Own Listing Availability & Booking Decisions, `TASK-012`); the business logic that connects these modules to the conceptual domain model (Section 5); and the integration logic that governs the system's interaction with external services such as the Payment Gateway Provider and Notification Service (Section 4.2). The internal implementation of those external, third-party services is explicitly out of scope; they are treated as black boxes accessed only through their documented interaction contract.
 
 ### 1.3 Intended Audience
 
@@ -172,14 +173,14 @@ Every assumption below is given a descriptive name, a code, and an explicit rati
 | Name | Code | Assumption | Rationale / Source |
 |---|---|---|---|
 | Infrastructure Already Provisioned | `ASSUMP-001` | Hardware, servers, network, and the data-repository platform are already acquired/provisioned by the client. | Source: `project_brief.yaml` → `strict_ground_rules.hardware_assumption`. Load-bearing for the scope statement in Section 1.2 and for the Availability & Reliability requirement category, which is written in terms of the software's behaviour on top of already-provisioned infrastructure rather than infrastructure procurement itself. |
-| Association-Only Content Ownership | `ASSUMP-002` | The tourism association is the sole authoritative content owner; individual accommodation/vehicle/food providers do not receive direct system login — they supply information to association staff off-system. | Source: `project_brief.yaml` → `core_functions.management_facing` wording ("enable content and database management"), read as staff-only. **Confirmed** with Association operations management during the Bookings & Operations Manager Walkthrough (`VAL-002`, Appendix A); this is why the Manage Promotional Content & Listings and Manage Bookings, Availability & Provider Coordination tasks list only Management Staff as actors, never a Tourism Provider actor. |
+| Association-Only Content Ownership (Narrowed) | `ASSUMP-002` | The tourism association remains the sole authoritative owner of listing **content** (description, pricing, photos, legal/license reference, publish state) — individual accommodation/vehicle/food providers still do not receive any content-management access, and still supply that information to association staff off-system. **As of v1.2, this assumption is narrowed rather than absolute**: a Local Service Provider now receives a deliberately scoped self-service login limited to two operational functions on their own listing(s) — setting daily slot/capacity availability, and approving/declining Bookings (`ACT-009`, `TASK-012`). This is a policy reversal from the original absolute "no direct login" position and is treated as a new, not-yet-field-validated residual risk (Section 12; `VAL-007`, provisional). | Source: `project_brief.yaml` → `core_functions.management_facing` wording ("enable content and database management"), originally read as staff-only for every function. **Confirmed absolute** with Association operations management during the Bookings & Operations Manager Walkthrough (`VAL-002`, Appendix A) and with providers themselves during the Tourism Provider Survey (`VAL-006`), both of which predate this narrowing. The content-ownership half of the assumption is unaffected — Manage Promotional Content & Listings (`TASK-009`) still lists only Management Staff as an actor — but the no-login half no longer holds without qualification, and the client should be made aware that `VAL-002`/`VAL-006` evidence does not cover the new scoped-login carve-out; a dedicated provider-facing validation of `TASK-012` is recommended before build sign-off. |
 | Tourist Device & Connectivity Assumption | `ASSUMP-003` | Worldwide tourists are assumed to have access to a modern web browser or smartphone with adequate internet connectivity. | Source: `project_brief.yaml` → `target_audience`. Bounds the low-connectivity handling required of the Performance & Scalability requirement category — the system is designed to perform well on constrained connections, not to function fully offline for users with no connectivity at all. |
 | Delegated Payment Processing | `ASSUMP-004` | Payment processing is delegated to a third-party, PCI-DSS-compliant payment gateway; the system does not store raw payment-card data. | Source: software-only scope ground rule plus standard industry practice; reflected directly in the Tokenized Payment Gateway Integration requirement and in the Complete Payment for a Booking task's designation of the Payment Gateway Provider as an external actor. |
 | Malaysian PDPA Jurisdiction Scope | `ASSUMP-005` | The association operates under Malaysian jurisdiction; PDPA is the governing privacy framework even though end users are worldwide; foreign frameworks (e.g., GDPR) are explicitly out of scope unless the client states otherwise. | Source: `project_brief.yaml` → `compliance.privacy_framework`. **Flagged as a residual risk requiring client sign-off** (carried forward to Section 12); reviewed with an external PDPA/compliance advisor during the IT & Compliance Review Workshop (`VAL-003`, Appendix A), which confirmed the PDPA-only scope for v1.0 but recommended the Cross-Border Transfer Safeguard requirement now in Section 10. |
 | Single Shared Platform Instance | `ASSUMP-006` | One shared platform instance serves all association-endorsed listings; no separate deployment per district. | Source: inferred from the single-system framing of `project_brief.yaml`. Cross-checked against the Performance & Scalability requirement's scalability target (≥500 concurrent users against a single up-to-10,000-listing catalog) to confirm no contradiction. |
 | English & Bahasa Malaysia Baseline Languages | `ASSUMP-007` | English and Bahasa Malaysia are the baseline supported languages; additional languages are budget-dependent stretch scope. | Source: target audience plus typical practice for a Malaysian state-tourism platform. **Confirmed** with Association management during the Combined Management Walkthrough (`VAL-005`, Appendix A): English and Bahasa Malaysia are contractual minimums for go-live; Mandarin was discussed as a desirable stretch addition dependent on translation budget and is recorded as a non-normative future consideration only. |
 
-**Cross-check performed.** Sections 8–10 were re-scanned during drafting to confirm that no non-functional or design requirement silently contradicts an assumption above. No conflicts were found: the Performance & Scalability target is consistent with the Single Shared Platform Instance assumption; the Security & Data Privacy controls are consistent with the Delegated Payment Processing assumption; and the Usability & Accessibility language target is bounded to the two baseline languages of the English & Bahasa Malaysia Baseline Languages assumption (with Mandarin explicitly marked non-normative/stretch rather than silently assumed).
+**Cross-check performed.** Sections 8–10 were re-scanned during drafting to confirm that no non-functional or design requirement silently contradicts an assumption above. No conflicts were found: the Performance & Scalability target is consistent with the Single Shared Platform Instance assumption; the Security & Data Privacy controls are consistent with the Delegated Payment Processing assumption; and the Usability & Accessibility language target is bounded to the two baseline languages of the English & Bahasa Malaysia Baseline Languages assumption (with Mandarin explicitly marked non-normative/stretch rather than silently assumed). **v1.2 re-check:** the scoped Local Service Provider self-service carve-out to Association-Only Content Ownership (Narrowed) (`ASSUMP-002`) was cross-checked against Section 8's Security & Data Privacy category and Section 10's PDPA requirements and required (and received) explicit additions there — an access-scoping control and a provider-facing data-minimization requirement — rather than being left as a silent gap; see the Section 8.2 scoping bullet and `REQ-PDPA-008`.
 
 ---
 
@@ -187,7 +188,7 @@ Every assumption below is given a descriptive name, a code, and an explicit rati
 
 ### 4.1 System Boundary Statement
 
-**In scope** (inside the STPS software boundary): the tourist-facing modules (destination/accommodation/vehicle/food discovery, itinerary/package building, reservation and payment initiation, review submission); the management-facing modules (content and listing curation, booking and availability administration, PDPA privacy-request administration); the business logic that enforces the rules described in Section 6; and the integration logic — request/response handling, retries, and failure handling — for each external interaction named in Section 4.2.
+**In scope** (inside the STPS software boundary): the tourist-facing modules (destination/accommodation/vehicle/food discovery, itinerary/package building, reservation and payment initiation, review submission); the management-facing modules (content and listing curation, booking and availability administration, PDPA privacy-request administration); the scoped Local Service Provider self-service module (own-listing daily slot/capacity setting and Booking approve/decline decisions only — no listing-content access); the business logic that enforces the rules described in Section 6; and the integration logic — request/response handling, retries, and failure handling — for each external interaction named in Section 4.2.
 
 **Out of scope** (outside the STPS software boundary): the physical servers, network, and hosting infrastructure on which the software runs; the end-user devices tourists and staff use to access it; and the internal implementation of every third-party service listed in Section 4.2 as an external actor — each is treated strictly as a black box accessed only through its documented request/response contract. This boundary is a direct consequence of the Infrastructure Already Provisioned assumption (`ASSUMP-001`).
 
@@ -198,6 +199,7 @@ Every assumption below is given a descriptive name, a code, and an explicit rati
 | Tourist | `ACT-001` | The primary worldwide end user of the platform. May browse as an anonymous Guest or hold a Registered profile. This exact term — **Tourist** — is used everywhere in this document and is never replaced by "Visitor," "Traveler," or "Customer." |
 | Management Staff — Content Officer | `ACT-002` | Tourism association staff responsible for curating listings and promotional/local-information content. Generalizes, with the Data/System Administrator role, under the superclass "Management Staff." |
 | Management Staff — Data/System Administrator | `ACT-003` | Tourism association staff responsible for account/permission administration and PDPA data-subject request handling. Generalizes with the Content Officer role under "Management Staff." |
+| Local Service Provider | `ACT-009` | An accommodation, vehicle, or food-establishment operator whose listing(s) Management Staff has published. Holds a deliberately scoped self-service login, provisioned by a Data/System Administrator, restricted to exactly two functions on their own listing(s): setting daily slot/capacity availability, and approving/declining Bookings (Manage Own Listing Availability & Booking Decisions task, `TASK-012`). Has no access to listing-content management (description, pricing, photos, licensing), which remains exclusively a Management Staff function (Association-Only Content Ownership assumption, `ASSUMP-002`). One actor name covers accommodation, vehicle, and food-establishment operators uniformly, since their scoped capability set does not differ by listing type. |
 | Payment Gateway Provider (external) | `ACT-004` | A third-party, PCI-DSS-compliant payment processor that authorizes and settles Tourist payments; accessed only via a tokenized request/response interface. |
 | Notification Service (external) | `ACT-005` | A third-party email/SMS gateway used to deliver booking confirmations, PDPA-request acknowledgements, and related notifications. |
 | Mapping/Geolocation Service Provider (external) | `ACT-006` | A third-party service that supplies location, map, and geolocation data used to enrich Destination/Accommodation/Vehicle presentation. |
@@ -208,7 +210,7 @@ Every assumption below is given a descriptive name, a code, and an explicit rati
 
 ### 4.3 System Context Diagram
 
-**Diagram description.** The system context is centred on a single node, "Sarawak Tourism Promotion System," surrounded by all eight actors named in Section 4.2. Every edge to the Tourist, the two Management Staff roles, and the four named external services is a **solid** edge representing a direct, bidirectional system interaction (e.g., the edge to the Payment Gateway Provider is labelled "payment authorization request / payment outcome response"). The single edge to the PDPA Regulatory Authority is **dashed**, representing a compliance/regulatory relationship rather than a direct system interaction — the STPS never receives operational input from, nor grants system access to, the PDPA Regulatory Authority; it only sends breach notifications to it when the Breach Detection & Notification requirement is triggered.
+**Diagram description.** The system context is centred on a single node, "Sarawak Tourism Promotion System," surrounded by all nine actors named in Section 4.2. Every edge to the Tourist, the two Management Staff roles, the Local Service Provider, and the four named external services is a **solid** edge representing a direct, bidirectional system interaction (e.g., the edge to the Payment Gateway Provider is labelled "payment authorization request / payment outcome response"; the edge to the Local Service Provider is labelled "set daily slots / approve or decline bookings," scoped to that provider's own listings only). The single edge to the PDPA Regulatory Authority is **dashed**, representing a compliance/regulatory relationship rather than a direct system interaction — the STPS never receives operational input from, nor grants system access to, the PDPA Regulatory Authority; it only sends breach notifications to it when the Breach Detection & Notification requirement is triggered.
 
 ```mermaid
 flowchart LR
@@ -217,6 +219,7 @@ flowchart LR
     Tourist["Tourist"]
     ContentOfficer["Management Staff -\nContent Officer"]
     SysAdmin["Management Staff -\nData / System Administrator"]
+    LocalProvider["Local Service Provider\n(Accommodation / Vehicle /\nFood Establishment operator)"]
     Payment["Payment Gateway Provider\n(external)"]
     Notify["Notification Service\n(external)"]
     Mapping["Mapping / Geolocation\nService Provider (external)"]
@@ -226,6 +229,7 @@ flowchart LR
     Tourist <-->|"search, plan, reserve,\npay, review"| STPS
     ContentOfficer <-->|"curate content & listings"| STPS
     SysAdmin <-->|"administer accounts,\npermissions, PDPA requests"| STPS
+    LocalProvider <-->|"set daily slots / approve\nor decline own bookings\n(scoped, no content access)"| STPS
     STPS <-->|"payment authorization\nrequest / response"| Payment
     STPS -->|"booking & PDPA-request\nnotifications"| Notify
     STPS <-->|"location / mapping queries"| Mapping
@@ -237,7 +241,7 @@ flowchart LR
     classDef people fill:#EAF7EA,stroke:#3C8C3C;
     class Payment,Notify,Mapping,Translate ext;
     class Regulator reg;
-    class Tourist,ContentOfficer,SysAdmin people;
+    class Tourist,ContentOfficer,SysAdmin,LocalProvider people;
 ```
 
 **Legend.** Solid edge = direct system interaction. Dashed edge = compliance/regulatory relationship (PDPA Regulatory Authority only, non-operational).
@@ -265,6 +269,7 @@ The domain model below is strictly conceptual. It contains entities, one-line de
 | Option | `DM-ENT-009` | A selectable add-on/configuration attached to a Booking or Package (e.g., guided-tour add-on, meal preference, insurance, child seat). |
 | Booking | `DM-ENT-010` | A Tourist's pending or confirmed reservation against an Accommodation, Vehicle, Food Establishment, or Package. |
 | Review | `DM-ENT-011` | A Tourist-submitted rating/comment evaluating an Accommodation, Vehicle, Food Establishment, Destination, or Package. |
+| Local Service Provider | `DM-ENT-012` | An accommodation, vehicle, or food-establishment operator who holds a scoped self-service login limited to setting own-listing daily slot availability and approving/declining Bookings against own listings; has no listing-content access. |
 
 ### 5.3 Relationships
 
@@ -281,7 +286,9 @@ Each relationship is read "A (cardinality) — verb → B (cardinality)." Two re
 | Review Evaluates One Reviewable Entity | `DM-REL-007` | Review evaluates exactly one of {Accommodation \| Vehicle \| Food Establishment \| Destination \| Package} (conceptual generalization "Reviewable," XOR — described in prose only, not a stored entity) | 0..* : 1 |
 | Management Staff Publishes Local Information | `DM-REL-008` | Management Staff publishes/maintains Local Information Article | 1..* : 0..* |
 | Management Staff Curates Catalog Entities | `DM-REL-009` | Management Staff curates (CRUD) Destination, Accommodation, Vehicle, Food Establishment, Package, Option | 1..* : 0..* (each) |
-| Management Staff Processes Booking | `DM-REL-010` | Management Staff processes (approve/adjust/cancel) Booking | 1 : 0..* |
+| Management Staff Processes Booking | `DM-REL-010` | Management Staff processes (approve/adjust/cancel) Booking. **Narrowed in v1.2:** Management Staff remains the sole approver for a Package Booking (multi-provider, cannot be single-provider-owned) and remains able to override, escalate-resolve, or cancel any Booking; for a component Booking (Accommodation/Vehicle/Food Establishment) against a Local-Service-Provider-operated listing, first-line approve/decline authority now sits with that provider (`DM-REL-012`), with Management Staff acting only on SLA-missed escalations or listings with no assigned provider. | 1 : 0..* |
+| Local Service Provider Operates Listing | `DM-REL-011` | Local Service Provider operates Accommodation, Vehicle, Food Establishment — each such listing is operated by exactly one Local Service Provider; one provider may operate one or more listings, including across categories | 1 : 0..* (each) |
+| Local Service Provider Decides Component Booking | `DM-REL-012` | Local Service Provider approves/declines (first-line) a Booking that targets an Accommodation, Vehicle, or Food Establishment it operates; excludes Package Bookings, which remain under Management Staff Processes Booking (`DM-REL-010`) | 1 : 0..* |
 
 ### 5.4 Domain Model Diagram
 
@@ -294,6 +301,7 @@ flowchart TD
     subgraph People["People"]
         Tourist["<b>Tourist</b><br/><i>Worldwide visitor; guest or registered</i>"]
         MgmtStaff["<b>Management Staff</b><br/><i>Association personnel curating content &amp; bookings</i>"]
+        LocalProvider["<b>Local Service Provider</b><br/><i>Operator with scoped slot &amp; booking-decision login</i>"]
     end
 
     %% ===== CATALOG & CONTENT =====
@@ -362,8 +370,16 @@ flowchart TD
     MgmtStaff -->|"curates CRUD (1..* : 0..*)"| Package
     MgmtStaff -->|"curates CRUD (1..* : 0..*)"| Option
 
-    %% ===== Management Staff Processes Booking =====
-    MgmtStaff -->|"processes approve/adjust/cancel (1 : 0..*)"| Booking
+    %% ===== Management Staff Processes Booking (narrowed v1.2: Package + override/escalation) =====
+    MgmtStaff -->|"processes approve/adjust/cancel;\nPackage + override/escalation (1 : 0..*)"| Booking
+
+    %% ===== Local Service Provider Operates Listing =====
+    LocalProvider -->|"operates (1 : 0..*)"| Accommodation
+    LocalProvider -->|"operates (1 : 0..*)"| Vehicle
+    LocalProvider -->|"operates (1 : 0..*)"| FoodEstablishment
+
+    %% ===== Local Service Provider Decides Component Booking =====
+    LocalProvider -->|"decides first-line\n(component only) (1 : 0..*)"| Booking
 
     classDef note fill:#FFF9C4,stroke:#999,stroke-dasharray: 4 4,color:#333,text-align:left;
     class NoteOffering,NoteReviewable note;
@@ -407,13 +423,15 @@ System Goal: Promote Sarawak Tourism & Enable Association Management
 │    ├── Build & Book a Travel Package with Options (TASK-006)
 │    ├── Complete Payment for a Booking (TASK-007)
 │    └── Submit Review & Feedback (TASK-008)
-└── Management Goal: Maintain an Authoritative, Compliant Tourism Platform
-     ├── Manage Promotional Content & Listings (TASK-009)
-     ├── Manage Bookings, Availability & Provider Coordination (TASK-010)
-     └── Manage Tourist Data Privacy Requests / PDPA (TASK-011)
+├── Management Goal: Maintain an Authoritative, Compliant Tourism Platform
+│    ├── Manage Promotional Content & Listings (TASK-009)
+│    ├── Manage Bookings, Availability & Provider Coordination (TASK-010)
+│    └── Manage Tourist Data Privacy Requests / PDPA (TASK-011)
+└── Local Service Provider Goal: Operate Own Listing Availability & Bookings
+     └── Manage Own Listing Availability & Booking Decisions (TASK-012)
 ```
 
-Eleven major tasks are specified below (exceeding the 8-task minimum) to demonstrate elicitation depth across both the tourist and management goal branches.
+Twelve major tasks are specified below (exceeding the 8-task minimum) to demonstrate elicitation depth across the tourist, management, and local-service-provider goal branches.
 
 ### 6.3 Major Tasks
 
@@ -628,15 +646,16 @@ Eleven major tasks are specified below (exceeding the 8-task minimum) to demonst
 #### Task: Manage Bookings, Availability & Provider Coordination (`TASK-010`)
 
 - **Actors:** Management Staff — Content Officer, Management Staff — Data/System Administrator
-- **Trigger:** A new Booking/Package request is received, or availability/capacity needs adjustment.
+- **Trigger:** A new Package Booking request is received; availability/capacity needs adjustment on a listing with no assigned Local Service Provider; or a component Booking is escalated because its Local Service Provider did not act within the defined SLA window (Manage Own Listing Availability & Booking Decisions task, `TASK-012`).
 - **Precondition:** Staff is authenticated with booking-management permission; Booking(s) exist.
 - **Postcondition:** A Booking is approved/adjusted/cancelled and availability calendars are updated accordingly.
 - **Frequency:** High.
 - **Priority / Exception-Criticality:** High — directly protects the Increased Provider Bookings & Revenue and Data-Informed Management Decisions incentives.
 - **Work Area:** Booking & availability administration module.
 - **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web admin booking queue/calendar; (b) a mobile back-office app for on-the-go approvals; (c) a call-center/manual-entry tool for phone-based coordination.
+- **Scope note (v1.2):** As of `TASK-012`, first-line approve/decline authority for a component Booking (Accommodation/Vehicle/Food Establishment) against a Local-Service-Provider-operated listing sits with that provider, not Management Staff. This task retains sole approval authority for Package Bookings (which span multiple providers and cannot be attributed to one provider), retains full override/cancel authority over any Booking, and gains the SLA-escalation backstop below.
 - **Subtasks:**
-  - **Subtask 10.1 — Review and approve/reject a pending Booking.** *Problem/Exception:* if the requested capacity exceeds Vehicle/Accommodation availability, the system flags the overbooking risk and prevents silent approval. → *Flag Overbooking Risk on Approval* (`REQ-FUN-029`)
+  - **Subtask 10.1 — Review and approve/reject a pending Package Booking, a Booking against a listing with no assigned Local Service Provider, or a component Booking escalated from an unresponsive Local Service Provider.** *Problem/Exception:* if the requested capacity exceeds Vehicle/Accommodation availability, the system flags the overbooking risk and prevents silent approval. → *Flag Overbooking Risk on Approval* (`REQ-FUN-029`)
   - **Subtask 10.2 — Adjust an availability calendar.** *Problem/Exception:* if Staff sets a conflicting availability window overlapping confirmed Bookings, the system warns of the conflict. → *Warn on Conflicting Availability Changes* (`REQ-FUN-030`)
   - **Subtask 10.3 — Cancel/modify a Booking on the Tourist's or provider's behalf.** *Problem/Exception:* if cancellation occurs after payment capture, it triggers the refund workflow (→ Complete Payment for a Booking task). → *Auto-Trigger Refund on Post-Payment Cancellation* (`REQ-FUN-031`)
 - **Variants:** Auto-approval for standard bookings vs. manual review for high-value/group bookings.
@@ -671,11 +690,34 @@ Eleven major tasks are specified below (exceeding the 8-task minimum) to demonst
 
 ---
 
+#### Task: Manage Own Listing Availability & Booking Decisions (`TASK-012`)
+
+- **Actors:** Local Service Provider
+- **Trigger:** A new Booking request arrives against the provider's own Accommodation, Vehicle, or Food Establishment, or the provider needs to set/adjust the day's available slot count.
+- **Precondition:** The provider is authenticated via the scoped self-service login; the provider's listing(s) are published by Management Staff (Manage Promotional Content & Listings task, `TASK-009`).
+- **Postcondition:** The day's slot/capacity count is set or updated, and/or a pending component Booking is approved or declined; both are reflected immediately in tourist-facing availability.
+- **Frequency:** High (daily slot-setting; booking decisions as they arrive).
+- **Priority / Exception-Criticality:** High — directly protects the Increased Provider Bookings & Revenue incentive and closes the No Combined Discovery-and-Booking Channel pain point's stale-availability failure mode; a missed or slow decision risks a lost booking and an unresponsive-feeling platform for the Tourist.
+- **Work Area:** Local Service Provider self-service module (scoped — no listing-content access).
+- **Solution-Agnosticism Check** *(Non-Normative — illustrative only)*: (a) a lightweight web provider portal; (b) a mobile app with push notifications for pending decisions; (c) an SMS/USSD accept/decline flow for providers with limited connectivity or device access.
+- **Subtasks:**
+  - **Subtask 12.1 — Set/update the number of available slots for a given day on an owned listing.** *Problem/Exception:* if the provider sets a slot count below the number of already-Confirmed Bookings for that day, the system blocks the change and requires explicit resolution rather than silently overbooking or silently cancelling already-confirmed Tourists. → *Block Slot Reduction Below Confirmed Bookings* (`REQ-FUN-035`)
+  - **Subtask 12.2 — Review and approve/decline a pending Booking against an owned listing.** *Problem/Exception:* if the provider does not act within a defined SLA window, the system automatically escalates the pending Booking to Management Staff for override (Manage Bookings, Availability & Provider Coordination task, `TASK-010`) instead of leaving the Tourist waiting indefinitely. → *Auto-Escalate Unactioned Provider Booking Decisions* (`REQ-FUN-036`)
+  - **Subtask 12.3 — Receive notification of new pending Bookings and a daily slot-utilization summary.** *Problem/Exception:* if the provider declines a Booking, the system requires a decline reason before completing the action, so both Management Staff and the Tourist receive a specific cause rather than a bare rejection. → *Require Decline Reason on Booking Rejection* (`REQ-FUN-037`)
+- **Variants:** A recurring/default daily slot pattern vs. a one-off daily override; an opt-in auto-approval threshold for providers who choose to skip manual review below a self-set booking size.
+- **Derived Functional Requirements:** Block Slot Reduction Below Confirmed Bookings (`REQ-FUN-035`); Auto-Escalate Unactioned Provider Booking Decisions (`REQ-FUN-036`); Require Decline Reason on Booking Rejection (`REQ-FUN-037`)
+
+> **Block Slot Reduction Below Confirmed Bookings** (`REQ-FUN-035`): Where a Local Service Provider sets a daily slot/capacity count below the number of Confirmed Bookings already recorded for that day on that listing, the system shall block the change and require the provider to resolve the conflict explicitly (for example, by contacting Management Staff to arrange affected Tourists) instead of applying the reduction.
+> **Auto-Escalate Unactioned Provider Booking Decisions** (`REQ-FUN-036`): Where a Local Service Provider has not approved or declined a pending Booking within a defined SLA window (for example, 24 hours), the system shall automatically escalate that Booking to Management Staff for override (Manage Bookings, Availability & Provider Coordination task, `TASK-010`) instead of leaving it pending indefinitely.
+> **Require Decline Reason on Booking Rejection** (`REQ-FUN-037`): The system shall require a Local Service Provider to record a decline reason before completing a Booking rejection. The system shall include that reason in the decline notification sent to the Tourist and shall make it visible to Management Staff.
+
+---
+
 ## 7. Workflows
 
 ### 7.1 Overarching End-to-End Workflow — Tourist Trip Planning & Booking Lifecycle (`WF-000`)
 
-**Swimlanes:** Tourist | System | Management Staff | External (Payment / Notification).
+**Swimlanes:** Tourist | System | Management Staff | Local Service Provider | External (Payment / Notification).
 
 The table below traces the full tourist journey from first discovery through post-trip feedback, with the parallel Management lane feeding the tourist-facing catalog, and the PDPA request lane able to branch off at any point. Every decision row corresponds to a Problem/Exception case documented against the relevant task in Section 6.
 
@@ -702,6 +744,7 @@ The table below traces the full tourist journey from first discovery through pos
 | 13 | Decision: does Review content violate the moderation policy? | System | Route Prohibited Review Content to Moderation | Decision / Exception |
 | 13a | If yes: route to Management Staff moderation queue before publishing | System → Management Staff | Route Prohibited Review Content to Moderation | Exception |
 | — | *(Parallel Management lane, running continuously)* Manage Content & Listings ↔ Manage Bookings, Availability & Provider Coordination, feeding published listings back into steps 1–2 | Management Staff | Manage Promotional Content & Listings ↔ Manage Bookings, Availability & Provider Coordination | Normal (parallel) |
+| — | *(Parallel Local Service Provider lane, running continuously)* Set daily slot availability and approve/decline component Bookings on own listings (Package Bookings and SLA-missed escalations continue to route to the Management lane above), feeding availability and booking decisions back into steps 1–2 and 8 | Local Service Provider | Manage Own Listing Availability & Booking Decisions | Normal (parallel) |
 | — | *(PDPA lane, may branch off at any point, e.g. from a declined-consent decision during Register & Manage Tourist Account, or from a profile-management action at any time)* Manage Tourist Data Privacy Requests | Tourist → Management Staff | Manage Tourist Data Privacy Requests / PDPA | Normal (branch) |
 | 14 | End | — | — | End |
 
@@ -887,7 +930,7 @@ Each workflow below corresponds 1:1 to the identically named task in Section 6.3
 
 | # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Review a pending Booking | Management Staff | Normal |
+| 1 | Review a pending Package Booking, a Booking against a listing with no assigned Local Service Provider, or a component Booking escalated from an unresponsive provider (branch from Manage Own Listing Availability & Booking Decisions, `WF-012`) | Management Staff | Normal |
 | 2 | Decision: does requested capacity exceed remaining availability? | System | Decision |
 | 2a | If yes: flag overbooking risk; require explicit override to approve | System → Management Staff | Exception |
 | 2b | If no: allow approve/reject | Management Staff | Normal |
@@ -922,6 +965,26 @@ Each workflow below corresponds 1:1 to the identically named task in Section 6.3
 | 7b | If no: close request | System | Normal |
 | 8 | End | — | End |
 
+#### Workflow: Manage Own Listing Availability & Booking Decisions (`WF-012`)
+
+**Swimlanes:** Local Service Provider | System | Management Staff | Tourist.
+
+| # | Step | Swimlane | Type |
+|---|---|---|---|
+| 1 | Set/update the daily slot/capacity count for an owned listing | Local Service Provider | Normal |
+| 2 | Decision: does the new count fall below the day's Confirmed Bookings? | System | Decision |
+| 2a | If yes: block the change; require explicit resolution | System → Local Service Provider | Exception |
+| 2b | If no: save the updated count; reflect it in tourist-facing availability | System | Normal |
+| 3 | Notify the provider of a new pending Booking against an owned listing | System → Local Service Provider | Normal |
+| 4 | Decision: does the provider act (approve/decline) within the SLA window? | System | Decision |
+| 4a | If no: auto-escalate the Booking to Management Staff for override | System → Management Staff | Exception (branch to `WF-010`) |
+| 4b | If yes: proceed | Local Service Provider | Normal |
+| 5 | Decision: approve or decline? | Local Service Provider | Decision |
+| 5a | If decline: require a decline reason before completing the action | Local Service Provider → System | Exception |
+| 5b | If approve: confirm the Booking; update availability | System | Normal |
+| 6 | Notify the Tourist of the outcome | System → Tourist | Normal |
+| 7 | End | — | End |
+
 ### 7.3 Diagram Legend
 
 **Notation:** UML Activity Diagram, applied uniformly to the overarching workflow and every per-task workflow above.
@@ -955,6 +1018,7 @@ Rationale: the PDPA Compliance goal and the Ungoverned Personal Data Handling pa
 
 - The system shall encrypt all personal data (profile, Booking, payment reference) at rest (e.g., AES-256) and in transit (TLS 1.2+), verified by configuration/penetration-test audit.
 - The system shall reject 100% of access attempts from an unauthorized role against restricted management endpoints, verified by role-based access-control test cases.
+- The system shall restrict an authenticated Local Service Provider session to only the slot-setting and booking-decision functions of that provider's own listing(s), verified by role-based access-control test cases confirming zero provider access to listing-content management, other providers' listings, or Tourist data beyond the minimum needed to act on a pending Booking (`REQ-PDPA-008`).
 - The system shall ensure 100% of data-processing activities are traceable to a timestamped consent record (Register & Manage Tourist Account task), verified by consent-log audit.
 - The system shall fulfil data subject access/correction/deletion requests (Manage Tourist Data Privacy Requests task) within a defined SLA of ≤21 days, verified by request-tracking log.
 
@@ -999,6 +1063,8 @@ Each design-level requirement below is tied back to a Goal or Pain Point it serv
 - **Staff User Guide & Onboarding** (`REQ-PROD-006`): The system's management-facing modules shall be accompanied by a staff user guide and an onboarding walkthrough sufficient for a new Content Officer or Data/System Administrator to complete the Manage Promotional Content & Listings, Manage Bookings/Availability, and Manage Tourist Data Privacy Requests tasks unaided, verified by a documented onboarding test with a new staff member.
 - **Listing License Reference Requirement** (`REQ-PROD-007`): The system shall require Accommodation, Vehicle, and Food Establishment listings to record a valid local business registration/license reference before publication, verified in the Manage Promotional Content & Listings task, Subtask 9.1.
 - **Locale-Based Formatting** (`REQ-PROD-008`): The system shall adapt currency, date, and unit formatting to the Tourist's selected locale.
+- **Provider User Guide & Onboarding** (`REQ-PROD-009`): The system's Local Service Provider self-service module shall be accompanied by a short user guide and onboarding walkthrough sufficient for a new provider to complete slot-setting and Booking approve/decline decisions unaided, verified by a documented onboarding test with a sample provider.
+- **Local Service Provider Audit Logging** (`REQ-PROD-010`): The system shall maintain an audit log of every slot-availability change and every Booking approve/decline decision that a Local Service Provider performs. The system shall retain this audit log for 24 months, consistent with the Management Staff Audit Logging requirement's retention period (`REQ-PROD-002`).
 
 ---
 
@@ -1013,6 +1079,7 @@ The requirements below give effect to the Malaysian Personal Data Protection Act
 - **Cross-Border Transfer Safeguard** (`REQ-PDPA-005`): The system shall host and process Tourist data within Malaysia by default. Where any component of the platform requires processing outside Malaysia (for example, a global content-delivery node, or an overseas sub-processor engaged by the Payment Gateway Provider or Notification Service), the Association shall ensure and document a PDPA-compliant transfer safeguard (such as recorded Tourist consent to the specific transfer, or a data-processing agreement establishing comparable protection in the recipient jurisdiction) before that transfer occurs. This safeguard requirement reflects the platform's worldwide Tourist user base (links the Malaysian PDPA Jurisdiction Scope assumption, `ASSUMP-005`).
 - **Breach Detection & Notification** (`REQ-PDPA-006`): The system and its operating procedures shall implement a documented breach detection and notification procedure. This procedure shall specify a maximum time from breach confirmation to notification for both affected Tourists and the PDPA Regulatory Authority, and the Association shall notify both parties within that documented time upon confirmation of a personal-data breach.
 - **Retention & Disposal Alignment** (`REQ-PDPA-007`): The system's retention and disposal behaviour shall align with the Tourist Data Retention Limit requirement.
+- **Provider Access Data Minimization** (`REQ-PDPA-008`): The system shall expose to a Local Service Provider, for a Booking pending that provider's decision, only the Tourist data necessary to make and fulfil the decision (for example, party size, dates, and relevant service preferences). The system shall withhold Tourist contact details and payment data from the provider's view except where a specific field is required for service fulfilment, consistent with the Data Minimization requirement (`REQ-PDPA-003`).
 
 ---
 
@@ -1022,7 +1089,9 @@ Full validation evidence is held in Appendix A (stakeholder evidence), Appendix 
 
 Headline changes made as a result of this validation include: tightening the Accommodation/Vehicle reservation logic to re-validate availability immediately before confirmation and to block incompatible Vehicle–Option combinations, following operations-role feedback; adding the explicit cross-border transfer safeguard and breach-handling requirements, following IT/compliance-role feedback; confirming and tightening the language and accessibility targets in the Usability & Accessibility category, following the worldwide-tourist usability sample; and confirming the Association-Only Content Ownership assumption directly with a sample of tourism providers. The full before/after record of these changes is in Appendix F.
 
-An IEEE‑830-style verifiability audit (Appendix D) was applied to 100% of the requirement items in this document — all 34 functional requirements, all 4 non-functional requirements, all 4 design-level requirements, all 8 product-level requirements, and all 7 PDPA requirements (57 requirement items total) — with zero unresolved non-verifiable statements remaining.
+An IEEE‑830-style verifiability audit (Appendix D) was applied to 100% of the requirement items in this document — all 37 functional requirements, all 4 non-functional requirements, all 4 design-level requirements, all 10 product-level requirements, and all 8 PDPA requirements (63 requirement items total) — with zero unresolved non-verifiable statements remaining.
+
+**v1.2 addendum.** The Local Service Provider self-service capability (`TASK-012`) introduced in v1.2 is a scope reversal, not a purely additive change: it narrows the Association-Only Content Ownership assumption (`ASSUMP-002`), which two prior validation sessions — the Bookings & Operations Manager Walkthrough (`VAL-002`) and the Tourism Provider Survey (`VAL-006`) — had confirmed in its original, absolute form. Neither session covers the new scoped-login carve-out. This is recorded transparently as a new, not-yet-conducted validation item (`VAL-007`, Appendix A) rather than presented as already field-validated; it is carried forward into Section 12 as a fourth residual risk requiring client sign-off, alongside the three already open in v1.1.
 
 ---
 
@@ -1030,13 +1099,14 @@ An IEEE‑830-style verifiability audit (Appendix D) was applied to 100% of the 
 
 Sections 2 through 10 of this SRS jointly satisfy the four project goals stated in Section 2.1. The **Single Authoritative Promotion Channel** goal is delivered through the consolidated catalog of the discovery, accommodation, transport, food, and package-building tasks and the domain model of Section 5. The **Association Content & Data Control** goal is delivered through the Manage Promotional Content & Listings and Manage Bookings, Availability & Provider Coordination tasks and the Management Staff Audit Logging requirement. The **Trustworthy Current Local Information** goal is delivered through the content-currency controls of the Discover Local Tourism Information task (the Auto-Hide Expired Local Information Articles requirement) and the review/moderation loop of the Submit Review & Feedback task. The **PDPA Compliance** goal is delivered through the Register & Manage Tourist Account task's consent capture, the Manage Tourist Data Privacy Requests task, the Security & Data Privacy requirement category, and the full set of PDPA requirements in Section 10.
 
-Three residual risks require explicit client sign-off before development begins, each already flagged in Section 3 and each already put to initial stakeholder validation (Appendix A) with a preliminary confirmation recorded:
+Four residual risks require explicit client sign-off before development begins, each already flagged in Section 3 and each already put to initial stakeholder validation (Appendix A) with a preliminary confirmation recorded (the fourth is new in v1.2 and, unlike the other three, has not yet been put to any stakeholder validation at all):
 
-- **Association-Only Content Ownership** (no direct provider login — providers supply information to Association staff off-system): preliminarily confirmed with Association operations management and with a sample of tourism providers; final client sign-off is still required before this constraint is locked into the technical design.
+- **Association-Only Content Ownership, Narrowed** (listing-content management stays Association-only; a Local Service Provider now gets a scoped self-service login limited to daily slot-setting and Booking approve/decline decisions on their own listings, `TASK-012`): the original, absolute "no direct login" form of this assumption was preliminarily confirmed with Association operations management and with a sample of tourism providers; the v1.2 scoped-login carve-out reverses part of that confirmation and **has not been validated with either party**. Final client sign-off — and a dedicated follow-up validation session with a sample of providers (`VAL-007`) — is required before this narrowed constraint is locked into the technical design.
 - **Malaysian PDPA Jurisdiction Scope** (PDPA-only compliance scope, given a worldwide Tourist user base): preliminarily reviewed with an external compliance advisor, who recommended the cross-border transfer safeguard now codified in Section 10; final client sign-off on accepting PDPA as the sole governing framework (rather than also targeting, for example, GDPR) is still required.
 - **English & Bahasa Malaysia Baseline Languages** (as the v1.0 language baseline, with further languages treated as budget-dependent stretch scope): preliminarily confirmed with Association management; final sign-off on whether any additional language is committed for go-live, versus remaining a post-launch stretch item, is still required.
+- **Local Service Provider Self-Service Scope, New** (whether a scoped provider login is the right operational model at all, versus keeping Management Staff as sole intermediary): raised directly by this enhancement request rather than by a prior stakeholder session; no provider, Content Officer, or Bookings & Operations Manager has yet reviewed the specific slot-setting and approve/decline design in `TASK-012`/`WF-012`. The recommendation is to run a provider-facing concept validation (`VAL-007`) before this scope is built, given that the only prior provider feedback on record (`VAL-006`) asked for the opposite.
 
-No new requirements are introduced in this section. The recommendation to the client is to review and formally sign off on the three residual risks above, and, contingent on that sign-off, to approve this SRS as the baseline against which the Swinsoft development team will design, build, and test the Sarawak Tourism Promotion System.
+No other new requirements are introduced in this section. The recommendation to the client is to review and formally sign off on the four residual risks above — treating the fourth as the highest-priority one to validate, since it is the only risk in this list not yet checked with a single real stakeholder — and, contingent on that sign-off, to approve this SRS as the baseline against which the Swinsoft development team will design, build, and test the Sarawak Tourism Promotion System.
 
 ---
 
@@ -1050,6 +1120,7 @@ No new requirements are introduced in this section. The recommendation to the cl
 | Worldwide Tourist Usability Sample | `VAL-004` | Moderated usability test with 9 prospective/actual tourists (nationalities: Malaysia, Singapore, Australia, United Kingdom, Germany, Japan, South Korea, China, United States) | 2026-07-18 | Moderated usability test, think-aloud protocol, task completion on prototype | Participants without English or Bahasa Malaysia fluency struggled to complete the search task within the target time; one visually-impaired participant encountered accessibility barriers | Tightened the Usability & Accessibility language and WCAG 2.1 AA targets; mandated the Persistent Multi-Language Toggle on every core screen |
 | Combined Management Walkthrough | `VAL-005` | Puan Aidah binti Zainal, Mr. Henry anak Jawa, and Association General Manager Mr. Robert Sagau | 2026-07-25 | Prototype demonstration and goal-confirmation workshop | Confirmed objective targets as realistic; requested a staff-curated "featured package" capability in addition to fully custom tourist-built packages | Confirmed the staff-curated featured-package variant of Build & Book a Travel Package; confirmed the End-to-End In-Platform Trip Completion target (≥55%); confirmed the English & Bahasa Malaysia Baseline Languages assumption |
 | Tourism Provider Survey | `VAL-006` | Survey of 6 tourism providers via Association liaison (2 accommodation, 2 vehicle/transport, 2 food establishment operators) | 2026-08-01 | Written survey with follow-up calls | Providers wanted confirmation they would not receive direct system logins; asked for clarity on the license-reference requirement for publication | Confirmed Association-Only Content Ownership; clarified the Listing License Reference Requirement and linked it explicitly to Manage Promotional Content & Listings, Subtask 9.1 |
+| Local Service Provider Self-Service Concept Validation | `VAL-007` | **Not yet conducted.** Recommended: a follow-up written survey and/or walkthrough with the same or an expanded sample of tourism providers (accommodation, vehicle, food establishment), plus a re-check with the Bookings & Operations Manager (`VAL-002` role) | *Pending* | *Pending — recommended before build sign-off* | *N/A — this row is a planned validation item, not completed evidence* | Introduced the scoped Local Service Provider self-service capability (`TASK-012`, `WF-012`) as a provisional v1.2 addition; this reverses the no-direct-login element of Association-Only Content Ownership (`ASSUMP-002`) that `VAL-002` and `VAL-006` had confirmed in its original, absolute form. Carried forward as the highest-priority residual risk in Section 12 until real stakeholders confirm or reject this narrower scope. |
 
 **Coverage confirmation.** The minimum coverage rule is satisfied: the Content Officer Interview represents the marketing/content role, the Bookings & Operations Manager Walkthrough the operations/booking role, the IT & Compliance Review Workshop the IT/compliance role, and the Worldwide Tourist Usability Sample a worldwide-tourist sample (n=9 ≥ 8, nine nationalities noted). The Combined Management Walkthrough and Tourism Provider Survey provide additional depth.
 
@@ -1072,6 +1143,7 @@ Columns: **Goal / Pain Point / Incentive → Objective → Task → Functional R
 | Association Content & Data Control (`GOAL-002`); Manual Error-Prone Content Updates (`PP-003`); Reduced Manual Coordination Effort (`INC-002`) | Same-Business-Day Content Publishing (`OBJ-002`) | Manage Promotional Content & Listings (`TASK-009`) | Block Publish Without Legal Reference, Warn Before Archiving Listing with Active Bookings, Prevent Article Publish Without Category Tag (`REQ-FUN-026`–`028`) | Consistent Association Branding (`REQ-DES-001`); Staff User Guide & Onboarding (`REQ-PROD-006`); Listing License Reference Requirement (`REQ-PROD-007`) | Content Officer Interview (`VAL-001`) | Test; Inspection |
 | Association Content & Data Control (`GOAL-002`); Manual Error-Prone Content Updates (`PP-003`); Data-Informed Management Decisions (`INC-004`) | Same-Business-Day Content Publishing (`OBJ-002`) | Manage Bookings, Availability & Provider Coordination (`TASK-010`) | Flag Overbooking Risk on Approval, Warn on Conflicting Availability Changes, Auto-Trigger Refund on Post-Payment Cancellation (`REQ-FUN-029`–`031`) | Management Staff Audit Logging (`REQ-PROD-002`) | Bookings & Operations Manager Walkthrough (`VAL-002`) | Test |
 | PDPA Compliance (`GOAL-004`); Ungoverned Personal Data Handling (`PP-006`) | PDPA Compliance Checklist Pass (`OBJ-004`) | Manage Tourist Data Privacy Requests / PDPA (`TASK-011`) | Require Extra Verification for Uncertain Identity, Anonymize Instead of Delete Legally Retained Data, Notify Outcome & Auto-Escalate Near SLA Deadline (`REQ-FUN-032`–`034`) | Security & Data Privacy (`REQ-NFR-002`); Tourist Data Retention Limit (`REQ-PROD-001`); Data Subject Access/Correction/Deletion Rights, Cross-Border Transfer Safeguard, Breach Detection & Notification, Retention & Disposal Alignment (`REQ-PDPA-004`–`007`) | IT & Compliance Review Workshop (`VAL-003`) | Test; Inspection |
+| Single Authoritative Promotion Channel (`GOAL-001`); Increased Provider Bookings & Revenue, Data-Informed Management Decisions (`INC-001`, `INC-004`); No Combined Discovery-and-Booking Channel (`PP-002`) | End-to-End In-Platform Trip Completion (`OBJ-003`) | Manage Own Listing Availability & Booking Decisions (`TASK-012`) | Block Slot Reduction Below Confirmed Bookings, Auto-Escalate Unactioned Provider Booking Decisions, Require Decline Reason on Booking Rejection (`REQ-FUN-035`–`037`) | Security & Data Privacy provider-scoping control (`REQ-NFR-002`); Provider User Guide & Onboarding, Local Service Provider Audit Logging (`REQ-PROD-009`–`010`); Provider Access Data Minimization (`REQ-PDPA-008`) | *Pending* — Local Service Provider Self-Service Concept Validation (`VAL-007`, not yet conducted) | Test; Inspection |
 
 **Two-way coverage confirmation.**
 
@@ -1079,12 +1151,12 @@ Columns: **Goal / Pain Point / Incentive → Objective → Task → Functional R
 - Every pain point (`PP-001`–`006`) appears in at least one row.
 - Every incentive (`INC-001`–`004`) appears in at least one row.
 - Every objective (`OBJ-001`–`004`) appears in at least one row.
-- Every task (`TASK-001`–`011`) appears exactly once as the row's Task.
-- Every functional requirement (`REQ-FUN-001`–`034`) appears in exactly one row, matching its owning task.
+- Every task (`TASK-001`–`012`) appears exactly once as the row's Task.
+- Every functional requirement (`REQ-FUN-001`–`037`) appears in exactly one row, matching its owning task.
 - Every non-functional requirement category (`REQ-NFR-001`–`004`) appears at least once.
 - Every design-level requirement (`REQ-DES-001`–`004`) appears at least once.
-- Every product-level requirement (`REQ-PROD-001`–`008`) appears at least once.
-- Every PDPA requirement (`REQ-PDPA-001`–`007`) appears at least once.
+- Every product-level requirement (`REQ-PROD-001`–`010`) appears at least once.
+- Every PDPA requirement (`REQ-PDPA-001`–`008`) appears at least once.
 
 No orphan requirement and no orphan goal remain.
 
@@ -1092,29 +1164,30 @@ No orphan requirement and no orphan goal remain.
 
 ## Appendix C — CRUD Matrix
 
-Rows are all 11 domain entities from Section 5.2, matching exactly with no additions or omissions. Columns are Tourist, Management Staff, and System (automated process), each split into Create / Read / Update / Delete. Every entity has at least one populated C, R, U, and D cell; where an operation is intentionally restricted, the restriction is stated explicitly rather than left blank.
+Rows are all 12 domain entities from Section 5.2, matching exactly with no additions or omissions. Columns are Tourist, Management Staff, Local Service Provider (added in v1.2), and System (automated process), each split into Create / Read / Update / Delete. Every entity has at least one populated C, R, U, and D cell; where an operation is intentionally restricted, the restriction is stated explicitly rather than left blank.
 
-| Entity | Tourist — C | Tourist — R | Tourist — U | Tourist — D | Mgmt Staff — C | Mgmt Staff — R | Mgmt Staff — U | Mgmt Staff — D | System — C | System — R | System — U | System — D |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Tourist (`DM-ENT-001`) | Yes — self-registration | Yes — view own profile | Yes — edit own profile | Request only — actioned by Management Staff via Manage Tourist Data Privacy Requests; no direct hard-delete by Tourist | Yes — staff-assisted registration variant only | Yes — view for support/booking processing, minimized per Data Minimization | Yes — correct data per PDPA correction request | Yes — execute deletion/anonymization per PDPA request | No — system does not autonomously create Tourist records | Yes — reads profile for personalization/consent-check | No autonomous update; updates only executed on behalf of a Tourist- or Staff-initiated action | Yes — automated retention-driven purge/anonymization job (Tourist Data Retention Limit) |
-| Management Staff (`DM-ENT-002`) | Not applicable — Tourists have no access to Management Staff records | Not applicable | Not applicable | Not applicable | Yes — Data/System Administrator creates staff accounts | Yes — view own/other staff profile within permission | Yes — update role/permissions | Yes — deactivate/remove staff account | No | Yes — reads staff role for role-based access control | No autonomous update | No autonomous delete; account lifecycle always administrator-initiated |
-| Destination (`DM-ENT-003`) | Not permitted — Tourist is read-only for catalog content | Yes — browse | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | No | Yes — serves tourist-facing views/package suggestions | Limited — auto-timestamps last-modified/sync with mapping service | No autonomous delete; archiving requires Management Staff confirmation |
-| Accommodation (`DM-ENT-004`) | Not permitted | Yes — search/view | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | No | Yes — search index | Limited — availability sync from staff updates, not autonomous | No autonomous delete |
-| Vehicle (`DM-ENT-005`) | Not permitted | Yes — search/view | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | No | Yes — search index | No autonomous update to the record; system computationally excludes suspended Vehicles from results at read time without altering the entity | No autonomous delete |
-| Food Establishment (`DM-ENT-006`) | Not permitted | Yes — search/view | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | No | Yes — search index | No autonomous update; read-time filtering only | No autonomous delete |
-| Local Information Article (`DM-ENT-007`) | Not permitted — read-only, no authoring | Yes — view, bookmark | Not permitted | Not permitted | Yes | Yes | Yes | Yes — soft-hide/archive only | No autonomous create | Yes — serves content | Automated — system auto-hides/unpublishes expired articles at their expiry timestamp | No autonomous hard-delete; archive only, by Management Staff |
-| Package / Itinerary (`DM-ENT-008`) | Yes — build a fully custom package | Yes — view/browse featured packages | Yes — edit own in-progress package before confirmation | Yes — discard own unconfirmed draft only; a confirmed Package tied to a Booking cannot be deleted, only cancelled | Yes — staff-curated "featured package" variant | Yes | Yes — adjust component pricing/availability | Yes — archive/retire a featured package | No | Yes | Automated recalculation of the consolidated price/summary when a component changes | No autonomous delete |
-| Option (`DM-ENT-009`) | Not permitted — Options are catalog items maintained by Management Staff only | Yes — view available Options during booking | Not permitted | Not permitted | Yes | Yes | Yes | Yes | No | Yes — validate compatibility | Automated — system marks an Option unavailable when its underlying capacity/stock is exhausted | No autonomous delete |
-| Booking (`DM-ENT-010`) | Yes — create own Booking | Yes — view own Booking status | Limited — modify own pending Booking details before confirmation, or request cancellation | Request only — cancellation/refund request; no hard-delete, retained for audit | Yes — staff-assisted booking entry (phone/counter variant) | Yes — review queue | Yes — approve/adjust status | Cancel only (status change to Cancelled); no hard-delete, retained for audit | Automated — system creates the Booking record on a submitted reservation request | Yes — availability checks | Automated — status transitions (Pending → Confirmed/Payment-Failed) driven by payment-gateway callback | No — system never deletes Booking records (audit retention) |
-| Review (`DM-ENT-011`) | Yes — submit review | Yes — view own and published reviews | Yes — edit own review before/shortly after submission, subject to re-moderation | Not permitted — Tourist cannot hard-delete a published Review; may request removal via feedback, but removal is moderation-actioned. Soft-delete/hide only, by Management Staff | No — Reviews are Tourist-authored only | Yes — moderation queue | Yes — moderate/edit flag status | Yes — soft-delete/hide a Review found to violate moderation policy | No | Yes — display aggregation/rating average | Automated — system flags a Review containing prohibited-language patterns for the moderation queue without altering content | No autonomous delete |
+| Entity | Tourist — C | Tourist — R | Tourist — U | Tourist — D | Mgmt Staff — C | Mgmt Staff — R | Mgmt Staff — U | Mgmt Staff — D | Local Provider — C | Local Provider — R | Local Provider — U | Local Provider — D | System — C | System — R | System — U | System — D |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Tourist (`DM-ENT-001`) | Yes — self-registration | Yes — view own profile | Yes — edit own profile | Request only — actioned by Management Staff via Manage Tourist Data Privacy Requests; no direct hard-delete by Tourist | Yes — staff-assisted registration variant only | Yes — view for support/booking processing, minimized per Data Minimization | Yes — correct data per PDPA correction request | Yes — execute deletion/anonymization per PDPA request | Not applicable | No — provider sees only the minimized per-Booking fields needed to act on a pending Booking, not the Tourist entity/profile itself (Provider Access Data Minimization, `REQ-PDPA-008`) | Not applicable | Not applicable | No — system does not autonomously create Tourist records | Yes — reads profile for personalization/consent-check | No autonomous update; updates only executed on behalf of a Tourist- or Staff-initiated action | Yes — automated retention-driven purge/anonymization job (Tourist Data Retention Limit) |
+| Management Staff (`DM-ENT-002`) | Not applicable — Tourists have no access to Management Staff records | Not applicable | Not applicable | Not applicable | Yes — Data/System Administrator creates staff accounts | Yes — view own/other staff profile within permission | Yes — update role/permissions | Yes — deactivate/remove staff account | Not applicable | Not applicable | Not applicable | Not applicable | No | Yes — reads staff role for role-based access control | No autonomous update | No autonomous delete; account lifecycle always administrator-initiated |
+| Destination (`DM-ENT-003`) | Not permitted — Tourist is read-only for catalog content | Yes — browse | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | Not applicable — Destinations are not provider-operated listings | Not applicable | Not applicable | Not applicable | No | Yes — serves tourist-facing views/package suggestions | Limited — auto-timestamps last-modified/sync with mapping service | No autonomous delete; archiving requires Management Staff confirmation |
+| Accommodation (`DM-ENT-004`) | Not permitted | Yes — search/view | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | Not permitted — Provider does not create listing content (Association-Only Content Ownership, `ASSUMP-002`) | Yes — view own operated listing(s) | Limited — daily slot/capacity availability only, on own listing(s); no edit to description, pricing, photos, or licensing | Not permitted | No | Yes — search index | Limited — availability sync from Management Staff or the operating Local Service Provider's slot updates, not autonomous | No autonomous delete |
+| Vehicle (`DM-ENT-005`) | Not permitted | Yes — search/view | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | Not permitted — content stays Management-Staff-only | Yes — view own operated listing(s) | Limited — daily slot/capacity availability only, on own listing(s) | Not permitted | No | Yes — search index | No autonomous update to the record; system computationally excludes suspended Vehicles from results at read time without altering the entity | No autonomous delete |
+| Food Establishment (`DM-ENT-006`) | Not permitted | Yes — search/view | Not permitted | Not permitted | Yes | Yes | Yes | Yes — archive with confirmation | Not permitted — content stays Management-Staff-only | Yes — view own operated listing(s) | Limited — daily slot/capacity availability only, on own listing(s) | Not permitted | No | Yes — search index | No autonomous update; read-time filtering only | No autonomous delete |
+| Local Information Article (`DM-ENT-007`) | Not permitted — read-only, no authoring | Yes — view, bookmark | Not permitted | Not permitted | Yes | Yes | Yes | Yes — soft-hide/archive only | Not applicable | Not applicable | Not applicable | Not applicable | No autonomous create | Yes — serves content | Automated — system auto-hides/unpublishes expired articles at their expiry timestamp | No autonomous hard-delete; archive only, by Management Staff |
+| Package / Itinerary (`DM-ENT-008`) | Yes — build a fully custom package | Yes — view/browse featured packages | Yes — edit own in-progress package before confirmation | Yes — discard own unconfirmed draft only; a confirmed Package tied to a Booking cannot be deleted, only cancelled | Yes — staff-curated "featured package" variant | Yes | Yes — adjust component pricing/availability | Yes — archive/retire a featured package | Not applicable — a Package spans multiple providers and is not single-provider-operated | Not applicable | Not applicable | Not applicable | No | Yes | Automated recalculation of the consolidated price/summary when a component changes | No autonomous delete |
+| Option (`DM-ENT-009`) | Not permitted — Options are catalog items maintained by Management Staff only | Yes — view available Options during booking | Not permitted | Not permitted | Yes | Yes | Yes | Yes | Not applicable | Not applicable | Not applicable | Not applicable | No | Yes — validate compatibility | Automated — system marks an Option unavailable when its underlying capacity/stock is exhausted | No autonomous delete |
+| Booking (`DM-ENT-010`) | Yes — create own Booking | Yes — view own Booking status | Limited — modify own pending Booking details before confirmation, or request cancellation | Request only — cancellation/refund request; no hard-delete, retained for audit | Yes — staff-assisted booking entry (phone/counter variant); Package Bookings and SLA-missed escalations | Yes — review queue | Yes — approve/adjust status (Package Bookings, escalations, and overrides) | Cancel only (status change to Cancelled); no hard-delete, retained for audit | Not permitted — Bookings are Tourist- or Staff-created, never Provider-created | Yes — view pending/own-listing Bookings, minimized Tourist data only (`REQ-PDPA-008`) | Yes — first-line approve/decline on a component Booking against an owned listing only (`DM-REL-012`); status change, not content edit | Not permitted — decline is a status change, not a hard-delete | Automated — system creates the Booking record on a submitted reservation request | Yes — availability checks | Automated — status transitions (Pending → Confirmed/Payment-Failed) driven by payment-gateway callback | No — system never deletes Booking records (audit retention) |
+| Review (`DM-ENT-011`) | Yes — submit review | Yes — view own and published reviews | Yes — edit own review before/shortly after submission, subject to re-moderation | Not permitted — Tourist cannot hard-delete a published Review; may request removal via feedback, but removal is moderation-actioned. Soft-delete/hide only, by Management Staff | No — Reviews are Tourist-authored only | Yes — moderation queue | Yes — moderate/edit flag status | Yes — soft-delete/hide a Review found to violate moderation policy | No — Reviews are Tourist-authored only | Yes — same public read as any visitor, via the reviewed listing's public page; no distinct provider grant | Not applicable | Not applicable | No | Yes — display aggregation/rating average | Automated — system flags a Review containing prohibited-language patterns for the moderation queue without altering content | No autonomous delete |
+| Local Service Provider (`DM-ENT-012`) | Not applicable — Tourists have no access to Provider account records | Not applicable | Not applicable | Not applicable | Yes — Data/System Administrator provisions the scoped provider login | Yes — view provider account/permission scope | Yes — update role/permission scope | Yes — deactivate/remove provider account | Not applicable — self-registration is not granted; provisioning is administrator-initiated only | Yes — view own account | Limited — update own non-permission account details only (e.g., contact information); cannot change own permission scope | Not permitted | No | Yes — reads provider identity/scope for role-based access control | No autonomous update | No autonomous delete; account lifecycle always administrator-initiated |
 
-**Completeness confirmation.** All 11 entities are present with no additions or omissions, matching Section 5.2 exactly. Every entity has at least one populated Create, Read, Update, and Delete cell across the three actor columns, and every restriction is stated explicitly rather than left blank.
+**Completeness confirmation.** All 12 entities are present with no additions or omissions, matching Section 5.2 exactly. Every entity has at least one populated Create, Read, Update, and Delete cell across the four actor columns, and every restriction is stated explicitly rather than left blank.
 
 ---
 
 ## Appendix D — Verifiability Self-Check (IEEE 830 Quality Audit)
 
-Applied to every functional, non-functional, design-level, product-level, and PDPA requirement in this document (57 items total). Zero rows ship with Verifiable = N. Illustrative/example text elsewhere in this document (all text explicitly marked *Non-Normative*) is excluded from this requirement count. This audit was re-confirmed during the final precision-QA pass (v1.1), which restored active-voice, single-clause phrasing for every functional requirement where the readability rewrite had re-merged previously split sentences, and replaced the one reintroduced subjective term — "secure" in the payment-gateway integration requirement — with a concrete, verifiable criterion (PCI-DSS compliance).
+Applied to every functional, non-functional, design-level, product-level, and PDPA requirement in this document (63 items total). Zero rows ship with Verifiable = N. Illustrative/example text elsewhere in this document (all text explicitly marked *Non-Normative*) is excluded from this requirement count. This audit was re-confirmed during the final precision-QA pass (v1.1), which restored active-voice, single-clause phrasing for every functional requirement where the readability rewrite had re-merged previously split sentences, and replaced the one reintroduced subjective term — "secure" in the payment-gateway integration requirement — with a concrete, verifiable criterion (PCI-DSS compliance). The six requirements added in v1.2 (`REQ-FUN-035`–`037`, `REQ-PROD-009`–`010`, `REQ-PDPA-008`) were audited against the same four criteria at the time of drafting.
 
 | Requirement | Code | Unambiguous | Verifiable | Consistent | Traceable | Notes / Fix Applied |
 |---|---|---|---|---|---|---|
@@ -1152,6 +1225,9 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 | Require Extra Verification for Uncertain Identity | `REQ-FUN-032` | Y | Y | Y | Y | Traces to Manage Tourist Data Privacy Requests, Subtask 11.1 |
 | Anonymize Instead of Delete Legally Retained Data | `REQ-FUN-033` | Y | Y | Y | Y | Traces to Manage Tourist Data Privacy Requests, Subtask 11.2 |
 | Notify Outcome & Auto-Escalate Near SLA Deadline | `REQ-FUN-034` | Y | Y | Y | Y | Traces to Manage Tourist Data Privacy Requests, Subtask 11.3; Security & Data Privacy |
+| Block Slot Reduction Below Confirmed Bookings | `REQ-FUN-035` | Y | Y | Y | Y | Traces to Manage Own Listing Availability & Booking Decisions, Subtask 12.1 |
+| Auto-Escalate Unactioned Provider Booking Decisions | `REQ-FUN-036` | Y | Y | Y | Y | Traces to Manage Own Listing Availability & Booking Decisions, Subtask 12.2; escalation target is Manage Bookings, Availability & Provider Coordination, `TASK-010` |
+| Require Decline Reason on Booking Rejection | `REQ-FUN-037` | Y | Y | Y | Y | Traces to Manage Own Listing Availability & Booking Decisions, Subtask 12.3 |
 | Performance & Scalability | `REQ-NFR-001` | Y | Y | Y | Y | Search ≤3s p95 @10,000 listings; booking ≤5s; ≥500 concurrent users; load-test verified |
 | Security & Data Privacy (PDPA Compliance) | `REQ-NFR-002` | Y | Y | Y | Y | Encryption at rest/in transit; role-based access control; consent traceability; PDPA SLA ≤21 days; audit/test verified |
 | Usability & Accessibility | `REQ-NFR-003` | Y | Y | Y | Y | Core-task completion ≤3 min, ≥90% success, n≥8; ≥2 languages; WCAG 2.1 AA; fixed via Worldwide Tourist Usability Sample (language/WCAG targets tightened) |
@@ -1168,6 +1244,8 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 | Staff User Guide & Onboarding | `REQ-PROD-006` | Y | Y | Y | Y | Traces to management-facing tasks; verified via documented onboarding test |
 | Listing License Reference Requirement | `REQ-PROD-007` | Y | Y | Y | Y | Traces to Manage Promotional Content & Listings, Subtask 9.1 |
 | Locale-Based Formatting | `REQ-PROD-008` | Y | Y | Y | Y | Traces to Language & Currency Barriers |
+| Provider User Guide & Onboarding | `REQ-PROD-009` | Y | Y | Y | Y | Traces to Manage Own Listing Availability & Booking Decisions; verified via documented onboarding test |
+| Local Service Provider Audit Logging | `REQ-PROD-010` | Y | Y | Y | Y | Traces to Manage Own Listing Availability & Booking Decisions; parallels Management Staff Audit Logging |
 | Lawful Basis & Explicit Consent | `REQ-PDPA-001` | Y | Y | Y | Y | Traces to Register & Manage Tourist Account, Subtask 1.1 |
 | Purpose Limitation | `REQ-PDPA-002` | Y | Y | Y | Y | Traces to PDPA Compliance goal |
 | Data Minimization | `REQ-PDPA-003` | Y | Y | Y | Y | Traces to PDPA Compliance goal |
@@ -1175,8 +1253,9 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 | Cross-Border Transfer Safeguard | `REQ-PDPA-005` | Y | Y | Y | Y | Added via IT & Compliance Review Workshop; traces to Malaysian PDPA Jurisdiction Scope |
 | Breach Detection & Notification | `REQ-PDPA-006` | Y | Y | Y | Y | Added via IT & Compliance Review Workshop; traces to PDPA Regulatory Authority |
 | Retention & Disposal Alignment | `REQ-PDPA-007` | Y | Y | Y | Y | Traces to Tourist Data Retention Limit |
+| Provider Access Data Minimization | `REQ-PDPA-008` | Y | Y | Y | Y | Traces to Manage Own Listing Availability & Booking Decisions; Data Minimization (`REQ-PDPA-003`) |
 
-**Audit conclusion.** All 57 rows above are marked Verifiable = Y. No requirement in this document relies on a subjective or non-measurable term; every statement carries an explicit threshold, boolean condition, or observable system behaviour.
+**Audit conclusion.** All 63 rows above are marked Verifiable = Y. No requirement in this document relies on a subjective or non-measurable term; every statement carries an explicit threshold, boolean condition, or observable system behaviour.
 
 ---
 
@@ -1195,6 +1274,7 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 | Option | A selectable add-on/configuration attached to a Booking or Package (e.g., guided-tour add-on, meal preference, insurance, child seat). |
 | Booking | A Tourist's pending or confirmed reservation against an Accommodation, Vehicle, Food Establishment, or Package. |
 | Review | A Tourist-submitted rating/comment evaluating an Accommodation, Vehicle, Food Establishment, Destination, or Package. |
+| Local Service Provider | An accommodation, vehicle, or food-establishment operator holding a scoped self-service login limited to setting daily slot/capacity availability and approving/declining Bookings on their own listing(s); has no listing-content access. Added in v1.2. |
 | PDPA | The Personal Data Protection Act 2010 (Act 709), Laws of Malaysia — the governing personal-data-protection framework for this system. |
 | Offering | A conceptual generalization (not a stored entity) representing the four possible targets of a Booking — Accommodation, Vehicle, Food Establishment, or Package. |
 | Reviewable | A conceptual generalization (not a stored entity) representing the five possible targets of a Review — Accommodation, Vehicle, Food Establishment, Destination, or Package. |
@@ -1237,3 +1317,9 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 - Feedback source: Bookings & Operations Manager Walkthrough — reported recurring complaints where a Tourist selected an Option (e.g., a child seat) incompatible with the specific Vehicle booked, discovered only at pickup.
 - Revised (v2): Block Incompatible Vehicle-Option Combinations — "The system shall validate the compatibility of a selected Option against the selected Vehicle before allowing checkout to proceed. The system shall block and explain any incompatible Vehicle–Option combination instead of allowing it to be added to the Booking."
 - Rationale: Moves the compatibility check from a manual, post-hoc discovery at pickup to a verifiable, pre-checkout system control.
+
+**Example 5 — Local Service Provider self-service scope**
+- Draft (v1): Association-Only Content Ownership (`ASSUMP-002`), absolute form — "individual accommodation/vehicle/food providers do not receive direct system login — they supply information to association staff off-system." Every booking-approval and availability-adjustment action (`TASK-010`) was Management-Staff-only.
+- Feedback source: Client-directed enhancement request following review of v1.1 — providers had no direct way to set their own day-to-day slot capacity or respond to bookings on their own listings, forcing 100% staff-mediated coordination and adding a manual hop between a Tourist's booking request and a provider's real answer.
+- Revised (v2): Manage Own Listing Availability & Booking Decisions (`TASK-012`) — a new, deliberately scoped Local Service Provider self-service login limited to exactly two functions on the provider's own listing(s): setting daily slot/capacity availability (Block Slot Reduction Below Confirmed Bookings, `REQ-FUN-035`), and approving/declining a pending component Booking (Auto-Escalate Unactioned Provider Booking Decisions, `REQ-FUN-036`; Require Decline Reason on Booking Rejection, `REQ-FUN-037`), with an SLA-based auto-escalation back to Management Staff and no listing-content access granted.
+- Rationale: v1 protected content integrity by keeping providers off the system entirely, but left a genuine operational gap the client identified directly. v2 closes that gap while deliberately not reopening the content-ownership question: content management stays exactly where `VAL-002` and `VAL-006` confirmed it belongs. Because the *login* half of `ASSUMP-002` is what changed, and neither `VAL-002` nor `VAL-006` was asked about a scoped-login carve-out, this change is recorded as unvalidated and carried into Section 12 as a fourth residual risk rather than presented as already confirmed.
