@@ -33,6 +33,7 @@
 | 0.9 | 2026-09-08 | Swinsoft Consulting — Technical Documenter | Domain model redesigned and rendered as a Mermaid diagram; traceability and CRUD matrices completed in full; cross-checked against blueprint hard constraints | Internal design review of Section 5 |
 | 1.0 | 2026-09-11 | Swinsoft Consulting — Technical Documenter | Consolidated draft assembled for hand-off to the precision-QA / verifiability pass | Completion of blueprint expansion |
 | 1.1 | 2026-09-11 | Swinsoft Consulting — Technical Documenter | Readability revision: every identifier throughout the document is now presented as a descriptive name with its code as a secondary tag, instead of the code standing alone | Reader feedback that bare codes (e.g. a bare `DM-ENT-001` or `TASK-004` with no attached name) were hard to follow without constantly checking the legend |
+| 1.3 | 2026-09-22 | Swinsoft Consulting — Technical Documenter | Backported for consistency with `FINAL_SRS.md` v1.3: added the Local Service Provider Goal branch and two new tasks/workflows (`TASK-012` slot/capacity management, `TASK-013` booking decisions, moving `REQ-FUN-036`–`037`); restructured `TASK-010` into five task-specific subtasks with an automatic capacity-exhaustion "Full" state replacing the overbooking-risk-flag mechanic (`REQ-FUN-029`, redefined) and a broadened refund trigger (`REQ-FUN-031`); deferred `TASK-011` and retired `REQ-FUN-032`–`034` (IDs not reused) | Consistency backport following the `FINAL_SRS.md` v1.3 rework (this draft predates the v1.2 Local Service Provider capability and needed both that capability and the v1.3 rework applied to stay aligned with the authoritative deliverable) |
 
 ### 0.3 Table of Contents
 
@@ -76,7 +77,7 @@ Every item in this document that carries a tracking code is written as **a plain
 | `REQ-DES-xxx` | A **Design-Level Requirement**. |
 | `REQ-PROD-xxx` | A **Product-Level Requirement**. |
 | `REQ-PDPA-xxx` | A **PDPA / Regulatory Compliance Requirement**. |
-| `WF-xxx` | A **Workflow** (`WF-000` is the single overarching, end-to-end workflow; `WF-001`…`WF-011` are the one-per-task workflows). |
+| `WF-xxx` | A **Workflow** (`WF-000` is the single overarching, end-to-end workflow; `WF-001`…`WF-010` are the one-per-task workflows, except `WF-011`, deferred with `TASK-011`; `TASK-012`/`TASK-013` are specified in Section 6.3 but not yet diagrammed as separate workflows in this draft). |
 | `VAL-xxx` | A piece of **Validation Evidence** (a stakeholder session, test, or review that shaped this document). |
 
 ### 0.5 Intended Audience Statement
@@ -407,13 +408,16 @@ System Goal: Promote Sarawak Tourism & Enable Association Management
 │    ├── Build & Book a Travel Package with Options (TASK-006)
 │    ├── Complete Payment for a Booking (TASK-007)
 │    └── Submit Review & Feedback (TASK-008)
-└── Management Goal: Maintain an Authoritative, Compliant Tourism Platform
-     ├── Manage Promotional Content & Listings (TASK-009)
-     ├── Manage Bookings, Availability & Provider Coordination (TASK-010)
-     └── Manage Tourist Data Privacy Requests / PDPA (TASK-011)
+├── Management Goal: Maintain an Authoritative, Compliant Tourism Platform
+│    ├── Manage Promotional Content & Listings (TASK-009)
+│    ├── Manage Bookings, Availability & Provider Coordination (TASK-010)
+│    └── Manage Tourist Data Privacy Requests / PDPA (TASK-011) — Deferred, v1.3
+└── Local Service Provider Goal: Operate Own Listing Availability & Bookings
+     ├── Manage Own Listing Availability (TASK-012)
+     └── Review & Decide on Own-Listing Bookings (TASK-013)
 ```
 
-Eleven major tasks are specified below (exceeding the 8-task minimum) to demonstrate elicitation depth across both the tourist and management goal branches.
+Thirteen major tasks are specified below (exceeding the 8-task minimum) to demonstrate elicitation depth across the tourist, management, and local-service-provider goal branches. Twelve are in active scope for this version; TASK-011 is deferred (Section 6.3) but retained here for traceability against the standing PDPA compliance commitment in Section 10. (`TASK-012`/`TASK-013` and the Local Service Provider Goal branch are carried into this draft from the v1.3 rework of `FINAL_SRS.md` for consistency; they were not yet present when this draft was first written.)
 
 ### 6.3 Major Tasks
 
@@ -430,14 +434,14 @@ Eleven major tasks are specified below (exceeding the 8-task minimum) to demonst
 - **Subtasks:**
   - **Subtask 1.1 — View & accept/decline the Terms of Use and Privacy Policy.** *Problem/Exception:* if consent is declined, the system restricts personalization features but still allows guest browsing rather than blocking the Tourist entirely. → *Present & Record Terms/Privacy Consent* (`REQ-FUN-001`), *Restrict Personalization on Declined Consent* (`REQ-FUN-002`)
   - **Subtask 1.2 — Provide profile details** (contact, nationality, preferred language/currency). *Problem/Exception:* if invalid or duplicate contact information is submitted, the system flags it for correction before saving rather than silently discarding or overwriting existing data. → *Validate Contact Details at Registration* (`REQ-FUN-003`)
-  - **Subtask 1.3 — Update profile/preferences, or request deletion of them.** *Problem/Exception:* if the Tourist requests full data deletion, the system routes the request into the Manage Tourist Data Privacy Requests task (`TASK-011`) rather than attempting an ad hoc deletion within the profile module. → *Update Profile / Route Deletion Request* (`REQ-FUN-004`)
+  - **Subtask 1.3 — Update profile/preferences, or request deletion of them.** *Problem/Exception:* if the Tourist requests full data deletion, the system routes the request into the Manage Tourist Data Privacy Requests task (`TASK-011`) rather than attempting an ad hoc deletion within the profile module; as `TASK-011` is deferred (v1.3), the routed request is queued for Management Staff to action manually, off-system, until that task is built. → *Update Profile / Route Deletion Request* (`REQ-FUN-004`)
 - **Variants:** Guest checkout without full registration; social-login-assisted registration (where enabled).
 - **Derived Functional Requirements:** Present & Record Terms/Privacy Consent (`REQ-FUN-001`); Restrict Personalization on Declined Consent (`REQ-FUN-002`); Validate Contact Details at Registration (`REQ-FUN-003`); Update Profile / Route Deletion Request (`REQ-FUN-004`)
 
 > **Present & Record Terms/Privacy Consent** (`REQ-FUN-001`): The system shall present the Terms of Use and PDPA-aligned Privacy Policy to every Tourist before any personal data is collected, and shall record the Tourist's accept-or-decline choice together with a timestamp.
 > **Restrict Personalization on Declined Consent** (`REQ-FUN-002`): Where the Tourist declines consent, the system shall restrict all personalization and data-collection features while continuing to allow guest browsing of publicly available tourist-facing content.
 > **Validate Contact Details at Registration** (`REQ-FUN-003`): The system shall validate submitted contact details (e.g., email format, duplicate email/phone against existing accounts) at the point of submission and shall reject the submission with a specific correction message rather than saving invalid or duplicate data.
-> **Update Profile / Route Deletion Request** (`REQ-FUN-004`): The system shall allow a registered Tourist to update their own profile/preference fields at any time, and shall route any deletion request submitted through the profile module into the Manage Tourist Data Privacy Requests task (`TASK-011`) within the same session.
+> **Update Profile / Route Deletion Request** (`REQ-FUN-004`): The system shall allow a registered Tourist to update their own profile/preference fields at any time, and shall route any deletion request submitted through the profile module into the Manage Tourist Data Privacy Requests task (`TASK-011`) within the same session. Until `TASK-011` is built (deferred, v1.3), a routed request shall be logged and made visible to Management Staff for manual, off-system handling.
 
 ---
 
@@ -628,46 +632,72 @@ Eleven major tasks are specified below (exceeding the 8-task minimum) to demonst
 #### Task: Manage Bookings, Availability & Provider Coordination (`TASK-010`)
 
 - **Actors:** Management Staff — Content Officer, Management Staff — Data/System Administrator
-- **Trigger:** A new Booking/Package request is received, or availability/capacity needs adjustment.
+- **Trigger:** A new Package Booking request is received; OR availability/capacity needs adjustment on a listing with no assigned Local Service Provider; OR a component Booking against a Local-Service-Provider-operated listing was declined by that provider, or was not actioned within the defined SLA window and escalated (Review & Decide on Own-Listing Bookings task, `TASK-013`).
 - **Precondition:** Staff is authenticated with booking-management permission; Booking(s) exist.
-- **Postcondition:** A Booking is approved/adjusted/cancelled and availability calendars are updated accordingly.
+- **Postcondition:** A Package Booking, unassigned-listing Booking, or escalated/declined component Booking is approved, finalized, or cancelled/modified; any due refund is triggered; availability calendars for Management-administered listings are updated accordingly.
 - **Frequency:** High.
 - **Priority / Exception-Criticality:** High — directly protects the Increased Provider Bookings & Revenue and Data-Informed Management Decisions incentives.
 - **Work Area:** Booking & availability administration module.
 - **Solution-Agnosticism Check** *(Non-Normative)*: (a) a web admin booking queue/calendar; (b) a mobile back-office app for on-the-go approvals; (c) a call-center/manual-entry tool for phone-based coordination.
+- **Scope note (v1.3):** Capacity is enforced automatically at the point of Booking (`REQ-FUN-029`) rather than flagged for manual override. First-line approve/decline authority for a component Booking against a Local-Service-Provider-operated listing sits with that provider (`TASK-013`).
 - **Subtasks:**
-  - **Subtask 10.1 — Review and approve/reject a pending Booking.** *Problem/Exception:* if the requested capacity exceeds Vehicle/Accommodation availability, the system flags the overbooking risk and prevents silent approval. → *Flag Overbooking Risk on Approval* (`REQ-FUN-029`)
-  - **Subtask 10.2 — Adjust an availability calendar.** *Problem/Exception:* if Staff sets a conflicting availability window overlapping confirmed Bookings, the system warns of the conflict. → *Warn on Conflicting Availability Changes* (`REQ-FUN-030`)
-  - **Subtask 10.3 — Cancel/modify a Booking on the Tourist's or provider's behalf.** *Problem/Exception:* if cancellation occurs after payment capture, it triggers the refund workflow (→ Complete Payment for a Booking task). → *Auto-Trigger Refund on Post-Payment Cancellation* (`REQ-FUN-031`)
+  - **Subtask 10.1 — Review and approve/reject a pending Package Booking.** (No exception case: capacity is pre-enforced per `REQ-FUN-029`.)
+  - **Subtask 10.2 — Review and approve/reject a Booking against a listing with no assigned Local Service Provider.** (No exception case: same capacity pre-enforcement.)
+  - **Subtask 10.3 — Finalize a component Booking that its Local Service Provider did not approve** (declined outright, or escalated after its SLA window lapsed, per `TASK-013`). *Problem/Exception:* if payment was already captured, the system automatically grants a refund instead of requiring Management Staff to initiate one manually. → *Auto-Trigger Refund on Booking Non-Approval or Cancellation* (`REQ-FUN-031`)
+  - **Subtask 10.4 — Adjust an availability calendar for a Management-administered (no-provider) listing.** *Problem/Exception:* if Staff sets a conflicting availability window overlapping confirmed Bookings, the system warns of the conflict. → *Warn on Conflicting Availability Changes* (`REQ-FUN-030`)
+  - **Subtask 10.5 — Cancel/modify a Booking on the Tourist's behalf.** *Problem/Exception:* if cancellation occurs after payment capture, it triggers the same refund workflow as Subtask 10.3. → *Auto-Trigger Refund on Booking Non-Approval or Cancellation* (`REQ-FUN-031`)
 - **Variants:** Auto-approval for standard bookings vs. manual review for high-value/group bookings.
-- **Derived Functional Requirements:** Flag Overbooking Risk on Approval (`REQ-FUN-029`); Warn on Conflicting Availability Changes (`REQ-FUN-030`); Auto-Trigger Refund on Post-Payment Cancellation (`REQ-FUN-031`)
+- **Derived Functional Requirements:** Auto-Mark Listing Full at Capacity (`REQ-FUN-029`); Warn on Conflicting Availability Changes (`REQ-FUN-030`); Auto-Trigger Refund on Booking Non-Approval or Cancellation (`REQ-FUN-031`)
 
-> **Flag Overbooking Risk on Approval** (`REQ-FUN-029`): The system shall flag as an overbooking risk any pending Booking whose requested quantity/capacity would exceed the remaining published availability of the targeted Accommodation or Vehicle, and shall require explicit Management Staff override before such a Booking can be approved.
-> **Warn on Conflicting Availability Changes** (`REQ-FUN-030`): The system shall warn Management Staff when a newly entered availability-calendar change would overlap one or more existing Confirmed Bookings, before the change is saved.
-> **Auto-Trigger Refund on Post-Payment Cancellation** (`REQ-FUN-031`): Where Management Staff cancels or modifies a Booking for which payment has already been captured, the system shall automatically initiate the refund workflow (Complete Payment for a Booking task, Subtask 7.3) rather than requiring a separate manual refund request.
+> **Auto-Mark Listing Full at Capacity** (`REQ-FUN-029`): Once an Accommodation, Vehicle, or Food Establishment listing's available capacity for a given date/slot reaches zero, the system shall automatically display that listing as "Full" to Tourists and shall prevent new Booking requests against that capacity, without requiring Management Staff review or override.
+> **Warn on Conflicting Availability Changes** (`REQ-FUN-030`): The system shall warn Management Staff when a newly entered availability-calendar change on a Management-administered listing would overlap one or more existing Confirmed Bookings, before the change is saved.
+> **Auto-Trigger Refund on Booking Non-Approval or Cancellation** (`REQ-FUN-031`): Where a component Booking is not approved by its Local Service Provider (declined, or escalated per `REQ-FUN-036` and not overridden by Management Staff), or where Management Staff cancels or modifies a Booking, and payment has already been captured, the system shall automatically initiate the refund workflow (Complete Payment for a Booking task, Subtask 7.3) rather than requiring a separate manual refund request.
 
 ---
 
-#### Task: Manage Tourist Data Privacy Requests / PDPA (`TASK-011`)
+#### Task: Manage Tourist Data Privacy Requests / PDPA (`TASK-011`) — Deferred (v1.3)
 
-- **Actors:** Management Staff — Data/System Administrator
-- **Trigger:** A Tourist submits a data access/correction/deletion request (from Subtask 1.3 or a dedicated privacy-request channel).
-- **Precondition:** Staff is authenticated with data-administration permission; the request is logged.
-- **Postcondition:** The request is actioned (exported/corrected/deleted) and the requester is notified within SLA; the action is logged for audit.
-- **Frequency:** Low.
-- **Priority / Exception-Criticality:** High — legal/compliance-critical; directly delivers the PDPA Compliance goal and the PDPA Compliance Checklist Pass objective.
-- **Work Area:** Privacy/compliance administration module.
-- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a self-service web privacy-request portal reviewed by staff; (b) a staff-managed ticket/case tool; (c) a manual email-based request logged into the same backend.
+This task is deferred and out of scope for the current version. The Association's PDPA compliance obligation is not deferred — it remains a standing, documented commitment (`REQ-NFR-002`, Section 8.2; `REQ-PDPA-001`–`008`, Section 10). Until this task is built, data-subject access/correction/deletion requests (including those routed from Subtask 1.3) are received and handled manually, off-system, by Management Staff. `REQ-FUN-032`, `REQ-FUN-033`, and `REQ-FUN-034` — the subtask-derived requirements originally scoped under this task — are retired accordingly (see Revision History, v1.3); their IDs are not reused.
+
+---
+
+#### Task: Manage Own Listing Availability (`TASK-012`)
+
+- **Actors:** Local Service Provider
+- **Trigger:** The provider needs to set or adjust the day's available slot/capacity count on an owned listing.
+- **Precondition:** The provider is authenticated via the scoped self-service login; the provider's listing(s) are published by Management Staff (Manage Promotional Content & Listings task, `TASK-009`).
+- **Postcondition:** The day's slot/capacity count is set or updated, reflected immediately in tourist-facing availability.
+- **Frequency:** High (daily slot-setting).
+- **Priority / Exception-Criticality:** High — directly protects the Increased Provider Bookings & Revenue incentive.
+- **Work Area:** Local Service Provider self-service module (scoped — no listing-content access; no booking-decision access, see `TASK-013`).
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a lightweight web provider portal; (b) a mobile app; (c) an SMS/USSD flow.
 - **Subtasks:**
-  - **Subtask 11.1 — Verify the Tourist's identity for the request.** *Problem/Exception:* if identity cannot be confidently verified, the system requires an additional verification step before proceeding. → *Require Extra Verification for Uncertain Identity* (`REQ-FUN-032`)
-  - **Subtask 11.2 — Fulfil the access/correction/deletion request.** *Problem/Exception:* if deletion is requested but the data is legally required to be retained (e.g., a financial record), the system anonymizes rather than deletes, with justification logged. → *Anonymize Instead of Delete Legally Retained Data* (`REQ-FUN-033`)
-  - **Subtask 11.3 — Log the outcome and notify the Tourist within SLA.** *Problem/Exception:* if the SLA deadline is approaching without resolution, the system auto-escalates to responsible Staff. → *Notify Outcome & Auto-Escalate Near SLA Deadline* (`REQ-FUN-034`)
-- **Variants:** Routine access request vs. full account-deletion request (which cascades into Booking/Review retention handling).
-- **Derived Functional Requirements:** Require Extra Verification for Uncertain Identity (`REQ-FUN-032`); Anonymize Instead of Delete Legally Retained Data (`REQ-FUN-033`); Notify Outcome & Auto-Escalate Near SLA Deadline (`REQ-FUN-034`)
+  - **Subtask 12.1 — Set/update the number of available slots for a given day on an owned listing.** *Problem/Exception:* if the provider sets a slot count below the number of already-Confirmed Bookings for that day, the system blocks the change and requires explicit resolution. → *Block Slot Reduction Below Confirmed Bookings* (`REQ-FUN-035`)
+- **Variants:** A recurring/default daily slot pattern vs. a one-off daily override.
+- **Derived Functional Requirements:** Block Slot Reduction Below Confirmed Bookings (`REQ-FUN-035`)
 
-> **Require Extra Verification for Uncertain Identity** (`REQ-FUN-032`): Where Management Staff cannot confirm a data-subject request's requester identity to a defined confidence level, the system shall require at least one additional verification step before the request can proceed to fulfilment.
-> **Anonymize Instead of Delete Legally Retained Data** (`REQ-FUN-033`): Where a deletion request applies to data that a documented legal obligation requires the Association to retain (e.g., financial/tax records), the system shall anonymize the personal identifiers on that data instead of deleting the record, and shall log the specific legal justification against the request.
-> **Notify Outcome & Auto-Escalate Near SLA Deadline** (`REQ-FUN-034`): The system shall notify the requesting Tourist of the outcome of their data-subject request and shall automatically escalate the request to a responsible Management Staff member if it remains unresolved within a defined number of days before the applicable PDPA SLA deadline (Security & Data Privacy requirement category).
+> **Block Slot Reduction Below Confirmed Bookings** (`REQ-FUN-035`): Where a Local Service Provider sets a daily slot/capacity count below the number of Confirmed Bookings already recorded for that day on that listing, the system shall block the change and require the provider to resolve the conflict explicitly instead of applying the reduction.
+
+---
+
+#### Task: Review & Decide on Own-Listing Bookings (`TASK-013`)
+
+- **Actors:** Local Service Provider
+- **Trigger:** A new Booking request arrives against the provider's own Accommodation, Vehicle, or Food Establishment listing.
+- **Precondition:** The provider is authenticated via the scoped self-service login; the listing is published (`TASK-009`); slot/capacity availability is managed via `TASK-012`.
+- **Postcondition:** A pending component Booking is approved or declined; the Tourist and Management Staff are notified; a non-approved Booking is handed to `TASK-010` for refund/finalization.
+- **Frequency:** High (booking decisions as they arrive).
+- **Priority / Exception-Criticality:** High — a missed or slow decision risks a lost booking.
+- **Work Area:** Local Service Provider self-service module (scoped — no listing-content access; capacity is set via `TASK-012`).
+- **Solution-Agnosticism Check** *(Non-Normative)*: (a) a lightweight web provider portal; (b) a mobile app with push notifications; (c) an SMS/USSD accept/decline flow.
+- **Subtasks:**
+  - **Subtask 13.1 — Review and approve/decline a pending Booking against an owned listing.** *Problem/Exception:* if the provider does not act within a defined SLA window, the system automatically escalates the pending Booking to Management Staff for override (Manage Bookings, Availability & Provider Coordination task, `TASK-010`, Subtask 10.3). → *Auto-Escalate Unactioned Provider Booking Decisions* (`REQ-FUN-036`)
+  - **Subtask 13.2 — Receive notification of new pending Bookings and a daily slot-utilization summary.** *Problem/Exception:* if the provider declines a Booking, the system requires a decline reason before completing the action. → *Require Decline Reason on Booking Rejection* (`REQ-FUN-037`)
+- **Variants:** An opt-in auto-approval threshold for providers who choose to skip manual review below a self-set booking size.
+- **Derived Functional Requirements:** Auto-Escalate Unactioned Provider Booking Decisions (`REQ-FUN-036`); Require Decline Reason on Booking Rejection (`REQ-FUN-037`)
+
+> **Auto-Escalate Unactioned Provider Booking Decisions** (`REQ-FUN-036`): Where a Local Service Provider has not approved or declined a pending Booking within a defined SLA window (for example, 24 hours), the system shall automatically escalate that Booking to Management Staff for override (Manage Bookings, Availability & Provider Coordination task, `TASK-010`, Subtask 10.3) instead of leaving it pending indefinitely.
+> **Require Decline Reason on Booking Rejection** (`REQ-FUN-037`): The system shall require a Local Service Provider to record a decline reason before completing a Booking rejection, and shall include that reason in the decline notification sent to the Tourist and make it visible to Management Staff.
 
 ---
 
@@ -677,7 +707,7 @@ Eleven major tasks are specified below (exceeding the 8-task minimum) to demonst
 
 **Swimlanes:** Tourist | System | Management Staff | External (Payment / Notification).
 
-The table below traces the full tourist journey from first discovery through post-trip feedback, with the parallel Management lane feeding the tourist-facing catalog, and the PDPA request lane able to branch off at any point. Every decision row corresponds to a Problem/Exception case documented against the relevant task in Section 6.
+The table below traces the full tourist journey from first discovery through post-trip feedback, with the parallel Management lane feeding the tourist-facing catalog. Every decision row corresponds to a Problem/Exception case documented against the relevant task in Section 6. The PDPA request lane shown below (`WF-011`) is deferred, v1.3 (see Section 6.3, `TASK-011`); it is retained in this table to show where it will reconnect once built. (This draft's workflow diagrams predate the v1.2/v1.3 Local Service Provider tasks; `TASK-012`/`TASK-013` are specified in Section 6.3 but are not yet diagrammed as swimlanes here — see `FINAL_SRS.md`, `WF-012`/`WF-013`, for the authoritative diagrams.)
 
 | # | Step | Swimlane | Realizes | Type |
 |---|---|---|---|---|
@@ -702,10 +732,10 @@ The table below traces the full tourist journey from first discovery through pos
 | 13 | Decision: does Review content violate the moderation policy? | System | Route Prohibited Review Content to Moderation | Decision / Exception |
 | 13a | If yes: route to Management Staff moderation queue before publishing | System → Management Staff | Route Prohibited Review Content to Moderation | Exception |
 | — | *(Parallel Management lane, running continuously)* Manage Content & Listings ↔ Manage Bookings, Availability & Provider Coordination, feeding published listings back into steps 1–2 | Management Staff | Manage Promotional Content & Listings ↔ Manage Bookings, Availability & Provider Coordination | Normal (parallel) |
-| — | *(PDPA lane, may branch off at any point, e.g. from a declined-consent decision during Register & Manage Tourist Account, or from a profile-management action at any time)* Manage Tourist Data Privacy Requests | Tourist → Management Staff | Manage Tourist Data Privacy Requests / PDPA | Normal (branch) |
+| — | *(PDPA lane — deferred, v1.3; may branch off at any point once built, e.g. from a declined-consent decision during Register & Manage Tourist Account, or from a profile-management action at any time)* Manage Tourist Data Privacy Requests | Tourist → Management Staff | Manage Tourist Data Privacy Requests / PDPA (`TASK-011`, deferred) | Normal (branch, deferred) |
 | 14 | End | — | — | End |
 
-**Required decision branches confirmed present:** payment failure/retry (steps 9/9a); availability conflict at confirmation (steps 5/5a, 7/7a); PDPA consent declined with guest-mode continuation (branches from Register & Manage Tourist Account, Subtask 1.1, feeding the PDPA lane).
+**Required decision branches confirmed present:** payment failure/retry (steps 9/9a); availability conflict at confirmation (steps 5/5a, 7/7a); PDPA consent declined with guest-mode continuation (branches from Register & Manage Tourist Account, Subtask 1.1, feeding the PDPA lane — deferred, v1.3, pending `TASK-011`).
 
 ### 7.2 Per-Task Workflow Diagrams
 
@@ -728,7 +758,7 @@ Each workflow below corresponds 1:1 to the identically named task in Section 6.3
 | 5b | If valid: save profile | System | Normal |
 | 6 | Later: Tourist updates profile/preferences, or requests deletion | Tourist | Normal |
 | 7 | Decision: is this a deletion request? | System | Decision |
-| 7a | If yes: route into the PDPA workflow (Manage Tourist Data Privacy Requests) | System | Exception (branch to `WF-011`) |
+| 7a | If yes: route into the PDPA workflow (Manage Tourist Data Privacy Requests); `TASK-011`/`WF-011` are deferred (v1.3), so the routed request is queued for Management Staff to action manually, off-system, until built | System | Exception (branch to `WF-011`, deferred) |
 | 7b | If no: apply the update | System | Normal |
 | 8 | End | — | End |
 
@@ -887,40 +917,25 @@ Each workflow below corresponds 1:1 to the identically named task in Section 6.3
 
 | # | Step | Swimlane | Type |
 |---|---|---|---|
-| 1 | Review a pending Booking | Management Staff | Normal |
-| 2 | Decision: does requested capacity exceed remaining availability? | System | Decision |
-| 2a | If yes: flag overbooking risk; require explicit override to approve | System → Management Staff | Exception |
-| 2b | If no: allow approve/reject | Management Staff | Normal |
-| 3 | Adjust an availability calendar | Management Staff | Normal |
-| 4 | Decision: does the new window overlap confirmed Bookings? | System | Decision |
-| 4a | If yes: warn of conflict before saving | System → Management Staff | Exception |
-| 4b | If no: save the change | System | Normal |
-| 5 | Cancel/modify a Booking on the Tourist's or provider's behalf | Management Staff | Normal |
-| 6 | Decision: has payment already been captured for this Booking? | System | Decision |
-| 6a | If yes: automatically trigger refund workflow (branch to Complete Payment for a Booking) | System | Exception (branch to `WF-007`) |
-| 6b | If no: cancel/modify without a refund step | System | Normal |
-| 7 | End | — | End |
-
-#### Workflow: Manage Tourist Data Privacy Requests / PDPA (`WF-011`)
-
-**Swimlanes:** Tourist | Management Staff | System.
-
-| # | Step | Swimlane | Type |
-|---|---|---|---|
-| 1 | Tourist submits a data access/correction/deletion request (or arrives via branch from Register & Manage Tourist Account) | Tourist | Normal |
-| 2 | Verify Tourist identity | Management Staff | Normal |
-| 3 | Decision: can identity be confidently verified? | Management Staff | Decision |
-| 3a | If no: require an additional verification step before proceeding | System → Tourist | Exception |
-| 3b | If yes: proceed to fulfilment | Management Staff | Normal |
-| 4 | Fulfil the access/correction/deletion request | Management Staff | Normal |
-| 5 | Decision: is the data subject to a legal retention obligation (e.g., financial record)? | System | Decision |
-| 5a | If yes: anonymize rather than delete; log legal justification | System | Exception |
-| 5b | If no: complete deletion/correction/export as requested | System | Normal |
-| 6 | Log outcome and notify Tourist within SLA | System → Tourist | Normal |
-| 7 | Decision: is the SLA deadline approaching without resolution? | System | Decision |
-| 7a | If yes: auto-escalate to responsible Management Staff | System → Management Staff | Exception |
-| 7b | If no: close request | System | Normal |
+| 1 | Review and approve/reject a pending Package Booking | Management Staff | Normal |
+| 2 | Review and approve/reject a Booking against a listing with no assigned Local Service Provider | Management Staff | Normal |
+| 3 | Receive a component Booking that its Local Service Provider declined, or that was escalated after its SLA window lapsed (branch from Review & Decide on Own-Listing Bookings, `TASK-013`) | System → Management Staff | Normal |
+| 3a | Decision: has payment already been captured for that Booking? | System | Decision |
+| 3a-i | If yes: automatically grant a refund (branch to Complete Payment for a Booking) | System | Exception (branch to `WF-007`) |
+| 3a-ii | If no: finalize the non-approval with no refund step | System | Normal |
+| 4 | Adjust an availability calendar for a Management-administered listing | Management Staff | Normal |
+| 5 | Decision: does the new window overlap confirmed Bookings? | System | Decision |
+| 5a | If yes: warn of conflict before saving | System → Management Staff | Exception |
+| 5b | If no: save the change | System | Normal |
+| 6 | Cancel/modify a Booking on the Tourist's behalf | Management Staff | Normal |
+| 7 | Decision: has payment already been captured for this Booking? | System | Decision |
+| 7a | If yes: automatically trigger refund workflow (branch to Complete Payment for a Booking) | System | Exception (branch to `WF-007`) |
+| 7b | If no: cancel/modify without a refund step | System | Normal |
 | 8 | End | — | End |
+
+#### Workflow: Manage Tourist Data Privacy Requests / PDPA (`WF-011`) — Deferred (v1.3)
+
+This workflow is deferred along with `TASK-011` (Section 6.3) and not detailed in this version. Data-subject access/correction/deletion requests are handled manually, off-system, by Management Staff until the task is built.
 
 ### 7.3 Diagram Legend
 
@@ -1070,8 +1085,10 @@ Columns: **Goal / Pain Point / Incentive → Objective → Task → Functional R
 | Single Authoritative Promotion Channel (`GOAL-001`); Increased Provider Bookings & Revenue (`INC-001`) | End-to-End In-Platform Trip Completion (`OBJ-003`) | Complete Payment for a Booking (`TASK-007`) | Preserve Pending Payment for Retry, Reconcile Payment Confirmation with Booking Status, Apply Policy-Limited Refund After Cutoff (`REQ-FUN-020`–`022`) | Performance & Scalability (`REQ-NFR-001`); Tokenized Payment Gateway Integration (`REQ-PROD-003`); Notification Service Integration (`REQ-PROD-005`); Localized Currency Pricing Display (`REQ-DES-003`) | Bookings & Operations Manager Walkthrough, IT & Compliance Review Workshop (`VAL-002`, `VAL-003`) | Test |
 | Trustworthy Current Local Information (`GOAL-003`); No Structured Feedback Channel (`PP-005`); Strengthened Association Brand Trust (`INC-003`) | — | Submit Review & Feedback (`TASK-008`) | Block Premature Review Submission, Route Prohibited Review Content to Moderation, Hide Moderated Reviews & Notify Tourist (`REQ-FUN-023`–`025`) | — | Content Officer Interview, Worldwide Tourist Usability Sample (`VAL-001`, `VAL-004`) | Test |
 | Association Content & Data Control (`GOAL-002`); Manual Error-Prone Content Updates (`PP-003`); Reduced Manual Coordination Effort (`INC-002`) | Same-Business-Day Content Publishing (`OBJ-002`) | Manage Promotional Content & Listings (`TASK-009`) | Block Publish Without Legal Reference, Warn Before Archiving Listing with Active Bookings, Prevent Article Publish Without Category Tag (`REQ-FUN-026`–`028`) | Consistent Association Branding (`REQ-DES-001`); Staff User Guide & Onboarding (`REQ-PROD-006`); Listing License Reference Requirement (`REQ-PROD-007`) | Content Officer Interview (`VAL-001`) | Test; Inspection |
-| Association Content & Data Control (`GOAL-002`); Manual Error-Prone Content Updates (`PP-003`); Data-Informed Management Decisions (`INC-004`) | Same-Business-Day Content Publishing (`OBJ-002`) | Manage Bookings, Availability & Provider Coordination (`TASK-010`) | Flag Overbooking Risk on Approval, Warn on Conflicting Availability Changes, Auto-Trigger Refund on Post-Payment Cancellation (`REQ-FUN-029`–`031`) | Management Staff Audit Logging (`REQ-PROD-002`) | Bookings & Operations Manager Walkthrough (`VAL-002`) | Test |
-| PDPA Compliance (`GOAL-004`); Ungoverned Personal Data Handling (`PP-006`) | PDPA Compliance Checklist Pass (`OBJ-004`) | Manage Tourist Data Privacy Requests / PDPA (`TASK-011`) | Require Extra Verification for Uncertain Identity, Anonymize Instead of Delete Legally Retained Data, Notify Outcome & Auto-Escalate Near SLA Deadline (`REQ-FUN-032`–`034`) | Security & Data Privacy (`REQ-NFR-002`); Tourist Data Retention Limit (`REQ-PROD-001`); Data Subject Access/Correction/Deletion Rights, Cross-Border Transfer Safeguard, Breach Detection & Notification, Retention & Disposal Alignment (`REQ-PDPA-004`–`007`) | IT & Compliance Review Workshop (`VAL-003`) | Test; Inspection |
+| Association Content & Data Control (`GOAL-002`); Manual Error-Prone Content Updates (`PP-003`); Data-Informed Management Decisions (`INC-004`) | Same-Business-Day Content Publishing (`OBJ-002`) | Manage Bookings, Availability & Provider Coordination (`TASK-010`) | Auto-Mark Listing Full at Capacity, Warn on Conflicting Availability Changes, Auto-Trigger Refund on Booking Non-Approval or Cancellation (`REQ-FUN-029`–`031`) | Management Staff Audit Logging (`REQ-PROD-002`) | Bookings & Operations Manager Walkthrough (`VAL-002`) | Test |
+| PDPA Compliance (`GOAL-004`); Ungoverned Personal Data Handling (`PP-006`) | PDPA Compliance Checklist Pass (`OBJ-004`) | Manage Tourist Data Privacy Requests / PDPA (`TASK-011`) — **Deferred, v1.3** | *Retired with the task* — Require Extra Verification for Uncertain Identity, Anonymize Instead of Delete Legally Retained Data, Notify Outcome & Auto-Escalate Near SLA Deadline (`REQ-FUN-032`–`034`, retired, IDs not reused) | Security & Data Privacy (`REQ-NFR-002`); Tourist Data Retention Limit (`REQ-PROD-001`); Data Subject Access/Correction/Deletion Rights, Cross-Border Transfer Safeguard, Breach Detection & Notification, Retention & Disposal Alignment (`REQ-PDPA-004`–`007`) — standing commitment, not deferred | IT & Compliance Review Workshop (`VAL-003`) | *Deferred — not verifiable against a built system until `TASK-011` is implemented* |
+| Single Authoritative Promotion Channel (`GOAL-001`); Increased Provider Bookings & Revenue (`INC-001`); No Combined Discovery-and-Booking Channel (`PP-002`) | End-to-End In-Platform Trip Completion (`OBJ-003`) | Manage Own Listing Availability (`TASK-012`) | Block Slot Reduction Below Confirmed Bookings (`REQ-FUN-035`) | Security & Data Privacy provider-scoping control (`REQ-NFR-002`); *provider onboarding/audit and data-minimization requirements (`REQ-PROD-009`–`010`, `REQ-PDPA-008`) are `FINAL_SRS.md` v1.2 additions not yet backported to this draft's Sections 9–10* | *Pending* — Local Service Provider Self-Service Concept Validation (`VAL-007`, not yet conducted) | Test; Inspection |
+| Single Authoritative Promotion Channel (`GOAL-001`); Increased Provider Bookings & Revenue, Data-Informed Management Decisions (`INC-001`, `INC-004`); No Combined Discovery-and-Booking Channel (`PP-002`) | End-to-End In-Platform Trip Completion (`OBJ-003`) | Review & Decide on Own-Listing Bookings (`TASK-013`) | Auto-Escalate Unactioned Provider Booking Decisions, Require Decline Reason on Booking Rejection (`REQ-FUN-036`–`037`) | Security & Data Privacy provider-scoping control (`REQ-NFR-002`); *see note above on `REQ-PROD-009`–`010`, `REQ-PDPA-008`* | *Pending* — Local Service Provider Self-Service Concept Validation (`VAL-007`, not yet conducted) | Test; Inspection |
 
 **Two-way coverage confirmation.**
 
@@ -1079,12 +1096,12 @@ Columns: **Goal / Pain Point / Incentive → Objective → Task → Functional R
 - Every pain point (`PP-001`–`006`) appears in at least one row.
 - Every incentive (`INC-001`–`004`) appears in at least one row.
 - Every objective (`OBJ-001`–`004`) appears in at least one row.
-- Every task (`TASK-001`–`011`) appears exactly once as the row's Task.
-- Every functional requirement (`REQ-FUN-001`–`034`) appears in exactly one row, matching its owning task.
+- Every task (`TASK-001`–`013`) appears exactly once as the row's Task; `TASK-011` is marked Deferred (v1.3) rather than removed, so it remains traceable.
+- Every functional requirement (`REQ-FUN-001`–`037`) appears in exactly one row, matching its owning task; `REQ-FUN-032`–`034` are marked Retired within `TASK-011`'s row (v1.3) and are not reused.
 - Every non-functional requirement category (`REQ-NFR-001`–`004`) appears at least once.
 - Every design-level requirement (`REQ-DES-001`–`004`) appears at least once.
-- Every product-level requirement (`REQ-PROD-001`–`008`) appears at least once.
-- Every PDPA requirement (`REQ-PDPA-001`–`007`) appears at least once.
+- Every product-level requirement (`REQ-PROD-001`–`008`) appears at least once (`REQ-PROD-009`–`010` are a `FINAL_SRS.md` v1.2 addition not yet backported to this draft).
+- Every PDPA requirement (`REQ-PDPA-001`–`007`) appears at least once (`REQ-PDPA-008` is a `FINAL_SRS.md` v1.2 addition not yet backported to this draft).
 
 No orphan requirement and no orphan goal remain.
 
@@ -1114,7 +1131,7 @@ Rows are all 11 domain entities from Section 5.2, matching exactly with no addit
 
 ## Appendix D — Verifiability Self-Check (IEEE 830 Quality Audit)
 
-Applied to every functional, non-functional, design-level, product-level, and PDPA requirement in this document (57 items total). Zero rows ship with Verifiable = N. Illustrative/example text elsewhere in this document (all text explicitly marked *Non-Normative*) is excluded from this requirement count.
+Applied to every functional, non-functional, design-level, product-level, and PDPA requirement in this document (60 items total, 57 active — `REQ-FUN-032`–`034` are retired with `TASK-011`, v1.3, and excluded from active verification while their rows are kept below for audit-trail completeness). Zero active rows ship with Verifiable = N. Illustrative/example text elsewhere in this document (all text explicitly marked *Non-Normative*) is excluded from this requirement count. `REQ-FUN-035`–`037` (`TASK-012`/`TASK-013`) are backported here from `FINAL_SRS.md` v1.2/v1.3 for consistency, alongside the v1.3 rework of `REQ-FUN-029`/`031`.
 
 | Requirement | Code | Unambiguous | Verifiable | Consistent | Traceable | Notes / Fix Applied |
 |---|---|---|---|---|---|---|
@@ -1146,12 +1163,15 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 | Block Publish Without Legal Reference | `REQ-FUN-026` | Y | Y | Y | Y | Traces to Manage Promotional Content & Listings, Subtask 9.1; Listing License Reference Requirement |
 | Warn Before Archiving Listing with Active Bookings | `REQ-FUN-027` | Y | Y | Y | Y | Traces to Manage Promotional Content & Listings, Subtask 9.2 |
 | Prevent Article Publish Without Category Tag | `REQ-FUN-028` | Y | Y | Y | Y | Traces to Manage Promotional Content & Listings, Subtask 9.3 |
-| Flag Overbooking Risk on Approval | `REQ-FUN-029` | Y | Y | Y | Y | Traces to Manage Bookings, Availability & Provider Coordination, Subtask 10.1 |
-| Warn on Conflicting Availability Changes | `REQ-FUN-030` | Y | Y | Y | Y | Traces to Manage Bookings, Availability & Provider Coordination, Subtask 10.2 |
-| Auto-Trigger Refund on Post-Payment Cancellation | `REQ-FUN-031` | Y | Y | Y | Y | Traces to Manage Bookings, Availability & Provider Coordination, Subtask 10.3; Complete Payment for a Booking |
-| Require Extra Verification for Uncertain Identity | `REQ-FUN-032` | Y | Y | Y | Y | Traces to Manage Tourist Data Privacy Requests, Subtask 11.1 |
-| Anonymize Instead of Delete Legally Retained Data | `REQ-FUN-033` | Y | Y | Y | Y | Traces to Manage Tourist Data Privacy Requests, Subtask 11.2 |
-| Notify Outcome & Auto-Escalate Near SLA Deadline | `REQ-FUN-034` | Y | Y | Y | Y | Traces to Manage Tourist Data Privacy Requests, Subtask 11.3; Security & Data Privacy |
+| Auto-Mark Listing Full at Capacity | `REQ-FUN-029` | Y | Y | Y | Y | Traces to Manage Bookings, Availability & Provider Coordination, Subtask 10.1/10.2; redefined in v1.3, replacing the prior overbooking-risk-flag definition |
+| Warn on Conflicting Availability Changes | `REQ-FUN-030` | Y | Y | Y | Y | Traces to Manage Bookings, Availability & Provider Coordination, Subtask 10.4 |
+| Auto-Trigger Refund on Booking Non-Approval or Cancellation | `REQ-FUN-031` | Y | Y | Y | Y | Traces to Manage Bookings, Availability & Provider Coordination, Subtask 10.3 and 10.5; Complete Payment for a Booking; broadened in v1.3 |
+| Require Extra Verification for Uncertain Identity | `REQ-FUN-032` | Y | Y | Y | Y | **Retired (v1.3)** — was traced to Manage Tourist Data Privacy Requests, Subtask 11.1; task deferred, ID not reused |
+| Anonymize Instead of Delete Legally Retained Data | `REQ-FUN-033` | Y | Y | Y | Y | **Retired (v1.3)** — was traced to Manage Tourist Data Privacy Requests, Subtask 11.2; task deferred, ID not reused |
+| Notify Outcome & Auto-Escalate Near SLA Deadline | `REQ-FUN-034` | Y | Y | Y | Y | **Retired (v1.3)** — was traced to Manage Tourist Data Privacy Requests, Subtask 11.3; task deferred, ID not reused |
+| Block Slot Reduction Below Confirmed Bookings | `REQ-FUN-035` | Y | Y | Y | Y | Traces to Manage Own Listing Availability, Subtask 12.1 |
+| Auto-Escalate Unactioned Provider Booking Decisions | `REQ-FUN-036` | Y | Y | Y | Y | Traces to Review & Decide on Own-Listing Bookings, Subtask 13.1; escalation target is Manage Bookings, Availability & Provider Coordination, `TASK-010`, Subtask 10.3 |
+| Require Decline Reason on Booking Rejection | `REQ-FUN-037` | Y | Y | Y | Y | Traces to Review & Decide on Own-Listing Bookings, Subtask 13.2 |
 | Performance & Scalability | `REQ-NFR-001` | Y | Y | Y | Y | Search ≤3s p95 @10,000 listings; booking ≤5s; ≥500 concurrent users; load-test verified |
 | Security & Data Privacy (PDPA Compliance) | `REQ-NFR-002` | Y | Y | Y | Y | Encryption at rest/in transit; role-based access control; consent traceability; PDPA SLA ≤21 days; audit/test verified |
 | Usability & Accessibility | `REQ-NFR-003` | Y | Y | Y | Y | Core-task completion ≤3 min, ≥90% success, n≥8; ≥2 languages; WCAG 2.1 AA; fixed via Worldwide Tourist Usability Sample (language/WCAG targets tightened) |
@@ -1176,7 +1196,7 @@ Applied to every functional, non-functional, design-level, product-level, and PD
 | Breach Detection & Notification | `REQ-PDPA-006` | Y | Y | Y | Y | Added via IT & Compliance Review Workshop; traces to PDPA Regulatory Authority |
 | Retention & Disposal Alignment | `REQ-PDPA-007` | Y | Y | Y | Y | Traces to Tourist Data Retention Limit |
 
-**Audit conclusion.** All 57 rows above are marked Verifiable = Y. No requirement in this document relies on a subjective or non-measurable term; every statement carries an explicit threshold, boolean condition, or observable system behaviour.
+**Audit conclusion.** All 60 rows above are marked Verifiable = Y, including the 3 retired rows (`REQ-FUN-032`–`034`, kept for audit-trail completeness). No requirement in this document relies on a subjective or non-measurable term; every statement carries an explicit threshold, boolean condition, or observable system behaviour.
 
 ---
 
