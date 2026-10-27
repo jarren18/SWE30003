@@ -1,0 +1,8 @@
+Checked Assignment2\build\FINAL_OOD.md
+Classes in diagram: 36 | CRC cards: 36 | Verification scenarios: 5 | Bootstrap diagrams: 1
+
+ERRORS (0)
+  none
+
+WARNINGS (0)
+  none

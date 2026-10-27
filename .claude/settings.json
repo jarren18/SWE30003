@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/skills/ood/scripts/hook_check_ood.py\"",
+            "timeout": 60,
+            "statusMessage": "Checking FINAL_OOD.md against rubric penalties"
+          }
+        ]
+      }
+    ]
+  }
+}

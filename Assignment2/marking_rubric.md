@@ -1,0 +1,15 @@
+# Assignment 2 Marking Criteria
+**Total Points:** 100
+
+| Criteria | Requirements & Description | Max Points | Penalties / Notes |
+| :--- | :--- | :--- | :--- |
+| **1. Executive Summary & Introduction** | Overview of the document, summary or problem to be addressed, and outlook of the solution to be taken. | 5 | |
+| **2. Assumptions** | Detail the assumptions made. Ensure they are realistic, within given constraints, and described in adequate detail. | 5 | |
+| **3. Evidence of Problem Analysis** | Illustrate some form of problem analysis. Provide a brief discussion of "simplifications" made during the analysis. | 5 | |
+| **4. Overview of Candidate Classes** | 1. Full list of candidate classes in the design solution.<br>2. UML-type class diagram highlighting relationships.<br>3. Brief justification of chosen classes and why others were discarded. | 20 | - Up to 15 pts for classes and overview.<br>- Up to 5 pts for justification.<br>- **Penalty:** Deduct up to 5 pts if full method signatures (or similar) are used in the diagram. |
+| **5. CRC Cards of Candidate Classes** | For each class in the "Overview", provide a CRC card containing:<br>1. Class name and parent class (if applicable).<br>2. Brief description of the class.<br>3. List of responsibilities plus all their collaborators. | 20 | - **Penalty:** Deduct 4 pts per missing class.<br>- **Penalty:** Deduct 1 pt per missing item on the CRC card. |
+| **6. Quality of Design Solution** | 1. All necessary system responsibilities covered.<br>2. Responsibilities described consistently and precisely.<br>3. Responsibilities evenly distributed (no "god" classes).<br>4. Use of design heuristics made explicit.<br>5. Use of Design Patterns made explicit. | 15 | |
+| **7. Illustration of Bootstrap Process** | Illustration of which class(es) create instances of other class(es) and in which specific order. | 5 | - **Penalty:** Deduct 1 pt for each undefined class used in the process. |
+| **8. Basic Verification of Solution** | Must contain at least 4 non-trivial use cases for the system and illustrate how the design covers these scenarios (e.g., using UML sequence diagrams). | 20 | - Award 4 pts for each valid, non-trivial use case scenario provided. |
+| **9. Coherent Document** | - Suitable overall structure (1 pt).<br>- Clarity and consistency of various parts (1 pt).<br>- Title page, Table of Contents, Section, Page numbering (1 pt).<br>- Use of English, diagrams with legends/notations (1 pt).<br>- Pitched at the appropriate audience (1 pt). | 5 | |
+| **10. Administrative Requirements** | 1. Electronic submission is required.<br>2. Assignment 1 submission attached as an appendix.<br>3. Cover sheet signed.<br>4. Worksheet (contribution document) completed and signed. | 0 | - **Penalty:** Up to -5 pts if Assignment 1 is not attached.<br>- **Penalty:** Up to -5 pts if Cover sheet is unsigned.<br>- **Penalty:** Up to -10 pts if Worksheet is incomplete/unsigned. |
